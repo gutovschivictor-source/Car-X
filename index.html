@@ -724,7 +724,7 @@ function suspStep(dt){
 /* mașina jucătorului: ~40% alb/bej + pete de culoare (paleta în PAL.car) */
 const skP=[];
 /* jante + accesorii specifice fiecarui skin */
-let RIMST='sq';const RIMS=[],RIMW=[],CYG={},SKA=[],SKR=['sq','star','solid','six','multi','ring','cross','octa','hive','turbo','prism','wheel','ring','turbo'],RB=['#ff5a3c','#ffc233','#77be68','#5aa9ff','#b06cff','#ff8fb1'],NEONM=new THREE.MeshBasicMaterial({color:0x00f0ff,fog:false});
+let RIMST='sq';const RIMS=[],RIMW=[],CYG={},SKA=[],SKR=['sq','star','solid','six','multi','ring','cross','octa','hive','turbo','prism','wheel','ring','turbo','solid'],RB=['#ff5a3c','#ffc233','#77be68','#5aa9ff','#b06cff','#ff8fb1'],NEONM=new THREE.MeshBasicMaterial({color:0x00f0ff,fog:false});
 for(const w of pc.wh){const sd=Math.sign(w.position.x),q=w.geometry.parameters,r=Math.min(q.height,q.depth)*.44,g=new THREE.Group(),sg=new THREE.Group();
  g.position.x=sd*(q.width/2+.025);w.add(g);g.add(sg);RIMS.push(sg);RIMW.push({sg,sd,r})}
 function rimCyl(r,l,x,m,par){const k=r+','+l,g=CYG[k]||(CYG[k]=new THREE.CylinderGeometry(r*1.4142,r*1.4142,l,4).rotateZ(Math.PI/2).rotateX(Math.PI/4)),me=new THREE.Mesh(g,m);me.add(new THREE.LineSegments(ED(g),OLM(m,LB)));me.position.x=x;par.add(me);return me}
@@ -746,7 +746,7 @@ const rimPaint=Q=>{const dm=colMat(Q.c,0),hm=colMat(Q.a,0),im=colMat(Q.ink,0),st
   else if(st==='prism'){rimCyl(r*.95,.05,0,im,sg);for(let i=0;i<6;i++){const q=mk(colMat(RB[i],0),sd*(.04+i*.004),0,0,.05,r*1.7,.11,sg,LB);q.rotation.x=i*Math.PI/6}hub(.3,.11)}
   else{mk(dm,0,0,0,.05,r*1.6,r*1.6,sg,LB);mk(dm,sd*.01,0,0,.05,r*1.6,r*1.6,sg,LB).rotation.x=Math.PI/4;mk(im,sd*.03,0,0,.05,r*1.1,r*1.1,sg,LW).rotation.x=Math.PI/8;hub(.4,.06)}}};
 function skAcc(i){while(SKA.length){const m=SKA.pop();if(m.parent)m.parent.remove(m)}
- const B=(w,h,l,x,y,z,c,rz,rx)=>{const m=box(w,h,l,x,y,z,typeof c==='string'?colMat(c,0):c,LB,pc.g);if(rz)m.rotation.z=rz;if(rx)m.rotation.x=rx;SKA.push(m);return m},k=((i%14)+14)%14;
+ const B=(w,h,l,x,y,z,c,rz,rx)=>{const m=box(w,h,l,x,y,z,typeof c==='string'?colMat(c,0):c,LB,pc.g);if(rz)m.rotation.z=rz;if(rx)m.rotation.x=rx;SKA.push(m);return m},k=((i%15)+15)%15;
  if(k===0){B(.03,.3,.03,.64,1.45,.95,BM,-.12);B(.09,.09,.09,.66,1.63,.95,'#ff5a3c')}
  else if(k===1){B(.07,.85,.07,-.62,1.45,1.2,BM);B(.07,.85,.07,.62,1.45,1.2,BM);B(1.3,.07,.07,0,1.88,1.2,BM)}
  else if(k===2){for(const s of[-1,1])B(.05,.05,1.1,s*.55,1.34,.45,BM);for(const z of[0,.45,.9])B(1.2,.05,.05,0,1.34,z,BM);B(.8,.22,.7,0,1.47,.45,'#d1cbc7');B(.82,.03,.08,0,1.59,.45,'#ff5a3c')}
@@ -766,18 +766,27 @@ function skAcc(i){while(SKA.length){const m=SKA.pop();if(m.parent)m.parent.remov
   for(let j=0;j<6;j++)B(.16,.22,.18,0,1.37,-.15+j*.25,RB[j]);
   for(let j=0;j<5;j++)B(.09,.09,.9,(j-2)*.16,.86,2.0,RB[j],0,.12)}
  else if(k===11){/* Pirat: toate piesele sunt lipite de caroserie (plafon sus 1.29, portbagaj sus .81, bot fata z -2.2) */
-  B(.05,.9,.05,0,1.74,.45,'#6b4a34');B(.6,.36,.03,.32,2.0,.45,'#1a1b3a');B(.14,.12,.02,.32,2.02,.47,'#fff4de');B(.03,.03,.02,.28,2.03,.485,'#1a1b3a');B(.03,.03,.02,.36,2.03,.485,'#1a1b3a');B(.5,.03,.02,.32,1.88,.47,'#ffc233');
+  B(.05,.45,.05,0,1.515,.45,'#6b4a34');B(.36,.22,.03,.2,1.63,.45,'#1a1b3a');B(.09,.07,.02,.2,1.645,.47,'#fff4de');B(.02,.02,.02,.176,1.65,.485,'#1a1b3a');B(.02,.02,.02,.224,1.65,.485,'#1a1b3a');B(.3,.02,.02,.2,1.56,.47,'#ffc233');
   for(const s of[-1,1]){B(.17,.17,.65,s*.55,.9,1.55,'#2a2a33');B(.21,.21,.08,s*.55,.9,1.3,'#ffc233')}
   B(.08,.08,.8,0,.6,-2.55,'#6b4a34')}
  else if(k===12){/* Fantoma: ochi si gura pe capota, poale lipite de flancuri, boruta alba pe plafon */
   B(.17,.04,.2,-.4,.825,-1.2,'#1a1b3a');B(.17,.04,.2,.4,.825,-1.2,'#1a1b3a');B(.22,.04,.3,0,.74,-2.05,'#1a1b3a');
   for(const s of[-1,1])for(let j=0;j<7;j++)B(.05,j%2?.4:.3,.45,s*.975,j%2?.35:.4,-1.9+j*.6,'#fff4de');
   B(.9,.2,.9,0,1.39,.45,'#ffffff');B(.6,.16,.6,0,1.57,.45,'#e8f0ff');B(.3,.12,.3,0,1.71,.45,'#ffffff')}
- else{/* Retro 80s: neon lipit de praguri, spoiler si bot, antena pe plafon, faruri pe capota */
+ else if(k===13){/* Retro 80s: neon lipit de praguri, spoiler si bot, antena pe plafon, faruri pe capota */
   for(const s of[-1,1])B(.04,.05,2.4,s*1.07,.32,0,'#ff2d95');
   B(1.4,.04,.03,0,.27,2.49,NEONM);B(1.8,.03,.04,0,.245,-2.6,'#ff2d95');B(2.0,.03,.04,0,1.555,2.2,'#00f0ff');
   B(.03,.5,.03,-.55,1.54,1.0,'#fff4de');B(.1,.1,.1,-.55,1.84,1.0,'#00f0ff');
-  for(const s of[-1,1])B(.4,.06,.18,s*.5,.825,-1.3,'#ffe14a')}}
+  for(const s of[-1,1])B(.4,.06,.18,s*.5,.825,-1.3,'#ffe14a')}
+ else{/* Broscuta: ochi bulbucati pe capota, nari, zambet + obraji roz pe bot */
+  for(const s of[-1,1]){const x=s*.5;
+   B(.5,.16,.5,x,.85,-1.2,'#5cb546');             /* gluga ochiului */
+   B(.4,.34,.4,x,1.06,-1.2,'#fff4de');             /* globul ocular */
+   B(.22,.22,.05,x,1.06,-1.4,'#1a1b3a');           /* pupila mare */
+   B(.07,.07,.06,x+.05,1.12,-1.43,'#ffffff')}      /* sclipirea */
+  for(const s of[-1,1])B(.07,.03,.1,s*.14,.8,-2.0,'#1a1b3a');   /* nari */
+  B(1.0,.05,.05,0,.46,-2.25,'#1a1b3a');                           /* gura */
+  for(const s of[-1,1]){B(.1,.14,.05,s*.5,.52,-2.25,'#1a1b3a');B(.16,.1,.05,s*.78,.56,-2.24,'#ff8fb1')}}}
  /* skin-uri: [base, beige, a, b, c, d, ink] - acelasi sistem de culori ca masina originala */
 const SVGU=s=>'url("data:image/svg+xml,'+encodeURIComponent(s)+'") center/cover no-repeat';
 const SKINS=[{n:'Clasic',q:PAL.car},
@@ -790,10 +799,11 @@ const SKINS=[{n:'Clasic',q:PAL.car},
  {n:'Roz',q:{base:'#ff8fb1',beige:'#e873a0',a:'#fff4de',b:'#1a1b3a',c:'#5aa9ff',d:'#1a1b3a',ink:'#1a1b3a'}},
  {n:'Albină',q:{base:'#ffc233',beige:'#e6a91f',a:'#fff4de',b:'#fff4de',c:'#ffc233',d:'#1a1b3a',ink:'#1a1b3a'},sw:'repeating-linear-gradient(135deg,#ffc233 0 8px,#1a1b3a 8px 16px)'},
  {n:'Lavă',q:{base:'#2b1a1a',beige:'#1f1010',a:'#ff5a3c',b:'#ffc233',c:'#ff9d2e',d:'#150a0a',ink:'#150a0a'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#2b1a1a'/><path d='M0 30L10 24L18 30L28 20L36 26L48 16V24L36 34L28 28L18 38L10 32L0 38Z' fill='#ff5a3c'/><path d='M0 33L10 28L18 34L28 24L36 30L48 20V22L36 32L28 26L18 36L10 30L0 36Z' fill='#ffc233'/><circle cx='12' cy='12' r='3' fill='#ff9d2e'/><circle cx='34' cy='10' r='2' fill='#ffc233'/><circle cx='40' cy='42' r='2.5' fill='#ff5a3c'/><circle cx='8' cy='42' r='2' fill='#ff9d2e'/></svg>`)},
- {n:'Unicorn',q:{base:'#fff4de',beige:'#ffd6e8',a:'#ff8fb1',b:'#b06cff',c:'#5aa9ff',d:'#ffc233',ink:'#1a1b3a'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#fff4de'/><g fill='none' stroke-width='4.2'><path d='M-4 52A28 28 0 0 1 52 52' stroke='#ff5a3c'/><path d='M1 52A23 23 0 0 1 47 52' stroke='#ffc233'/><path d='M6 52A18 18 0 0 1 42 52' stroke='#77be68'/><path d='M11 52A13 13 0 0 1 37 52' stroke='#5aa9ff'/><path d='M16 52A8 8 0 0 1 32 52' stroke='#b06cff'/></g><path d='M10 6L11.6 10.4L16 12L11.6 13.6L10 18L8.4 13.6L4 12L8.4 10.4Z' fill='#ffc233'/><path d='M39 5L40.1 8L43 9L40.1 10L39 13L37.9 10L35 9L37.9 8Z' fill='#ff8fb1'/></svg>`)},
- {n:'Pirat',q:{base:'#1f1c26',beige:'#6b4a34',a:'#b02a2a',b:'#fff4de',c:'#ffc233',d:'#3a2a1f',ink:'#0f0d14'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#1f1c26'/><path d='M9 36L39 14M39 36L9 14' stroke='#ffc233' stroke-width='3.2' stroke-linecap='round'/><circle cx='24' cy='23' r='9.5' fill='#fff4de'/><rect x='19' y='29' width='10' height='8' rx='2' fill='#fff4de'/><circle cx='20.5' cy='22' r='2.6' fill='#1f1c26'/><circle cx='27.5' cy='22' r='2.6' fill='#1f1c26'/><path d='M24 25.5L22.6 28.4H25.4Z' fill='#1f1c26'/></svg>`)},
+ {n:'Unicorn',q:{base:'#fff4de',beige:'#ffd6e8',a:'#ff8fb1',b:'#b06cff',c:'#5aa9ff',d:'#ffc233',ink:'#1a1b3a'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#fff4de'/><g fill='none' stroke-width='5' stroke-linecap='round'><path d='M8 36A16 16 0 0 1 40 36' stroke='#ff8fb1'/><path d='M14 36A10 10 0 0 1 34 36' stroke='#b06cff'/><path d='M20 36A4 4 0 0 1 28 36' stroke='#5aa9ff'/></g></svg>`)},
+ {n:'Pirat',q:{base:'#1f1c26',beige:'#6b4a34',a:'#b02a2a',b:'#fff4de',c:'#ffc233',d:'#3a2a1f',ink:'#0f0d14'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#1f1c26'/><path d='M12 24A12 12 0 0 1 36 24V29H30V35H18V29H12Z' fill='#fff4de'/><circle cx='19' cy='24' r='3' fill='#1f1c26'/><circle cx='29' cy='24' r='3' fill='#1f1c26'/></svg>`)},
  {n:'Fantomă',q:{base:'#e8f0ff',beige:'#cfdcf5',a:'#9fd6ff',b:'#fff4de',c:'#b7c7ee',d:'#6a7fb0',ink:'#2a3a66'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#6a7fb0'/><path d='M10 40V22C10 13 16 8 24 8S38 13 38 22V40L33 35L28.5 40L24 35L19.5 40L15 35Z' fill='#fff4de'/><circle cx='19' cy='22' r='3' fill='#2a3a66'/><circle cx='29' cy='22' r='3' fill='#2a3a66'/><ellipse cx='24' cy='30' rx='3' ry='3.6' fill='#2a3a66'/></svg>`)},
- {n:'Retro 80s',q:{base:'#2a1450',beige:'#1a0b33',a:'#ff2d95',b:'#00f0ff',c:'#ffe14a',d:'#120a2e',ink:'#0b0620'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#2a1450'/><path d='M10 28A14 14 0 0 1 38 28Z' fill='#ffe14a'/><g fill='#2a1450'><rect x='10' y='20' width='28' height='1.6'/><rect x='10' y='23.4' width='28' height='2'/></g><rect y='28' width='48' height='20' fill='#1a0b33'/><g stroke='#00f0ff' stroke-width='1.2'><path d='M0 33H48M0 39H48M0 46H48'/></g><g stroke='#ff2d95' stroke-width='1.2'><path d='M24 28L0 48M24 28L12 48M24 28V48M24 28L36 48M24 28L48 48'/></g></svg>`)}];
+ {n:'Retro 80s',q:{base:'#2a1450',beige:'#1a0b33',a:'#ff2d95',b:'#00f0ff',c:'#ffe14a',d:'#120a2e',ink:'#0b0620'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#2a1450'/><path d='M10 30A14 14 0 0 1 38 30Z' fill='#ffe14a'/><rect x='6' y='32' width='36' height='3' rx='1.5' fill='#ff2d95'/><rect x='12' y='38' width='24' height='3' rx='1.5' fill='#00f0ff'/></svg>`)},
+ {n:'Broscuță',q:{base:'#7ed957',beige:'#c9ef8a',a:'#5cb546',b:'#c9ef8a',c:'#b8e86b',d:'#2d6a4f',ink:'#1a1b3a'},sw:SVGU(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' fill='#7ed957'/><circle cx='15' cy='19' r='7' fill='#fff4de'/><circle cx='33' cy='19' r='7' fill='#fff4de'/><circle cx='15' cy='20' r='3.4' fill='#1a1b3a'/><circle cx='33' cy='20' r='3.4' fill='#1a1b3a'/><ellipse cx='9' cy='33' rx='4.5' ry='3' fill='#ff8fb1'/><ellipse cx='39' cy='33' rx='4.5' ry='3' fill='#ff8fb1'/><path d='M19 34Q24 38.5 29 34' fill='none' stroke='#1a1b3a' stroke-width='2.6' stroke-linecap='round'/></svg>`)}];
 function paintPC(Q){while(skP.length){const m=skP.pop();if(m.parent)m.parent.remove(m)}pc.m=colMat(Q.base,0);
  const M=c=>colMat(c,0),F=(w,h,l)=>PBODY.children.filter(m=>m.isMesh&&m.geometry.parameters&&m.geometry.parameters.width===w&&m.geometry.parameters.height===h&&m.geometry.parameters.depth===l),
  P1=(a,c)=>{for(const m of a)if(m)reMat(m,M(c))},pt=(m,w,h,l,x,y,z,c)=>{if(m)skP.push(box(w,h,l,x,y,z,M(c),LB,m))};
@@ -962,7 +972,8 @@ const CHS=[
  ()=>{RB.forEach((c,i)=>cm(c,(i-2.5)*.02,0,0,.02,.09-Math.abs(i-2.5)*.014,.03))} /* curcubeu */,
  ()=>{cm('#ffc233',0,.01,0,.03,.1,.03);cm('#ffc233',0,.045,0,.09,.025,.03);cm('#ffc233',-.035,-.04,0,.03,.025,.03);cm('#ffc233',.035,-.04,0,.03,.025,.03);cm('#ffc233',0,-.055,0,.1,.02,.03)}, /* ancora */
  ()=>{cm('#fff4de',0,.01,0,.08,.1,.04);for(const x of[-.027,0,.027])cm('#fff4de',x,-.05,0,.024,.03,.04);dt_(-.02,.02,.015);dt_(.02,.02,.015)}, /* fantoma */
- ()=>{cm('#ff2d95',0,0,0,.1,.065,.03);cm('#120a2e',0,-.01,0,.07,.03,.034);dt_(-.022,-.01,.016);dt_(.022,-.01,.016)} /* casetă */
+ ()=>{cm('#ff2d95',0,0,0,.1,.065,.03);cm('#120a2e',0,-.01,0,.07,.03,.034);dt_(-.022,-.01,.016);dt_(.022,-.01,.016)} /* casetă */,
+ ()=>{cm('#7ed957',0,-.01,0,.11,.07,.04);for(const x of[-.032,.032]){cm('#fff4de',x,.04,0,.05,.05,.09);dt_(x,.04,.022)}cm('#1a1b3a',0,-.03,0,.06,.012,.05)} /* broscuta */
 ];
 function setCharm(i){while(chG.children.length)chG.remove(chG.children[0]);CHS[((i%CHS.length)+CHS.length)%CHS.length]()}
 let chZ=0,chZv=0,chX=0,chXv=0,chPv=20,chAf=0;
@@ -1223,7 +1234,7 @@ function collide(c,hx,hz){
   dmg+=dv/PH;susKick(dv*.7,nx);shake=Math.max(shake,Math.min(1,dv/10));hitT=1.5;sparkBurst((c.x+px)/2,.6,c.z*.5,Math.min(60,dv*5|0),(vx+(c.vx||0))/2,(vcz-v)/2,3+dv*.4);
   if((dv>11*PH||dmg>20)&&state==='run'){crash();return true}
   sfxHit(dv0)}
- if(lat){c.x+=nx*ox*.6;px-=nx*ox*.4}else c.z+=nz*oz;
+ if(lat){c.x+=nx*ox*.6;px-=nx*ox*.4}else c.z+=nz*Math.min(oz,.3);
  return false}
 
 /* volan */
@@ -2659,7 +2670,7 @@ rpT-=dt;if(rpT<=0&&!cr&&t>15&&spawn(-520-Math.random()*40,'carrier'))rpT=16+Math
     if(c.rival)dcs=Math.max(-34*dt,Math.min(16*dt,dcs));c.cs+=dcs}if(c.spin)c.spin.rotation.x-=dt*5;if(c.dmp)dumpStep(c,dt);
    const pz=c.z;c.z+=(v+(c.dir>0?-c.cs:c.cs))*dt;
    if(c.glue&&c.pol&&!c.hit){const gz=(4.4+(c.cl||c.l))/2*.95+.12;c.z+=(gz-c.z)*Math.min(1,dt*12);c.cs=v;c.x+=(px-c.x)*Math.min(1,dt*GLK);c.g.position.x=c.x}
-   if(nl&&!c.hit&&!c.amb&&!c.ut){const q=c.dir>0?c.z-nl.z:nl.z-c.z,mn=(c.l+nl.l)/2+.8;if(q<mn){c.z=c.dir>0?nl.z+mn:nl.z-mn;if(c.cs>nl.cs)c.cs=nl.cs}}
+   if(nl&&!c.hit&&!c.amb&&!c.ut){const q=c.dir>0?c.z-nl.z:nl.z-c.z,mn=(c.l+nl.l)/2+.8;if(q<mn){if(nl===PL){const g=mn-q;c.z+=(c.dir>0?1:-1)*Math.min(g,.3)}else c.z=c.dir>0?nl.z+mn:nl.z-mn;if(c.cs>nl.cs)c.cs=nl.cs}}
    c.pz=pz;c.g.position.z=c.z;if(c.hit)hitStep(c,dt);else if(c.sw)swStep(c,dt);else if(state==='run'&&!c.glue)ai(c,dt);
    if(!c.te&&c.m>5000&&state==='run'&&Math.abs(c.z)<15&&Math.abs(c.x-px)<7){c.te=1;sfxTruck(c)}if(c.blk)c.blk.visible=((now/130)|0)%2===0;if(c.dir<0&&!c.em)flashL(c,dt);if(c.lamps){const ph=((now/110)|0)%2===0;c.lamps[0].visible=ph;c.lamps[1].visible=!ph}
    if((c.hit||Math.abs(c.x)>6.6)&&!c.amb)sHit(c.x,c.z,c.w*.46,c.l*.46,c.vx||0,c.dir>0?-c.cs:c.cs,(o,nx,nz,pen,cl)=>{
