@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="logo-stea.png" type="image/png">
+<style>
+.social-img { width:25px; filter:brightness(0) invert(1.2); }
+@keyframes wa-in { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+ 
+@keyframes btnGradientFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
+.wa-float {
+  position: fixed;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 9997;
+  width: 40px; height: 40px;
+  background: linear-gradient(120deg, #0059ca, #0071ff,#0083ff, #0059ca);
+  background-size: 300% 300%;
+  animation: btnGradientFlow 5s ease infinite;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  box-shadow:
+              inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+ 
+}
+
+.wa-float:hover {
+  box-shadow: 0 8px 20px rgba(0,113,255,0.25),
+              inset 0 1px 0 rgba(255,255,255,0.3);
+
+  animation: btnGradientFlow 5s ease infinite, wa-bounce 0.4s ease;
+  transform: scale(1.05);
+}
+
+.wa-float:active { transform: scale(0.95); }
+
+
+
+@media (max-width: 480px) {
+  .wa-float { bottom: 1rem; right: 1rem; width: 40px; height: 40px; }
+  .wa-tooltip { display: none; }
+}
+@keyframes vortexSpin {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1.6); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.6); }
+}
+@keyframes vortexSpinReverse {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1.15); }
+  100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1.15); }
+}
+@keyframes vortexPulse {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+#cum-functioneaza {
+  background: var(--blue);
+  position: relative;
+  overflow: hidden;
+}
+
+.cf-vlayer {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 140%;
+  height: 60%;
+  pointer-events: none;
+  z-index: 0;
+}
+.cf-vlayer-1 {
+  background: conic-gradient(from 0deg, #007fff, #6eb2ff, #007fff, #0055bb, #6678ff, #007fff, #0070ee, #004faa, #007fff);
+  animation: vortexSpin 22s linear infinite, vortexPulse 7s ease-in-out infinite;
+  filter: blur(40px);
+}
+.cf-vlayer-2 {
+  background: conic-gradient(from 90deg, rgba(0,127,255,0) 0%, rgba(80,160,255,.35) 20%, rgba(120,100,255,.3) 45%, rgba(0,127,255,0) 70%, rgba(70,110,255,.25) 90%, rgba(0,127,255,0) 100%);
+  animation: vortexSpinReverse 16s linear infinite;
+  filter: blur(50px);
+  mix-blend-mode: screen;
+}
+
+.cf-vignette {
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(0,127,255,1) 0%,
+    rgba(0,127,255,0) 18%,
+    rgba(0,127,255,0) 82%,
+    rgba(0,127,255,1) 100%);
+}
+
+#cum-functioneaza {
+  background: var(--blue);
+  position: relative;
+  overflow: hidden; /* IMPORTANT: previne tăierea inconsecventă */
+}
+@keyframes riseStar {
+  0%   { opacity: 0;   transform: translateY(0px) rotate(0deg) scale(var(--s)); }
+  8%   { opacity: var(--max-op); }
+  45%  { opacity: var(--max-op); }
+  55%  { opacity: 0;   transform: translateY(var(--rise)) rotate(var(--rot)) scale(var(--s)); }
+  100% { opacity: 0;   transform: translateY(var(--rise)) rotate(var(--rot)) scale(var(--s)); }
+}
+#cum-functioneaza { background: var(--blue); }
+#cum-functioneaza .section-eyebrow { color: rgba(255,255,255,0.55); }
+#cum-functioneaza .section-title { color: #fff; }
+#cum-functioneaza .rule-line { background: rgba(255,255,255,0.2); }
+#cum-functioneaza .rule-diamond { background: rgba(255,255,255,0.4); }
+
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+.steps-row::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: calc(12.5% + 1rem);
+  right: calc(12.5% + 1rem);
+  height: 1.5px;
+  background: rgba(255,255,255,0.2);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.step-num {
+  width: 48px; height: 48px;
+  background: #fff;
+  color: var(--blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  position: relative; z-index: 1;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing: -0.02em;
+}
+.step-item:hover .step-num {
+  transform: scale(1.1) rotate(-8deg);
+  box-shadow:0 4px 20px rgba(0,0,0,0);
+}
+
+.step-item h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.02em;
+}
+.step-item p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.steps-cta {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: inset 0 1px 0px rgba(255,255,255,1);
+  border-radius: var(--r-xl);
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.steps-cta-text h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.2rem;
+}
+.steps-cta-text p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: -0.01em;
+}
+.btn-steps-cta {
+  background: #fff;
+  color: var(--blue);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.85rem 1.6rem;
+  border-radius: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing: -0.01em;
+ box-shadow: inset 0 -1px 0px rgba(0 ,113 ,227,0.5);
+}
+.btn-steps-cta:hover { transform: scale(1.03); box-shadow: 0 6px 20px rgba(0,0,0,0.15),inset 0 -1px 0px rgba(0 ,113 ,227,0.5);
+ }
+
+@media (max-width: 600px) {
+  .steps-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .steps-row::before { display: none; }
+  .steps-cta { flex-direction: column; text-align: center; padding: 1.75rem 1.5rem; }
+  .btn-steps-cta { width: 100%; text-align: center; }
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 4px; bottom: 4px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow:  0 2px 0px rgba(0,0,0,0.2);
+  transition: left 0.4s cubic-bezier(0.46,-0.29, 0.14, 1.31), width 0.4s cubic-bezier(0.46,-0.29, 0.14, 1.31);
+  pointer-events: none;
+  z-index: 0;
+
+}
+
+.tab-btn {
+  position: relative;
+  z-index: 1;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --blue:         #007fff;
+  --blue-light:   #2997ff;
+  --blue-dark:    #0051a2;
+  --indigo:       #5856d6;
+  --bg:           #f5f5f7;
+  --bg-card:      #ffffff;
+  --bg-dark:      #1d1d1f;
+  --text:         #1d1d1f;
+  --text-2:       #6e6e73;
+  --text-3:       #aeaeb2;
+  --border:       rgba(0,0,0,0.08);
+  --gold:         #ff9f00;
+  --r-sm:         10px;
+  --r-md:         16px;
+  --r-lg:         22px;
+  --r-xl:         30px;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::after { display: none; }
+
+/* ─── PROGRESS BAR ─── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light));
+  z-index: 10000;
+  width: 0%;
+  transition: width 0.1s;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9997;
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  background: rgba(255,255,255,1);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.1);
+  transition: background 0.3s;
+}
+
+nav.scrolled { background: rgba(255,255,255,1); }
+
+.nav-logo {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text);
+  text-decoration: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+  position: relative;
+}
+
+.nav-links a::after { display: none; }
+.nav-links a:hover { color: var(--blue); background: rgba(0,113,227,0.06); }
+
+/* ─── HAMBURGER ─── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  background: rgba(0,0,0,0.08);
+  border: none;
+  padding: 8px;
+  z-index: 9999;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.hamburger:hover { background: rgba(0,0,0,0.1); }
+.hamburger span {
+  display: block;
+  height: 1.5px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transform-origin: center;
+}
+.hamburger span:nth-child(1) { width: 14px; }
+.hamburger span:nth-child(2) { width: 14px; }
+.hamburger span:nth-child(3) { width: 14px; }
+.hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); width: 14px; }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); width: 14px; align-self: center; }
+
+/* ─── BOTTOM SHEET OVERLAY ─── */
+.sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 9980;
+  transition: background 0.35s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.sheet-overlay.open {
+  display: block;
+  background: rgba(0,0,0,0.45);
+}
+
+/* ─── BOTTOM SHEET ─── */
+.bottom-sheet {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(15,15,20,0.97);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 24px 24px 0 0;
+  z-index: 9998;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 1px 0px rgba(255,255,255,0.1);
+}
+.bottom-sheet.open {
+  transform: translateY(0);
+}
+
+.sheet-drag-bar {
+  width: 36px; height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  margin: 12px auto 14px;
+  box-shadow:inset 0 1px 0px rgba(255,255,255,0.05);
+}
+
+.sheet-header {
+  padding: 0 20px 12px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sheet-header-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+.sheet-close-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:inset 0 1px 0px rgba(255,255,255,0.1),inset 0 -1px 0px rgba(255,255,255,0.1);
+}
+.sheet-close-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+.sheet-nav-items {
+  padding: 8px 12px;
+}
+
+.sheet-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.18s;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+.sheet-nav-item:hover,
+.sheet-nav-item:active { background: rgba(255,255,255,0.08); }
+
+.sheet-nav-item-left {
+  display: flex; align-items: center; gap: 12px;
+}
+
+
+
+.sheet-nav-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: -0.01em;
+}
+
+.sheet-nav-arrow {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.2);
+  transition: transform 0.2s, color 0.2s;
+  line-height: 1;
+}
+.sheet-nav-item:hover .sheet-nav-arrow { transform: translateX(3px); color: rgba(255,255,255,0.5); }
+
+.sheet-cta-btn {
+  display: block;
+  margin: 8px 12px 0;
+  padding: 15px;
+  background: var(--blue);
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  border: none;
+  width: calc(100% - 24px);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: inset 0 1px 0px rgba(255,255,255,0.2),inset 0 -1px 0px rgba(255,255,255,0.1);
+}
+.sheet-cta-btn:hover { background: #0077ed; transform: scale(1.01); }
+.sheet-cta-btn:active { transform: scale(0.98); }
+
+/* ─── HERO / HEADER ─── */
+header {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  padding: 5.5rem 2rem 4rem;
+  overflow: hidden;
+}
+
+@keyframes vortexSpin {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1.6); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.6); }
+}
+@keyframes vortexSpinReverse {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) scale(1.15); }
+  100% { transform: translate(-50%, -50%) rotate(-360deg) scale(1.15); }
+}
+@keyframes vortexPulse {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+
+.hero-bg .vortex-layer {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 140%;
+  height: 600px;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-bg .vortex-layer-1 {
+  background: conic-gradient(
+    from 0deg,
+    #0071e3,
+    #001830,
+    #0071e3,
+    #001830,
+    #5856d6,
+    #001830,
+    #1a0a2e,
+    #0d1b3e,
+    #001830
+  );
+  animation: vortexSpin 22s linear infinite, vortexPulse 7s ease-in-out infinite;
+  filter: blur(40px);
+}
+.hero-bg .vortex-layer-2 {
+  background: conic-gradient(
+    from 90deg,
+    rgba(41,151,255,0) 0%,
+    rgba(41,151,255,0.35) 20%,
+    rgba(88,86,214,0.3) 45%,
+    rgba(41,151,255,0) 70%,
+    rgba(88,86,214,0.25) 90%,
+    rgba(41,151,255,0) 100%
+  );
+  animation: vortexSpinReverse 16s linear infinite;
+  filter: blur(50px);
+  mix-blend-mode: screen;
+}
+
+.hero-bg .vortex-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.08) 20%,
+    rgba(0,0,0,0.25) 35%,
+    rgba(0,0,0,0.5) 48%,
+    rgba(0,0,0,0.75) 60%,
+    rgba(0,0,0,0.92) 75%,
+    rgba(0,0,0,1) 90%);
+}
+.particles { position: absolute; inset: 0; overflow: hidden; }
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  opacity: 0;
+  animation: float-up var(--dur, 8s) var(--delay, 0s) ease-in infinite;
+}
+
+@keyframes float-up {
+  0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+  10%  { opacity: 0.35; }
+  90%  { opacity: 0.1; }
+  100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
+}
+
+.ornament {
+  color: rgba(255,255,255,0.2);
+  font-size: 0.7rem;
+  letter-spacing: 0.45rem;
+  margin: 0.65rem 0;
+  animation: fadeIn 1.5s ease both;
+  position: relative; z-index: 1;
+  font-weight: 300;
+}
+
+.hero-badge {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255,255,255,0.75);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04rem;
+  padding: 0.42rem 1.1rem;
+  border-radius: 980px;
+  margin-bottom: 0.5rem;
+  animation: slideDown 1s ease both;
+  border: 0.5px solid rgba(255,255,255,0.2);
+  position: relative; z-index: 1;
+  box-shadow: inset 0 0.1px 0px rgba(255,255,255,1),inset 0 -1px 0px rgba(0,0,0,0.1);
+}
+
+.hero-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2.2rem, 6.5vw, 5.5rem);
+  color: #fff;
+  line-height: 1.06;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0em;
+  animation: fadeUp 1.2s 0.3s ease both;
+  max-width: 900px;
+  position: relative; z-index: 1;
+  font-style: normal;
+  perspective: 800px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(105deg, #007fff 30%, #60b1fe 48%, #60b2ff 52%, #007fff 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 7.5s linear infinite;
+}
+
+.hero-title em.em-reveal {
+  display: inline-block;
+  animation: emReveal 1.1s cubic-bezier(0.16,1,0.3,1) both, shimmer 7.5s 1.1s linear infinite;
+}
+
+@keyframes emReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(9px);
+    letter-spacing: 0.09em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    letter-spacing: 0em;
+  }
+}
+
+.title-word {
+  display: inline-block;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(9px);
+  letter-spacing: 0.09em;
+  animation: wordReveal 1.1s cubic-bezier(0.16,1,0.3,1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.09s);
+  will-change: transform, opacity, filter;
+}
+.title-word { margin-left: 0.28em; }
+.mobile-title-break { display: none; }
+
+@keyframes wordReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(9px);
+    letter-spacing: 0.09em;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    letter-spacing: 0em;
+  }
+}
+
+.hero-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.98rem, 2.5vw, 1.18rem);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  margin-top: 1.5rem;
+  max-width: 520px;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  animation: fadeUp 1.2s 0.6s ease both;
+  position: relative; z-index: 1;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative; z-index: 1;
+  width: 100%;
+}
+@keyframes ctaPrimaryReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) translateY(10px);
+    filter: blur(6px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.01) translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ctaSecondaryReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(18px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes btnGradientFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, #007fff, #208fff, #007fff);
+  background-size: 200% 200%;
+  animation: btnGradientFlow 5s ease infinite, ctaPrimaryReveal 0.9s 1s cubic-bezier(0.34,1.56,0.64,1) both;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 0.82rem 1.65rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  border-radius: 980px;
+  position: relative; overflow: hidden;
+  text-align: center;
+  box-shadow: inset 0 1px 0px rgba(255,255,255,0.4),inset 0 -1px 0px rgba(255,255,255,0.2);
+
+}
+.btn-primary::before { display: none; }
+.btn-primary:hover { transform: scale(1.02); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: ctaSecondaryReveal 0.8s 1.25s cubic-bezier(0.16,1,0.3,1) both;
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.9);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 0.82rem 1.65rem;
+  border: 0.5px solid rgba(255,255,255,0.25);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.25s;
+  border-radius: 980px;
+  text-align: center;
+  box-shadow: inset 0 1px 0px rgba(0,0,0,1),inset 0 -1px 0px rgba(0,0,0,1);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.45);
+  transform: scale(1.02);
+  color: #fff;
+border: 1px solid rgba(255,255,255,0.5);
+}
+@media (max-width: 768px) {
+  .btn-secondary {
+    animation-name: ctaSecondaryReveal;
+  }
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.22);
+  font-size: 0.6rem;
+  letter-spacing: 0.08rem;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  animation: fadeIn 2s 1.5s ease both;
+  z-index: 1;
+}
+
+/* ─── SECTIONS BASE ─── */
+section {
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.section-inner { max-width: 1080px; margin: 0 auto; }
+
+.section-header { text-align: center; margin-bottom: 3.5rem; }
+
+.section-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+  display: block;
+}
+
+.section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  color: var(--text);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  font-style: normal;
+}
+.section-title .title-word {
+  display: inline-block;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(8px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+              transform 0.7s cubic-bezier(0.16,1,0.3,1),
+              filter 0.7s cubic-bezier(0.16,1,0.3,1);
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+.section-title.title-revealed .title-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+.section-title { overflow: visible; }
+.section-rule {
+  display: flex; align-items: center; gap: 0.7rem;
+  justify-content: center; margin: 1.25rem 0;
+}
+.rule-line { height: 0.5px; width: 36px; background: #aeaeb2; }
+.rule-diamond { width: 4px; height: 4px; background: var(--text-3); transform: rotate(45deg); flex-shrink: 0; }
+
+/* ─── INTRO ─── */
+#intro { background: #fff; }
+#intro::before { display: none; }
+
+.intro-single {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+.intro-single .section-rule { justify-content: center; }
+.intro-single .drop-cap::first-letter {
+  font-family: 'Inter', sans-serif; font-size: 3.4rem;
+  font-weight: 800; color: var(--blue); float: left;
+  line-height: 0.75; margin-right: 0.1em; margin-top: 0.12em;
+}
+
+.intro-highlight {
+  margin-top: 2.2rem;
+  padding: 1.8rem 2rem;
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+.intro-highlight-icon {
+  font-size: 1.3rem;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.intro-highlight p {
+  font-size: 0.95rem;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 480px) {
+  .intro-highlight { flex-direction: column; text-align: center; padding: 1.5rem; }
+}
+
+.intro-text p {
+  font-size: 1.02rem; line-height: 1.82;
+  color: var(--text-2); margin-bottom: 1.2rem;
+  font-weight: 400; letter-spacing: -0.01em;
+}
+
+.intro-text .drop-cap::first-letter {
+  font-family: 'Inter', sans-serif; font-size: 3.4rem;
+  font-weight: 800; color: var(--blue); float: left;
+  line-height: 0.75; margin-right: 0.1em; margin-top: 0.12em;
+}
+
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.stat-card {
+  background: var(--bg); border: none;
+  padding: 1.75rem 1.5rem; text-align: center;
+  position: relative; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  border-radius: var(--r-lg);
+}
+.stat-card.reveal:hover,
+.stat-card:hover {
+  transform: translateY(-4px) scale(1.01); background: #fff;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+  font-family: 'Inter', sans-serif; font-size: 2.4rem;
+  color: var(--text); font-weight: 800; display: block;
+  letter-spacing: -0.04em; line-height: 1;
+}
+.stat-label {
+  font-size: 0.77rem; color: var(--text-2); font-weight: 500;
+  margin-top: 0.4rem; letter-spacing: -0.01em; line-height: 1.4;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─── OFERTE ─── */
+#oferte { background: var(--bg); overflow: hidden; }
+#oferte::before { display: none; }
+#oferte .section-title { color: var(--text); }
+#oferte .section-eyebrow { color: var(--blue); }
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.2rem; margin-top: 1rem;
+}
+
+.offer-card {
+  background: #fff; border: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  padding: 2rem 1.75rem; position: relative;
+  cursor: pointer; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  overflow: hidden; border-radius: var(--r-xl);
+}
+.offer-card.reveal:hover,
+.offer-card:hover { transform: translateY(-3px) scale(1.005); box-shadow: 0 24px 48px rgba(0,0,0,0.13); }
+.offer-card::before { display: none; }
+
+.offer-icon {
+  width: 13px; height: 13px;
+  background: rgba(0,113,227,0.4);
+  clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.2rem; font-size: 1.3rem;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), background 0.3s ease;
+  position: relative; z-index: 1;
+}
+.offer-card:hover .offer-icon {
+  background: rgba(0,113,227,1);
+  transform: scale(1.2) rotate(90deg);
+}
+.offer-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 60%);
+  background-size: 200% 200%;
+  background-position: 200% 200%;
+  transition: background-position 0.6s ease;
+  pointer-events: none; border-radius: var(--r-xl);
+}
+.offer-card:hover::after { background-position: -50% -50%; }
+
+.offer-tag {
+  font-family: 'Inter', sans-serif; font-size: 0.68rem;
+  font-weight: 600; letter-spacing: 0.05rem; color: var(--blue);
+  text-transform: uppercase; margin-bottom: 0.55rem;
+  position: relative; z-index: 1;
+}
+
+.offer-title {
+  font-family: 'Inter', sans-serif; font-size: 1.3rem;
+  color: var(--text); margin-bottom: 0.75rem;
+  font-weight: 700; line-height: 1.25;
+  position: relative; z-index: 1;
+  letter-spacing: -0.025em; font-style: normal;
+}
+
+.offer-desc {
+  font-size: 0.9rem; color: var(--text-2); line-height: 1.7;
+  margin-bottom: 1.2rem; position: relative; z-index: 1; letter-spacing: -0.01em;
+}
+
+.offer-price {
+  display: flex; align-items: baseline; gap: 0.35rem;
+  margin-bottom: 1.2rem; position: relative; z-index: 1;
+}
+.price-amount { font-family: 'Inter', sans-serif; font-size: 1.9rem; color: var(--text); font-weight: 800; letter-spacing: -0.04em; }
+.price-period { font-size: 0.88rem; color: var(--text-2); font-weight: 400; }
+
+.offer-features {
+  list-style: none; margin-bottom: 1.7rem; position: relative; z-index: 1;
+}
+.offer-features li {
+  font-size: 0.9rem; color: var(--text-2); padding: 0.42rem 0;
+  border-bottom: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 0.6rem; letter-spacing: -0.01em;
+}
+.offer-features li:last-child { border-bottom: none; }
+.offer-features li::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--blue); flex-shrink: 0; font-size: 0;
+}
+
+.offer-badge {
+  border-radius: var(--r-sm); position: absolute; top: 1.2rem; right: 1.2rem;
+  background: var(--blue); color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 0.58rem; font-weight: 600; letter-spacing: 0.05rem;
+  padding: 0.3rem 0.75rem; z-index: 2; text-transform: uppercase;
+  box-shadow:inset 0 -1px 0px rgba(0,0,0,0.1);
+}
+
+.featured-card {
+  border: 1.5px solid rgba(0,113,227,0.5);
+  box-shadow: 0 2px 20px rgba(0,113,227,0.08);
+  background: linear-gradient(160deg, #fff 60%, rgba(0,113,227,0.03) 100%);
+}
+.featured-card:hover { box-shadow: 0 24px 48px rgba(0,113,227,0.18); border-color: var(--blue); }
+
+.offer-btn-secondary {
+  display: block; text-align: center; color: var(--blue);
+  border: 1px solid rgba(0,113,227,0.25); font-family: 'Inter', sans-serif;
+  font-size: 0.84rem; font-weight: 500; padding: 0.85rem 1rem;
+  letter-spacing: -0.01em; text-decoration: none; transition: all 0.25s;
+  border-radius: var(--r-md); position: relative; z-index: 1;
+}
+.offer-btn-secondary:hover { background: rgba(0, 113,255,0.05); border-color: var(--blue); }
+
+.offer-btn-primary {
+  display: block; text-align: center; background: var(--blue); color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 500;
+  letter-spacing: -0.01em; padding: 0.9rem 1rem; text-decoration: none;
+  border-radius: var(--r-md); transition: all 0.25s; position: relative; z-index: 1; overflow: hidden;
+  box-shadow: inset 0 -1px 0px rgba(0,0,0,0.1);
+}
+.offer-btn-primary::before { display: none; }
+.offer-btn-primary:hover { background: #0077ed; transform: scale(1.01); }
+
+/* ─── MATERII ─── */
+#materii { background: #fff; }
+
+.materii-tabs {
+  display: flex; justify-content: center; margin-bottom: 2.5rem;
+  background: #eaeaea; border-radius: var(--r-md); overflow: visible;
+  width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto;
+  padding: 4px; gap: 3px; position: relative;
+  box-shadow:  0 1px 0px rgba(0,0,0,0.2);
+}
+
+.tab-btn {
+  background: transparent; border: none; padding: 0.62rem 1.5rem;
+  font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 500;
+  letter-spacing: -0.01em; color: #606066; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1); flex: 1; white-space: nowrap;
+  border-radius: 12px;
+}
+.tab-btn.active { color: var(--text); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+.tab-content { display: none; animation: fadeIn 0.35s ease; }
+.tab-content.active { display: block; }
+
+.materie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+
+.materie-item {
+  border-left: none; border-top: 2.5px solid var(--blue);
+  padding: 1.4rem 1.3rem; background: var(--bg); position: relative;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1); border-radius: var(--r-lg);
+}
+.materie-item.reveal:hover,
+.materie-item:hover {
+  border-top-color: var(--indigo); transform: translateY(-3px);
+  background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.materie-item h4 { font-family: 'Inter', sans-serif; font-size: 0.98rem; color: var(--text); margin-bottom: 0.5rem; font-weight: 600; letter-spacing: -0.02em; }
+.materie-item p { font-size: 0.87rem; color: var(--text-2); line-height: 1.6; letter-spacing: -0.01em; }
+
+/* ─── TESTIMONIALE ─── */
+#testimoniale { background: var(--bg-dark); position: relative; overflow: hidden; }
+#testimoniale::before { display: none; }
+#testimoniale::after {
+  content: ''; position: absolute; bottom: -80px; left: -80px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(0,113,227,0.07); pointer-events: none;
+}
+#testimoniale .section-title { color: #fff; font-style: normal; }
+#testimoniale .section-eyebrow { color: rgba(255,255,255,0.45); }
+
+.testimoniale-slider { position: relative; max-width: 720px; margin: 0 auto; }
+
+.testimonial { display: none; animation: fadeIn 0.4s ease; text-align: center; padding: 1.5rem 1rem; }
+.testimonial.active { display: block; }
+
+.testimonial-quote {
+  font-family: 'Inter', sans-serif; font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255,255,255,0.75); line-height: 1.78; font-weight: 400;
+  margin-bottom: 2rem; position: relative; letter-spacing: -0.01em; font-style: normal;
+}
+.testimonial-quote::before {
+  content: '"'; font-size: 3rem; color: var(--blue-light); opacity: 0.35;
+  position: absolute; top: -1rem; left: 50%; transform: translateX(-50%);
+  line-height: 1; font-family: 'Inter', sans-serif; font-weight: 800;
+}
+
+.testimonial-author { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; letter-spacing: -0.01em; color: var(--blue-light); }
+.testimonial-grade { font-size: 0.82rem; color: rgba(255,255,255,0.3); margin-top: 0.3rem; font-weight: 400; }
+
+.slider-controls { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+
+.slider-dot {
+  width: 24px; height: 24px; border-radius: 50%; background: transparent;
+  cursor: pointer; transition: all 0.3s; border: none;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.slider-dot::after {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.22); transition: all 0.3s;
+}
+.slider-dot.active::after { background: #fff; transform: scale(1.3); }
+
+/* ─── CONTACT ─── */
+#contact { background: #fff; position: relative; }
+#contact::before { display: none; }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+
+.contact-info h3 { font-family: 'Inter', sans-serif; font-size: 1.6rem; color: var(--text); margin-bottom: 1rem; font-weight: 700; letter-spacing: -0.03em; font-style: normal; }
+.contact-info p { font-size: 0.97rem; line-height: 1.8; color: var(--text-2); margin-bottom: 1.8rem; letter-spacing: -0.01em; }
+
+.contact-detail { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 0.85rem; font-size: 0.95rem; color: var(--text-2); letter-spacing: -0.01em; }
+.contact-detail-icon { width: 36px; height: 36px; background: rgba(0,113,227,0.08); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.88rem; flex-shrink: 0; border-radius: var(--r-sm); }
+
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group { position: relative; }
+.form-label { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: -0.01em; color: var(--text-2); margin-bottom: 0.45rem; }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%; background: var(--bg); border: 2px solid rgba(0,0,0,0.05);
+  padding: 0.88rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.95rem;
+  font-weight: 400; color: var(--text); transition: all 0.25s; outline: none;
+  appearance: none; -webkit-appearance: none; border-radius: var(--r-md); letter-spacing: -0.01em;
+
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  background: #fff; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0,113,227,0.1);
+}
+.form-textarea { min-height: 90px; resize: vertical; }
+
+.form-submit {
+  border-radius: var(--r-md); background: var(--blue); color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600;
+  letter-spacing: -0.01em; padding: 1rem 2rem; border: none; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  box-shadow: inset 0 -1px 0px rgba(0,0,0,0.1);
+}
+.form-submit::before { display: none; }
+.form-submit:hover { background: #0077ed; transform: scale(1.01); }
+.form-submit:active { transform: scale(0.99); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--bg); padding: 3rem 2rem; text-align: center;
+  position: relative; border-top: 0.5px solid var(--border);
+}
+footer::before { display: none; }
+.footer-logo { font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); margin-bottom: 1rem; }
+.footer-text { font-size: 0.8rem; color: var(--text-2); line-height: 1.8; letter-spacing: -0.01em; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+
+.stat-card.reveal.visible,
+.offer-card.reveal.visible,
+.materie-item.reveal.visible {
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.3s cubic-bezier(0.34,1.56,0.64,1),
+              opacity 0.6s ease;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .offers-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  section { padding: 4.5rem 1.5rem; }
+  header { padding: 5.5rem 1.5rem 3.5rem; }
+  .hero-cta { flex-direction: column; align-items: stretch; }
+  .hero-cta .btn-primary,
+  .hero-cta .btn-secondary { width: 100%; max-width: 260px; margin: 0 auto; }
+  .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .intro-text .drop-cap::first-letter { font-size: 3rem; }
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+  .stat-number { font-size: 2rem; }
+  .offers-grid { grid-template-columns: 1fr; }
+  .materie-grid { grid-template-columns: 1fr; }
+  .materii-tabs { width: 70%; }
+  .tab-btn { padding: 0.62rem 1rem; font-size: 0.82rem; }
+  .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .form-submit { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 2.5rem; letter-spacing: -0.025em; }
+  .mobile-title-break { display: block; }
+  .hero-subtitle { font-size: 0.97rem; }
+  .section-title { font-size: 1.7rem; }
+  .ornament { letter-spacing: 0.3rem; font-size: 0.7rem; }
+  .hero-badge { font-size: 0.68rem; }
+  .stat-card { padding: 1.2rem 1rem; }
+  .stat-number { font-size: 1.9rem; }
+  .stat-label { font-size: 0.72rem; }
+  .offer-card { padding: 1.6rem 1.3rem; }
+  .offer-title { font-size: 1.2rem; }
+  .price-amount { font-size: 1.7rem; }
+  .materie-item { padding: 1.1rem; }
+  .contact-info h3 { font-size: 1.4rem; }
+  .footer-logo { font-size: 0.88rem; }
+}
+
+</style>
+</head>
+<body>
+<a class="wa-float" href="https://wa.me/37360400898?text=Bun%C4%83%20ziua!%20A%C8%99%20dori%20informa%C8%9Bii%20despre%20pregătirea%20BAC." target="_blank" aria-label="Contactează-ne pe WhatsApp">
+
+  <img src="social.png" class="social-img">
+
+</a>
+<div id="progress-bar"></div>
+
+<!-- ─── BOTTOM SHEET OVERLAY ─── -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+
+<!-- ─── BOTTOM SHEET MENIU ─── -->
+<div class="bottom-sheet" id="bottomSheet">
+  <div class="sheet-drag-bar"></div>
+
+  <div class="sheet-header">
+    <span class="sheet-header-title">Navigare</span>
+    <button class="sheet-close-btn" onclick="closeSheet()" aria-label="Închide meniu">✕</button>
+  </div>
+
+  <div class="sheet-nav-items">
+    <a href="#intro" class="sheet-nav-item" onclick="closeSheet()">
+      <div class="sheet-nav-item-left">
+        <div style="background:rgba(0,113,227,0.15);"></div>
+        <span class="sheet-nav-label">Despre noi</span>
+      </div>
+      <span class="sheet-nav-arrow">›</span>
+    </a>
+    <a href="#oferte" class="sheet-nav-item" onclick="closeSheet()">
+      <div class="sheet-nav-item-left">
+        <div class="sheet-nav-icon" style="background:rgba(88,86,214,0.15);"></div>
+        <span class="sheet-nav-label">Oferte</span>
+      </div>
+      <span class="sheet-nav-arrow">›</span>
+    </a>
+    <a href="#materii" class="sheet-nav-item" onclick="closeSheet()">
+      <div class="sheet-nav-item-left">
+        <div class="sheet-nav-icon" style="background:rgba(255,159,0,0.15);"></div>
+        <span class="sheet-nav-label">Materii</span>
+      </div>
+      <span class="sheet-nav-arrow">›</span>
+    </a>
+
+    <a href="#contact" class="sheet-nav-item" onclick="closeSheet()">
+      <div class="sheet-nav-item-left">
+        <div class="sheet-nav-icon" style="background:rgba(255,55,95,0.15);"></div>
+        <span class="sheet-nav-label">Contact</span>
+      </div>
+      <span class="sheet-nav-arrow">›</span>
+    </a>
+  </div>
+
+  <a href="#contact" class="sheet-cta-btn" onclick="closeSheet()">Consultație Gratuită</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">✦ Magistra Histori</a>
+  <ul class="nav-links">
+    <li><a href="#intro">Despre noi</a></li>
+    <li><a href="#oferte">Oferte</a></li>
+    <li><a href="#materii">Materii</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Meniu" onclick="toggleSheet()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<header id="hero">
+</button>
+<div class="hero-bg">
+  <div class="vortex-layer vortex-layer-1"></div>
+  <div class="vortex-layer vortex-layer-2"></div>
+<div class="vortex-vignette"></div>
+</div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-badge">Pregătire BAC · 2026</div>
+  <div class="ornament">— ✦ ◆ ✦ —</div>
+  <h1 class="hero-title" id="heroTitle">
+<em>Istoria</em> &amp; Istoria Artelor
+  </h1>
+    <div class="hero-cta">
+    <a href="#oferte" class="btn-primary">Descoperă Ofertele</a>
+    <a href="#contact" class="btn-secondary">Consultație Gratuită</a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Derulează</span>
+  </div>
+</header>
+
+<!-- INTRO -->
+<section id="intro">
+  <div class="section-inner">
+    <div class="intro-single reveal">
+      <span class="section-eyebrow">Cine suntem</span>
+      <h2 class="section-title">O poveste abia începută, cu ambiții mari</h2>
+      <div class="section-rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+      <p class="drop-cap">
+        Nu suntem o academie cu zeci de ani de tradiție în spate — suntem un proiect tânăr, pornit din dorința reală de a preda istoria altfel: ca pe o poveste vie, logică și ușor de reținut, nu ca pe o listă de date memorate pe de rost.
+      </p>
+      <p>
+        În doar câteva luni de la lansare, am construit deja un sistem de predare clar și personalizat, testat direct cu primii noștri elevi. Fiecare ședință e gândită să te ducă pas cu pas spre notă mare la BAC, cu atenție reală acordată nivelului și ritmului tău — nu unui șablon general.
+      </p>
+      <div class="intro-highlight">
+        <span class="intro-highlight-icon">✦</span>
+        <p>Suntem la început de drum, dar aducem energie, implicare directă și o metodă gândită special pentru examenul de Bacalaureat 2026.</p>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);overflow:hidden;line-height:0;z-index:2;">
+    <svg viewBox="0 0 50 15" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:40px;height:5px;">
+      <path d="M0,0 L25,15 L50,0 Z" fill="#000"/>
+    </svg>
+  </div>
+</section>
+
+<!-- OFERTE -->
+<section id="oferte">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">Pachete de pregătire</span>
+      <h2 class="section-title">Ofertele noastre</h2>
+      <div class="section-rule">
+        <div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div>
+      </div>
+    </div>
+
+    <div class="offers-grid">
+      <div class="offer-card reveal">
+        <div class="offer-icon"></div>
+        <div class="offer-tag">Pachet de Bază</div>
+        <h3 class="offer-title">Fondamentele Istoriei</h3>
+        <p class="offer-desc">Ideal pentru elevii care doresc o introducere solidă și o bază sigură pentru examen.</p>
+        <div class="offer-price">
+          <span class="price-amount">350 lei</span>
+          <span class="price-period">/ lună</span>
+        </div>
+        <ul class="offer-features">
+          <li>4 ședințe de 90 min / lună</li>
+          <li>Material de studiu digital</li>
+          <li>Teste de evaluare lunare</li>
+          <li>Grup mic (max 6 elevi)</li>
+          <li>Acces platformă online</li>
+        </ul>
+        <a href="#contact" class="offer-btn-secondary">Înscrie-te acum</a>
+      </div>
+
+      <div class="offer-card featured-card reveal reveal-delay-1">
+        <div class="offer-badge">Cel mai ales</div>
+        <div class="offer-icon"></div>
+        <div class="offer-tag">Pachet Premium</div>
+        <h3 class="offer-title">Maestrul Istoriei</h3>
+        <p class="offer-desc">Pregătire intensivă și completă, cu suport personalizat și simulări de examen.</p>
+        <div class="offer-price">
+          <span class="price-amount">650 lei</span>
+          <span class="price-period">/ lună</span>
+        </div>
+        <ul class="offer-features">
+          <li>8 ședințe de 90 min / lună</li>
+          <li>Material fizic + digital complet</li>
+          <li>Simulări BAC lunare</li>
+          <li>Grup restrâns (max 4 elevi)</li>
+          <li>Consultații individuale incluse</li>
+          <li>Feedback detaliat la lucrări</li>
+        </ul>
+        <a href="#contact" class="offer-btn-primary">Înscrie-te acum</a>
+      </div>
+
+      <div class="offer-card reveal reveal-delay-3">
+        <div class="offer-icon"></div>
+        <div class="offer-tag">Meditații Individuale</div>
+        <h3 class="offer-title">Pregătire 1-la-1</h3>
+        <p class="offer-desc">Atenție 100% concentrată pe nevoile și nivelul tău. Progres garantat rapid.</p>
+        <div class="offer-price">
+          <span class="price-amount">120 lei</span>
+          <span class="price-period">/ ședință</span>
+        </div>
+        <ul class="offer-features">
+          <li>Program complet flexibil</li>
+          <li>Curriculum personalizat total</li>
+          <li>Online sau față în față</li>
+          <li>Disponibil oricând</li>
+          <li>Progres garantat</li>
+        </ul>
+        <a href="#contact" class="offer-btn-secondary">Înscrie-te acum</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATERII -->
+<section id="materii">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Curriculum</span>
+      <h2 class="section-title">Ce studiem</h2>
+      <div class="section-rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+    </div>
+
+    <div class="materii-tabs reveal">
+      <div class="tab-indicator" id="tabIndicator"></div>
+      <button class="tab-btn active" onclick="switchTab('istorie', this)">Istorie</button>
+      <button class="tab-btn" onclick="switchTab('arte', this)">Istoria Artelor</button>
+    </div>
+
+    <div id="tab-istorie" class="tab-content active">
+      <div class="materie-grid">
+        <div class="materie-item reveal"><h4>Antichitatea greco-romană</h4><p>Civilizații, politică, cultură și moștenirea lumii antice pentru examenul de BAC.</p></div>
+        <div class="materie-item reveal reveal-delay-1"><h4>Evul Mediu european</h4><p>Feudalism, cruciade, Renaștere și formarea statelor naționale medievale.</p></div>
+        <div class="materie-item reveal reveal-delay-2"><h4>Epoca modernă</h4><p>Revoluțiile, marile imperii și construcția lumii moderne (sec. XV–XIX).</p></div>
+        <div class="materie-item reveal reveal-delay-3"><h4>Istoria României</h4><p>De la Daci la statul modern: unirea, independența, Marea Unire și perioada interbelică.</p></div>
+        <div class="materie-item reveal"><h4>Sec. XX și lumea contemporană</h4><p>Cele două războaie mondiale, Războiul Rece, globalizarea și lumea de azi.</p></div>
+        <div class="materie-item reveal reveal-delay-1"><h4>Documente și surse istorice</h4><p>Analiză critică a documentelor, hărților și surselor pentru subiectele de examen.</p></div>
+      </div>
+    </div>
+
+    <div id="tab-arte" class="tab-content">
+      <div class="materie-grid">
+        <div class="materie-item reveal"><h4>Artele antice și medievale</h4><p>Arhitectura, sculptura și pictura din Grecia, Roma, Bizanț și Evul Mediu occidental.</p></div>
+        <div class="materie-item reveal reveal-delay-1"><h4>Renașterea italiană</h4><p>Leonardo, Michelangelo, Rafael și revoluția artistică a Renașterii (sec. XV–XVI).</p></div>
+        <div class="materie-item reveal reveal-delay-2"><h4>Baroc și Clasicism</h4><p>Rubens, Rembrandt, Velázquez și marile curente ale sec. XVII–XVIII.</p></div>
+        <div class="materie-item reveal reveal-delay-3"><h4>Modernismul artistic</h4><p>Impresionism, Expresionism, Cubism, Dadaism și avangarda sec. XX.</p></div>
+        <div class="materie-item reveal"><h4>Artele românești</h4><p>Brâncuși, Luchian, Grigorescu și contribuția României la patrimoniul artistic mondial.</p></div>
+        <div class="materie-item reveal reveal-delay-1"><h4>Analiza operei de artă</h4><p>Metodologie completă de analiză și interpretare a operelor plastice pentru BAC.</p></div>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:-1px;left:0;width:100%;overflow:hidden;line-height:0;z-index:2;">
+    <svg viewBox="0 0 1200 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:30px;">
+      <path d="M0,30 Q530,30 600,0 Q670,30 1200,30 Z" fill="#007fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- CUM FUNCȚIONEAZĂ -->
+<section  id="cum-functioneaza" style="position:relative;overflow:hidden;">
+<div class="cf-vlayer cf-vlayer-1"></div>
+<div class="cf-vlayer cf-vlayer-2"></div>
+<div class="cf-vignette"></div>
+  <div  id="starLayer" style="position:absolute;inset:0;z-index:0;pointer-events:none;"></div>
+  <div class="particles" id="particles2"></div>
+  <div class="section-inner" style="position:relative;z-index:10;">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Procesul nostru</span>
+      <h2 class="section-title">Cum funcționează</h2>
+      <div class="section-rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+    </div>
+    <div class="steps-row">
+      <div class="step-item reveal reveal-delay-1">
+        <div class="step-num">1</div>
+        <h3>Ne contactezi</h3>
+        <p>WhatsApp sau formular — îți răspundem în 24h.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <h3>Evaluare gratuită</h3>
+        <p>30 de minute pentru a stabili nivelul și planul tău.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-3">
+        <div class="step-num">3</div>
+        <h3>Alegi pachetul</h3>
+        <p>Grup mic, intensiv sau 1-la-1 — tu decizi.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-4">
+        <div class="step-num">4</div>
+        <h3>Începi în 48h</h3>
+        <p>Materiale, platformă și prima ședință — imediat.</p>
+      </div>
+    </div>
+    <div class="steps-cta reveal">
+      <div class="steps-cta-text">
+        <h3>Gata să începi?</h3>
+        <p>Prima evaluare e gratuită și fără angajamente.</p>
+      </div>
+      <a href="#contact" class="btn-steps-cta">Rezervă acum</a>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var PATH = "M 14.05 2.4 L 15.95 2.4 C 15.95 7.3 22.7 14.05 27.6 14.05 L 27.6 15.95 C 22.7 15.95 15.95 22.7 15.95 27.6 L 14.05 27.6 C 14.05 22.7 7.3 15.95 2.4 15.95 L 2.4 14.05 C 7.3 14.05 14.05 7.3 14.05 2.4 Z";
+    var COUNT = 7;
+    var COLOR = "#ffffff";
+    var SPEED = 4;
+    var MIN_DIST = 40;
+
+    function buildStars() {
+      var layer = document.getElementById("starLayer");
+      layer.innerHTML = '';
+      var section = layer.parentElement;
+      var w = section.offsetWidth || window.innerWidth;
+      var h = section.offsetHeight || window.innerHeight;
+      var placed = [];
+
+      function tooClose(x, y) {
+        for (var j = 0; j < placed.length; j++) {
+          var dx = (x / 100 * w) - (placed[j].x / 100 * w);
+          var dy = y - placed[j].y;
+          if (Math.sqrt(dx * dx + dy * dy) < MIN_DIST) return true;
+        }
+        return false;
+      }
+
+      var i = 0, attempts = 0;
+      while (i < COUNT && attempts < 500) {
+        attempts++;
+        var size = 15 + Math.random() * 5;
+        var x = Math.random() * 100;
+        var startY = h * (0.85 + Math.random() * 0.15);
+        var targetY = h * (0.4 + Math.random() * 0.1);
+        if (tooClose(x, startY)) continue;
+        placed.push({ x: x, y: startY });
+        var rise = -(startY - targetY);
+        var dur = (8 + (10 - SPEED) * 1.8 + Math.random() * 4).toFixed(1);
+        var delay = -(Math.random() * parseFloat(dur));
+        var rot = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 90);
+        var maxOp = (0.3 + Math.random() * 0.65).toFixed(2);
+        var s = (0.6 + Math.random() * 0.8).toFixed(2);
+        var el = document.createElement("div");
+        el.style.cssText = "position:absolute;opacity:0;left:"+x+"%;top:"+startY+"px;width:"+size+"px;height:"+size+"px;--rot:"+rot+"deg;--rise:"+rise+"px;--max-op:"+maxOp+";--s:"+s+";animation:riseStar "+dur+"s "+delay+"s linear infinite;";
+        el.innerHTML = '<svg viewBox="0 0 30 30" width="'+size+'" height="'+size+'" aria-hidden="true"><path d="'+PATH+'" fill="'+COLOR+'"/></svg>';
+        layer.appendChild(el);
+        i++;
+      }
+    }
+
+    if (document.readyState === 'complete') { buildStars(); }
+    else { window.addEventListener('load', buildStars); }
+  })();
+  </script>
+</section>
+
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Hai să vorbim</span>
+      <h2 class="section-title">Contactează-ne</h2>
+      <div class="section-rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Începe-ți călătoria istorică</h3>
+        <p>Completează formularul sau contactează-ne direct. Îți oferim o primă ședință de evaluare gratuită, ca să vedem împreună la ce nivel ești și ce ai nevoie pentru succes la BAC.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <span>+37360400898</span>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉</div>
+          <span>contact@magistrahistoriae.ro</span>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <span>Chișinău / Online (Zoom, Meet)</span>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🕐</div>
+          <span>Lun–Sâm · 09:00–20:00</span>
+        </div>
+      </div>
+
+      <form class="contact-form reveal reveal-delay-2" onsubmit="sendWhatsApp(event)">
+        <div class="form-group">
+          <label class="form-label">Nume complet</label>
+          <input type="text" name="nume" class="form-input" placeholder="Ex: Maria Ionescu" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresă de email</label>
+          <input type="email" name="email" class="form-input" placeholder="email@exemplu.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Materia dorită</label>
+          <select name="materie" class="form-select" required>
+            <option value="">— Alege materia —</option>
+            <option>Istorie</option>
+            <option>Istoria Artelor</option>
+            <option>Ambele materii</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pachetul de interes</label>
+          <select name="pachet" class="form-select" required>
+            <option value="">— Alege pachetul —</option>
+            <option>Fondamentele Istoriei (350 lei/lună)</option>
+            <option>Maestrul Istoriei (650 lei/lună)</option>
+            <option>Istoria Artelor Elite (550 lei/lună)</option>
+            <option>Pregătire 1-la-1 (120 lei/ședință)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mesaj (opțional)</label>
+          <textarea name="mesaj" class="form-textarea" placeholder="Spune-ne cu ce ai nevoie de ajutor..."></textarea>
+        </div>
+        <button class="form-submit" type="submit">Trimite cererea ✦</button>
+      </form>
+    </div>
+  </div>
+
+  <div style="position:absolute;top:-1px;left:0;width:100%;overflow:hidden;line-height:0;z-index:2;">
+    <svg viewBox="0 0 1200 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:30px;">
+      <path d="M0,0 Q530,0 600,30 Q670,0 1200,0 Z" fill="#007fff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">✦ MAGISTRA HISTORIAE ✦</div>
+  <div class="section-rule" style="justify-content:center;margin:1rem 0">
+    <div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div>
+  </div>
+  <p class="footer-text">Pregătire BAC · Istorie & Istoria Artelor<br>© 2026 Magistra Historiae. Toate drepturile rezervate.</p>
+</footer>
+
+<script>
+  // Split hero title into an em word-reveal + per-word reveal for the rest
+  // (whole words stay intact so they never break mid-word on wrap)
+  (function initHeroTitleReveal() {
+    var h1 = document.getElementById('heroTitle');
+    if (!h1) return;
+    var em = h1.querySelector('em');
+    if (em) em.classList.add('em-reveal');
+
+    var node = em ? em.nextSibling : h1.firstChild;
+    if (node && node.nodeType === 3) {
+      var text = node.textContent;
+      var words = text.split(' ').map(function(w){ return w.trim(); }).filter(function(w) { return w.length > 0; });
+      var frag = document.createDocumentFragment();
+      words.forEach(function(word, i) {
+        var span = document.createElement('span');
+        span.className = 'title-word';
+        span.textContent = word;
+        span.style.setProperty('--i', i + 1);
+        frag.appendChild(span);
+        // keep the last two words ("Istoria Artelor") glued on one line
+        var isSecondToLast = (i === words.length - 2);
+        frag.appendChild(document.createTextNode(isSecondToLast ? '\u00A0' : ' '));
+        // forțează linia 2 doar pe mobil, imediat după "&"
+        if (word === '&') {
+          var br = document.createElement('br');
+          br.className = 'mobile-title-break';
+          frag.appendChild(br);
+        }
+      });
+      node.parentNode.replaceChild(frag, node);
+    }
+  })();
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('nav').classList.toggle('scrolled', d.scrollTop > 60);
+  });
+
+  // Particles
+  const pc = document.getElementById('particles');
+  const particleCount = window.innerWidth < 768 ? 12 : 25;
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 2 + Math.random() * 4;
+    p.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${6+Math.random()*8}s;--delay:${Math.random()*8}s;width:${size}px;height:${size}px;`;
+    pc.appendChild(p);
+  }
+const pc2 = document.getElementById('particles2');
+if (pc2) {
+  const count2 = window.innerWidth < 768 ? 10 : 20;
+  for (let i = 0; i < count2; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 3.5 + Math.random() * 3;
+    p.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${20+Math.random()*8}s;--delay:${Math.random()*3}s;width:${size}px;height:${size}px;`;
+    pc2.appendChild(p);
+  }
+}
+  // ─── BOTTOM SHEET ───
+  let sheetOpen = false;
+
+  function openSheet() {
+    sheetOpen = true;
+    document.getElementById('bottomSheet').classList.add('open');
+    document.getElementById('sheetOverlay').classList.add('open');
+    document.getElementById('hamburger').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    sheetOpen = false;
+    document.getElementById('bottomSheet').classList.remove('open');
+    document.getElementById('sheetOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function toggleSheet() {
+    sheetOpen ? closeSheet() : openSheet();
+  }
+
+  // Swipe down pentru a închide sheet-ul
+  let touchStartY = 0;
+  const sheet = document.getElementById('bottomSheet');
+  sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener('touchend', e => {
+    const diff = e.changedTouches[0].clientY - touchStartY;
+    if (diff > 60) closeSheet();
+  }, { passive: true });
+
+  // Escape key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheetOpen) closeSheet(); });
+
+  // Intersection observer
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -25% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Tabs
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    btn.classList.add('active');
+    moveIndicator(btn);
+  }
+
+  function moveIndicator(btn) {
+    const indicator = document.getElementById('tabIndicator');
+    indicator.style.left = btn.offsetLeft + 'px';
+    indicator.style.width = btn.offsetWidth + 'px';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const activeBtn = document.querySelector('.tab-btn.active');
+    if (activeBtn) moveIndicator(activeBtn);
+  });
+
+  window.addEventListener('resize', () => {
+    const activeBtn = document.querySelector('.tab-btn.active');
+    if (activeBtn) moveIndicator(activeBtn);
+  });
+
+  // Testimonials slider
+  let cur = 0;
+  const testimonials = document.querySelectorAll('.testimonial');
+  const dots = document.querySelectorAll('.slider-dot');
+
+  function goTo(n) {
+    testimonials[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = n;
+    testimonials[cur].classList.add('active');
+    dots[cur].classList.add('active');
+  }
+
+  if (testimonials.length > 1) {
+    setInterval(() => goTo((cur + 1) % testimonials.length), 5000);
+  }
+
+  // Touch swipe for testimonials
+  let touchStartX = 0;
+  const slider = document.querySelector('.testimoniale-slider');
+  if (slider) {
+    slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) goTo((cur + 1) % testimonials.length);
+        else goTo((cur - 1 + testimonials.length) % testimonials.length);
+      }
+    }, { passive: true });
+  }
+
+  // Form submit
+  function sendWhatsApp(e) {
+    e.preventDefault();
+    const form = e.target;
+    const text =
+`📚 Cerere nouă Magistra Historiae
+
+ Nume: ${form.nume.value}
+ Email: ${form.email.value}
+ Materie: ${form.materie.value}
+ Pachet: ${form.pachet.value}
+ Mesaj: ${form.mesaj.value}`;
+    window.open(`https://wa.me/37360400898?text=${encodeURIComponent(text)}`, "_blank");
+  }
+
+
+  // Smooth internal links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      closeSheet();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+// Split fiecare .section-title în cuvinte, pentru reveal la scroll
+(function initSectionTitleReveal() {
+  document.querySelectorAll('.section-title').forEach(function(title) {
+    var text = title.textContent;
+    var words = text.split(' ').filter(function(w) { return w.length > 0; });
+    title.innerHTML = '';
+    words.forEach(function(word, i) {
+      var span = document.createElement('span');
+      span.className = 'title-word';
+      span.textContent = word;
+      span.style.setProperty('--i', i);
+      title.appendChild(span);
+      if (i < words.length - 1) title.appendChild(document.createTextNode(' '));
+    });
+  });
+
+  var titleObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('title-revealed');
+        titleObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+
+  document.querySelectorAll('.section-title').forEach(function(title) {
+    titleObserver.observe(title);
+  });
+})();
+// Curăță animația de reveal după ce s-a terminat, ca hover-ul să funcționeze normal
+document.querySelectorAll('.btn-primary, .btn-secondary').forEach(function(btn) {
+  btn.addEventListener('animationend', function(e) {
+    if (e.animationName === 'ctaPrimaryReveal' || e.animationName === 'ctaSecondaryReveal' || e.animationName === 'ctaSecondaryRevealMobile') {
+      // păstrează gradientul animat (btnGradientFlow), elimină doar animația de reveal
+      btn.style.animation = btn.classList.contains('btn-primary')
+        ? 'btnGradientFlow 5s ease infinite'
+        : 'none';
+    }
+  });
+});
+</script>
+</body>
+</html>
