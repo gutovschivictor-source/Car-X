@@ -2626,7 +2626,7 @@ const RF=[],RPR=new Map();let RPpass=1,RPon=false,RPf=null,RPi=0,RPtp=0,RPside=1
 function rpRec(o,ow,rd){let r=RPR.get(o);if(!r){r={o,ow,rd,lt:0,s:0,live:null};RPR.set(o,r)}return r}
 function repRec(now){const T=now/1000,es=[],done=new Set();RPlast=T;
  const push=(o,ow,rd,ej)=>{if(done.has(o))return;done.add(o);const r=rpRec(o,ow,rd),p=o.position,q=o.quaternion;r.lt=T;
-  es.push({r,x:p.x,y:p.y,z:p.z,qx:q.x,qy:q.y,qz:q.z,qw:q.w,vis:o.visible?1:0,sc:o.parent?1:0,ej,dt:ow&&ow.det?ow.det.length:0,hl:ow&&ow.hl?ow.hl.length:0})};
+  es.push({r,x:p.x,y:p.y,z:p.z,qx:q.x,qy:q.y,qz:q.z,qw:q.w,vis:((o===pc.g)?!pc.dead:o.visible)?1:0,sc:o.parent?1:0,ej,dt:ow&&ow.det?ow.det.length:0,hl:ow&&ow.hl?ow.hl.length:0})};
  push(pc.g,pc,false,0);
  for(const c of cars){push(c.g,c,false,0);if(c.rd){if(!c.ej&&!c._rl)c._rl={p:c.rd.position.clone(),q:c.rd.quaternion.clone()};push(c.rd,c,true,c.ej?1:0)}}
  for(const r of riders)push(r.g,null,true,1);
