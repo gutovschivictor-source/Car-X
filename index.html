@@ -230,6 +230,103 @@ body.rp #rcb,body.skp #rcb,body.rp #rco,body.skp #rco{display:none!important}
 <button class="mb ldb" onclick="location.reload()">Reîncarcă</button>
 </div></div>
 <script>
+  /* =====================================================================
+   RAMPĂ IMPROVIZATĂ la marginea drumului (zona ORAȘ)
+   Scânduri pe lungeroni, sprijinite pe blocuri de beton (BCA) și butoaie,
+   cu margini galbene, buză galben-negru, cauciuc și conuri la capătul de jos.
+   Folosește TRB() (geometrii unite pe material) => doar ~16 desene per rampă.
+   ===================================================================== */
+
+/* ---------- PASUL 1: lipește acest bloc oriunde după funcția cityDetail ---------- */
+const CRH=1.7,CRL=9,CRW=1.9;               /* înălțime la capătul de sus, lungime (m), lățime (m) */
+
+function cityRampModel(){
+ const b=TRB(),H=CRH,Lr=CRL,W=CRW,th=Math.atan2(H,Lr),Ld=Math.hypot(Lr,H)+.1,
+  yT=z=>H/2-z*H/Lr,                         /* înălțimea suprafeței la poziția z (sus = -z) */
+  WD=[TRV.log,TRV.log2,TRV.wood,TRV.brn];
+
+ /* lungeroni (2 grinzi sub punte) */
+ for(const sx of[-.62,.62])b.box(.16,.2,Ld,sx,yT(0)-.16,0,TRV.wood,th);
+
+ /* scânduri transversale, ușor strâmbe, culori diferite */
+ for(let z=-4.35,i=0;z<=4.4;z+=.5,i++){
+  b.box(W+(Math.random()-.5)*.12,.06,.46,(Math.random()-.5)*.05,yT(z)-.03+(Math.random()-.5)*.012,z,
+   WD[i%4],th+(Math.random()-.5)*.03,(Math.random()-.5)*.03)}
+
+ /* margini galbene pe lungime */
+ for(const sx of[-1,1])b.box(.08,.1,Ld,sx*(W/2-.02),yT(0)+.03,0,TRV.yel,th);
+
+ /* buza de sus: bară galbenă + dungi negre */
+ b.box(W,.12,.14,0,yT(-4.45)+.04,-4.45,TRV.yel,th);
+ for(let x=-.8;x<=.81;x+=.4)b.box(.18,.13,.15,x,yT(-4.45)+.04,-4.45,TRV.blk,th);
+
+ /* coloană de blocuri de beton: y0 = de unde începe, hs = cât de sus ajunge */
+ const col=(x,z,hs,y0)=>{let y=y0||0,i=0;
+  for(;y+.2<=hs+.001;y+=.2,i++){const o=i%2?.07:-.07;
+   b.box(.4,.2,.2,x+o,y+.1,z-.105,TRV.gvl);b.box(.4,.2,.2,x-o,y+.1,z+.105,TRV.gvl)}
+  if(hs-y>.02)b.box(.46,hs-y,.46,x,y+(hs-y)/2,z,TRV.wood)};      /* cuib de scândură pentru restul */
+
+ /* sprijine din blocuri sub fiecare lungeron */
+ for(const z of[2.4,.6,-1.2,-3.0]){const hs=yT(z)-.26;
+  if(hs>.05)for(const sx of[-.62,.62])col(sx,z,hs,0)}
+
+ /* capătul de sus: 2 butoaie metalice + blocuri deasupra */
+ {const z=-4.1,hs=yT(z)-.26;
+  [[-.62,TRV.rust],[.62,TRV.tkb]].forEach(([x,m])=>{
+   b.cy(.3,.3,.88,x,.44,z,m);
+   b.cy(.315,.315,.05,x,.2,z,TRV.iron);b.cy(.315,.315,.05,x,.68,z,TRV.iron);
+   col(x,z,hs,.88)})}
+
+ /* decor: cauciuc culcat + bloc căzut + conuri la capătul de jos */
+ b.cy(.38,.38,.24,-.55,.12,5.4,TRV.blk);b.cy(.2,.2,.26,-.55,.12,5.4,TRV.gry);
+ b.box(.4,.2,.2,.6,.1,5.2,TRV.gvl,0,.5,0);
+ for(const x of[-.7,.7]){b.box(.5,.04,.5,x,.02,6.4,TRV.dgr);b.cy(.05,.2,.55,x,.31,6.4,TRV.orn);b.cy(.09,.14,.1,x,.33,6.4,TRV.xw)}
+
+ const m=b.build();m.traverse(o=>{if(o.geometry)o.userData.dg=1});return m}
+
+/* plasează rampele pe marginea drumului (±8.4 m, între drum și parapet) */
+const CRZ=[-150,-480,-760,-980,-1200,-1650,-1990];   /* pozițiile rampelor în zonă */
+const cityNoLamp=z=>CRZ.some(r=>z<=r+CRL/2+100&&z>=r-CRL/2-100);   /* z local: fără stâlp pe 100 m înaintea rampei */
+const cityNoLampW=zw=>!!zn&&zn.type==='city'&&cityNoLamp(zw-zn.g.position.z);  /* la fel, dar în coordonate lume */
+
+function cityRamps(g,L){
+ const R=g.userData.rmp=[];
+ CRZ.forEach((z,i)=>{if(-z>L-20)return;const s=i%2?-1:1,m=cityRampModel();
+  m.position.set(s*8.4,0,z);g.add(m);R.push({x:s*8.4,z,len:CRL,h:CRH})})}
+/* ---------- PASUL 2: în cityBuild, ULTIMA linie ----------
+   înlocuiește:   cityDetail(g,L,BL)}
+   cu:            cityDetail(g,L,BL);cityRamps(g,L)}
+*/
+function cityHwNext(){            /* cea mai apropiata autostrada din fata masinii */
+ const CO=zn&&zn.type==='city'&&zn.g.userData.CO;if(!CO)return null;
+ let b=null,bz=-1e9;
+ for(const c of CO){const rz=zn.g.position.z+c.z;if(rz<=16&&rz>bz){bz=rz;b=c}}
+ return b}
+function cityRampStep(dt){
+ /* zbor ghidat: ramane la 17.3 m pana trece de autostrada-tinta, apoi cade liber */
+ if(crFly){
+  const ok=zn&&crTg&&state==='run'&&!pc.dead&&air&&!rtk&&zn.g.position.z+crTg.z<=16;
+  if(!ok){crFly=false;crTg=null;pvy=0}
+  else{py=Math.min(17.3,py+12*dt);pvy=0;crPy=py;return}
+ }
+ const R=(zn&&zn.type==='city'&&inZone())?zn.g.userData.rmp:null;let on=null,s=0;
+ if(R&&state==='run'&&!pc.dead&&!air&&!rtk){
+  for(const r of R){if(Math.abs(px-r.x)>.95)continue;
+   const q=zn.g.position.z+r.z+r.len/2;
+   if(q>0&&q<=r.len){on=r;s=q;break}}}
+ if(on){py=on.h*s/on.len;pvy=0;if(!crOn)showTip('🛠️ Rampă improvizată!');crOn=on;crPy=py;return}
+ if(crOn){const r=crOn;crOn=null;
+  if(state==='run'&&!pc.dead&&!air&&!rtk&&crPy>.3){
+   py=crPy;air=true;airT=0;pk=crPy;
+   const fly=(zn&&zn.g.position.z+r.z+r.len/2)>r.len-.05;
+   pvy=fly?Math.min(9,2.5+v*.1):0;
+   if(fly){crTg=cityHwNext();crFly=!!crTg;sparkBurst(px,py,-2.2,20,vx,-v*.4,5);noiseBurst(.5,300,2500,.2);blip(110,.3,0,.15,'sawtooth');hap([20])}}}}
+/* în frame(), imediat după  rampStep(dt);  adaugă:
+      cityRampStep();
+   rampStep(dt);roadRepStep(dt,cr);   =>   rampStep(dt);cityRampStep();roadRepStep(dt,cr);
+
+   în resetExtras() adaugă la început:   crOn=null;
+*/
 (function(){
 var bx=document.querySelectorAll('#ld .bx');for(var i=0;i<bx.length;i++)bx[i].innerHTML='<i class="f"></i><i class="k"></i><i class="r"></i><i class="l"></i><i class="t"></i><i class="b"></i>';
 var L=document.getElementById('ld'),X=document.getElementById('ldx'),t0=performance.now(),minT=700,T=0,gen=0,vis=true;
@@ -285,8 +382,8 @@ const $=id=>document.getElementById(id),LANES=[-5.4,-1.8,1.8,5.4];
 const CFG=Object.assign({mute:false,vol:1,hap:true,steer:1,cam:0,gfx:2,skin:0,first:0,mode:0,fxv:100,bgv:100},(()=>{try{return JSON.parse(localStorage.getItem('cfg')||'{}')||{}}catch(e){return{}}})());
 const saveCFG=()=>{try{localStorage.setItem('cfg',JSON.stringify(CFG))}catch(e){}},PR=()=>Math.min(devicePixelRatio||1,[1,1.5,2][CFG.gfx]||2);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(PR());$('g').appendChild(renderer.domElement);
-const VIEWS=[900,1000,1100],VIEW=VIEWS[CFG.gfx]||VIEWS[2],FOGN=Math.round(100*VIEW/1560);/* cat se vede drumul (lungimea planului de drum); decorul si cladirile folosesc aceeasi distanta. Legat de Grafica: Joasa 900 / Medie 1000 / Inalta 1100 (se aplica la pornire); FOGN = inceputul cetii, scalat proportional */
-const scene=new THREE.Scene();scene.background=new THREE.Color(HX(PAL.sky));scene.fog=new THREE.Fog(HX(PAL.sky),FOGN,VIEW+40);
+const VIEWS=[480,540,600],VIEW=VIEWS[CFG.gfx]||VIEWS[2],FOGF=Math.round(VIEW*.85),FOGN=Math.round(FOGF*.08);/* cat se vede drumul (lungimea planului de drum); decorul si cladirile folosesc aceeasi distanta. Legat de Grafica: Joasa 900 / Medie 1000 / Inalta 1100 (se aplica la pornire); FOGN = inceputul cetii, scalat proportional */
+const scene=new THREE.Scene();scene.background=new THREE.Color(HX(PAL.sky));scene.fog=new THREE.Fog(HX(PAL.sky),FOGN,FOGF);
 const cinemaFX=document.getElementById('cinemaFX');let cinemaFxTimer=0;
 const cam=new THREE.PerspectiveCamera(62,1,.1,1600);
 /* cer separat: norii si soarele se deseneaza primii, apoi se sterge adancimea -> cladirile, decorul si muntii ii acopera mereu */
@@ -686,16 +783,18 @@ const GPT=[];for(let v=0;v<8;v++){const pos=[],idx=[];for(let t=0;t<40;t++){cons
 {const rows=111,dz=VIEW/rows;for(let sd=-1;sd<=1;sd+=2)for(let c=0;c<4;c++)for(let r=0;r<rows;r++){const o=new THREE.Mesh(GPT[(Math.random()*8)|0],Math.random()<.5?TGD:TGL);o.rotation.y=(Math.random()*4|0)*Math.PI/2;
  o.position.set(sd*(15.4+c*14+Math.random()*1.5),0,-r*dz-Math.random()*dz);o.userData.gz=1;o.userData.gp=1;scene.add(o);trees.push(o)}}
 /* inelul de margine are lungimea drumului; departe e mai rar (de la TRD m), ca sa nu creasca numarul de apeluri de desen */
-const TRL=VIEW,TRD=380;
+const TRL=VIEW,TRD=Math.round(FOGF*.6);
 /* unitatile de peisaj din fasia apropiata (cutii x0,x1,z0,z1); peticele de iarba nu se mai suprapun cu ele */
 function scSolids(dz){const A=[];for(const s of SCN){const u=s.userData;if(u.hill||u.x0>72)continue;const x=s.position.x,hw=Math.abs(x)-u.x0,z=s.position.z+dz;A.push(x-hw-1,x+hw+1,z-u.hz-1,z+u.hz+1)}return A}
-function treeScroll(dz,zt){const SB=scSolids(dz);for(const o of trees){const u=o.userData;let z=o.position.z+dz;if(z>14)z-=TRL;o.position.z=z;
-  if(u.gp){const x=o.position.x,r=u.sc?8.2:7.4;let h=false;for(let i=0;i<SB.length;i+=4)if(x+r>SB[i]&&x-r<SB[i+1]&&z+r>SB[i+2]&&z-r<SB[i+3]){h=true;break}u.sc=h}}
- /* zona se evalueaza DUPA ce copacii s-au mutat, ca zona si vegetatia sa fie comparate in acelasi cadru (altfel marginea sare cu dz si vegetatia palpaie) */
- if(zt)zoneTrees();
- for(const o of trees){const u=o.userData;if(u.tr===undefined)u.tr=Math.random();
-  const vis=!u.hz&&!u.sc&&u.tr<Math.max(.2,Math.min(1,TRD/Math.max(1,-o.position.z)));if(o.visible!==vis)o.visible=vis}window.anStep&&window.anStep();window.bdStep&&window.bdStep(dz);window.skbStep&&window.skbStep(dz);window.lpStep&&window.lpStep(dz);window.lgStep&&window.lgStep();window.stkStep&&window.stkStep(dz)}
-
+let tsF=0,zoneWas=false;
+function treeScroll(dz,zt){
+ tsF=(tsF+1)&3;const SB=tsF===0?scSolids(dz):null;
+ for(const o of trees){const u=o.userData;let z=o.position.z+dz;if(z>14)z-=TRL;o.position.z=z;
+  if(u.gp&&SB){const x=o.position.x,r=u.sc?8.2:7.4;let h=false;for(let i=0;i<SB.length;i+=4)if(x+r>SB[i]&&x-r<SB[i+1]&&z+r>SB[i+2]&&z-r<SB[i+3]){h=true;break}u.sc=h}}
+ if(zt&&(zn||zoneWas)){zoneTrees();zoneWas=!!zn}
+ for(const o of trees){const u=o.userData;if(u.tr===undefined){u.tr=Math.random();u.dv=TRD/u.tr}
+  const vis=!u.hz&&!u.sc&&(u.tr<.2||-o.position.z<u.dv);if(o.visible!==vis)o.visible=vis}
+ window.anStep&&window.anStep();window.bdStep&&window.bdStep(dz);window.skbStep&&window.skbStep(dz);window.lpStep&&window.lpStep(dz);window.lgStep&&window.lgStep();window.stkStep&&window.stkStep(dz)}
 /* ===== peisaj indepartat: munti, campuri, paduri, sate, ferme, turbine eoliene ===== */
 const SCN=[],SCT=[],SCLEN=VIEW+30,SCWH=new THREE.Color(0xffffff),scC=h=>new THREE.Color(HX(h)),
  scPal=h=>{const b=scC(h);return{T:b.clone().lerp(SCWH,.3),S:b.clone().lerp(SCWH,.06),D:b.clone().multiplyScalar(.74),B:b.clone().multiplyScalar(.55)}},
@@ -828,8 +927,10 @@ const SCBM=new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide,
  const m1=new THREE.Mesh(ge,SCBM),m2=new THREE.LineSegments(lg,SCBLN);m1.frustumCulled=m2.frustumCulled=false;mtScene.add(m1,m2)}
 function scenScroll(dz){for(const o of SCN){const u=o.userData;o.position.z+=dz;if(o.position.z-u.hz>30)o.position.z-=SCLEN;
   if(o.position.z<-(VIEW-160))o.scale.y=Math.max(.02,Math.min(1,(VIEW+20+o.position.z)/180));else if(o.scale.y!==1)o.scale.y=1}}
-function scenUpdate(rdt){const T=zn?zn.type:'',z0=zn?zn.g.position.z:0,L=zn?zn.L:0,xl=T==='tunnel'?360:T==='city'?215:T==='bridge'?58:T==='rail'?40:0,a=T==='tunnel'?MTE+10:T==='rail'?RLE+10:10;
- for(const o of SCN){const u=o.userData;let h=false;if(T==='coast'){const z=o.position.z;h=z-u.hz<z0+a&&z+u.hz>z0-L-a&&(o.position.x<0||u.x0<45)}else if(xl&&!u.hill&&u.x0<xl){const z=o.position.z;h=z-u.hz<z0+(T==='rail'?RLS+90:a)&&z+u.hz>z0-L-(T==='rail'?RLE+90:a)}o.visible=!h}
+let scnF=0;
+  function scenUpdate(rdt){const T=zn?zn.type:'',z0=zn?zn.g.position.z:0,L=zn?zn.L:0,xl=T==='tunnel'?360:T==='city'?215:T==='bridge'?58:T==='rail'?40:0,a=T==='tunnel'?MTE+10:T==='rail'?RLE+10:10;
+ 
+   if((scnF=(scnF+1)%6)===0)for(const o of SCN){const u=o.userData;let h=false;if(T==='coast'){const z=o.position.z;h=z-u.hz<z0+a&&z+u.hz>z0-L-a&&(o.position.x<0||u.x0<45)}else if(xl&&!u.hill&&u.x0<xl){const z=o.position.z;h=z-u.hz<z0+(T==='rail'?RLS+90:a)&&z+u.hz>z0-L-(T==='rail'?RLE+90:a)}o.visible=!h}
  for(const r of SCT)r.rotation.z+=rdt*r.userData.w;
  const k=Math.max(0,1-tunK*1.15);{const NN=(window.nightK||0)*(1-tunK),r=k*(1-NN*.5),g=k*(1-NN*.42),b=k*(1-NN*.2);SCBM.color.setRGB(r,g,b);SCBLN.color.setRGB(r*.8,g*.8,b*.85)}}
 
@@ -907,7 +1008,7 @@ for(let i=0;i<18;i++){const W=140+Math.random()*160,z=rz(500,1250);cadd_(cirrus(
    pos[c*3]=x;pos[c*3+1]=y;pos[c*3+2]=-1556;b.push(.45+Math.random()*.55);f.push(.8+Math.random()*2.2);ph.push(Math.random()*6.28);fd.push(Math.min(1,(el*180/Math.PI-7)/6));c++}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));const m=new THREE.PointsMaterial({size:sz*Math.min(devicePixelRatio||1,1.5),sizeAttenuation:false,color:0xffffff,transparent:true,blending:THREE.NormalBlending,depthWrite:false,fog:false,opacity:0}),pt=new THREE.Points(g,m);
   pt.frustumCulled=false;pt.renderOrder=-1;pt.visible=false;skyScene.add(pt);STR.push({g,m,pt,col,b,f,ph,fd,n})}
- window.skyStep=()=>{const k=Math.min(1,window.nightK||0),ks=1-k;sg.visible=ks>.004;mg.visible=k>.004;
+ let skL=-1;window.skyStep=()=>{const k=Math.min(1,window.nightK||0),ks=1-k;if(Math.abs(k-skL)<.004)return;skL=k;sg.visible=ks>.004;mg.visible=k>.004;
   if(sg.visible)sg.traverse(o=>{const m=o.material;if(!m)return;if(o.userData.o0===undefined){o.userData.o0=m.opacity;m.transparent=true}m.opacity=o.userData.o0*ks});
   if(mg.visible)for(const o of mg.children)o.material.opacity=o.userData.o0*k;
   {const t=performance.now()/1000;for(const q of STR){q.pt.visible=k>.02;if(!q.pt.visible)continue;q.m.opacity=Math.min(1,k*1.6)}}}}
@@ -1419,9 +1520,10 @@ function clearLane(){clrX=LANES.reduce((a,l)=>Math.abs(l-px)<Math.abs(a-px)?l:a)
 /* banda cu drum in reparatie in fata masinii (dir>0: inainte = -z; dir<0: inainte = +z) */
 function repBad(x,z,dir,D){return repList.some(o=>{if(o.t==='cone'&&o.hit)return false;const p=o.g.position,dz=dir>0?z-p.z:p.z-z;return Math.abs(p.x-x)<1.5&&dz>-6&&dz<D})}
 function pick(dir){let s=0;const a=[];for(const k in TY){const y=TY[k];if(dir<0&&!y.o)continue;s+=y.wt;a.push([k,s])}const r=Math.random()*s;for(const[k,c]of a)if(r<c)return k;return'car'}
+const HTC={};
 function spawn(z,fT){const x=fT?LANES[2+(Math.random()*2|0)]:LANES[Math.random()*4|0],dir=x>0?1:-1,ty=fT||pick(dir),Y=TY[ty];if((clrT>0&&Math.abs(x-clrX)<1)||(rbs.length&&dir<0)||!free(x,z,Y.l))return;
  const k=mkVeh(ty,Math.random()<Y.dk),sp=Y.sp[0]+Math.random()*(Y.sp[1]-Y.sp[0]),
- c={x,z,dir,w:k.w,l:k.l,sp,cs:sp,g:k.g,spin:k.spin,counted:false,sport:!!Y.fast,vx:0,m:MS[ty],rd:k.rd,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:k.rd?1.3:Math.max(1,new THREE.Box3().setFromObject(k.g).max.y)};
+ c={x,z,dir,w:k.w,l:k.l,sp,cs:sp,g:k.g,spin:k.spin,counted:false,sport:!!Y.fast,vx:0,m:MS[ty],rd:k.rd,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:k.rd?1.3:(HTC[ty]||(HTC[ty]=Math.max(1,new THREE.Box3().setFromObject(k.g).max.y)))};
  if(!fT)addLoad(k.g,ty);if(ty==='carrier')c.rampT=1;if(ty==='dump'){c.dmp=1;c.rk=Math.random()<.65}if(dir<0)k.g.rotation.y=Math.PI;k.g.position.set(x,0,z);scene.add(k.g);cars.push(c);return true}
 function reset(){if(window.AR)AR.end();repClear();window.stkClear&&window.stkClear();window.GDCS=null;epT=0;jcK=0;jcT=0;jkT=0;jk=0;for(const m of epR){m.visible=false;m.userData.t=-1}window.bdClear&&window.bdClear();window.skbClear&&window.skbClear();window.rcReset&&window.rcReset();window.lgClear&&window.lgClear();nmT=nmCd=swT=swCd=swK=0;nmCar=null;nmK=0;resetExtras();cars.forEach(c=>scene.remove(c.g));cars=[];debris.forEach(r=>scene.remove(r.g));debris.length=0;pc.dead=false;pc.g.visible=!fp;pc.lost=0;pc.pull=0;pc.smk=0;pc.det.forEach(m=>m.visible=true);pc.det.length=0;pc.hl.forEach(h=>h.parent&&h.parent.remove(h));pc.hl.length=0;smk.forEach(q=>{q.l=0;q.m.visible=false});dist=0;shN=0;lvI=0;emT=3;wV=0;wTg=0;alS='';$('al').classList.remove('on');riders.forEach(r=>scene.remove(r.g));riders.length=0;sparkClear();accT=6;vx=axs=yaw=roll=pitch=0;camX=1.8;sk.forEach(m=>m.visible=false);px=1.8;v=30;t=0;score=0;passed=0;wAng=wTarget=0;spawnT=0;shake=0;dmg=0;hitT=0;nt=ntCd=0;rtk=null;air=false;sbR=sbRv=sbP=sbPv=sbY=sbYv=swk=0;py=pvy=spin=spinR=0;rpT=8;airK=0;clrT=0;
  pc.lost=0;pc.pull=0;pc.smk=0;pc.lsm=0;fallOn=false;fallY=0;fallV=0;
@@ -2043,7 +2145,7 @@ function cityBuild(g,L){
  for(let i=0;i<WP.length+WDK.length;i++)S.push({p:[],l:[]});
  /* parapet continuu pe margini + felinare */
  for(const sd of[-1,1]){bx(0,sd*9.75,0,-L/2,.5,1.1,L,0);for(let z=-4;z>-L;z-=8)Ln(0,sd*9.75,0,z,sd*9.75,1.1,z);
-  for(let z=-15;z>-L;z-=36){bx(1,sd*10.5,0,z,.3,9,.3,0);bx(1,sd*9.1,8.8,z,3,.25,.3,0)}}
+  for(let z=-15;z>-L;z-=36){if(cityNoLamp(z))continue;bx(1,sd*10.5,0,z,.3,9,.3,0);bx(1,sd*9.1,8.8,z,3,.25,.3,0)}}
  /* autostrazi etajate PERPENDICULARE pe drum, cu rampe la capete */
  const cr=[];g.userData.cars=cr;
  for(const c of CO){const top=c.ys[c.ys.length-1];
@@ -2065,13 +2167,13 @@ function cityBuild(g,L){
   lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(S[i].l,3));const ln=new THREE.LineSegments(lg,lms[i]);m.frustumCulled=ln.frustumCulled=false;m.userData.dg=ln.userData.dg=1;g.add(m,ln)}
  /* pentru vegetatie: cladirile indexate pe z (cutii de 40 m) + culoarele de autostrazi etajate */
  {const bk={};for(const b of BL){const a=Math.floor((b.zc-b.d/2-12)/40),e=Math.floor((b.zc+b.d/2+12)/40);for(let k=a;k<=e;k++)(bk[k]||(bk[k]=[])).push(b)}g.userData.BLX=bk;g.userData.CO=CO}
- cityDetail(g,L,BL)}
+ cityDetail(g,L,BL);cityRamps(g,L)}
 /* raza de ocupare la sol a unei piese de vegetatie (copac cu coroana, tufa, piatra, petic de iarba) */
 function vegR(u){if(u.vr===undefined){const c=u.cr0!==undefined?u.cr0:(u.cr||0);u.vr=u.gp?7.4:u.gz?.8:u.br?2.7*u.br.k+.3:c?c+.9:.5}return u.vr}
-/* oras: true daca vegetatia ar intra in parapet/bordura, felinar, pila de autostrada sau cladire */
 function cityClash(o,z0,ud,pad){const u=o.userData,x=o.position.x,ax=Math.abs(x),lz=o.position.z-z0,R=vegR(u)+pad;
- if(ax+R>9.5&&ax-R<10.05)return true;                                   /* parapet / bordura la marginea drumului */
- if(ax+R>10.3&&ax-R<10.7){const k=Math.round((-15-lz)/36);if(k>=0&&Math.abs(lz+15+36*k)<R+.2)return true}   /* felinare (x 10.5, din 36 in 36 m) */
+ if(u.pl&&cityNoLamp(lz))return true;                                   /* fără stâlpi de margine pe 100 m înaintea rampei */
+ if(ax+R>9.5&&ax-R<10.05)return true;                                   /* parapet / bordura la marginea drumului */                                  /* parapet / bordura la marginea drumului */
+ if(ax+R>10.3&&ax-R<10.7){const k=Math.round((-15-lz)/36);if(k>=0&&Math.abs(lz+15+36*k)<R+.2&&!cityNoLamp(-15-36*k))return true}   /* felinare (x 10.5, din 36 in 36 m) */
  if(ud.CO&&ax<61)for(const c of ud.CO)if(Math.abs(lz-c.z)<7+R)return true;   /* sub autostrazile etajate (tablier + piloni) */
  const bk=ud.BLX&&ud.BLX[Math.floor(lz/40)];
  if(bk)for(const b of bk)if(Math.abs(x-b.cx)<b.w/2+R&&Math.abs(lz-b.zc)<b.d/2+R)return true;   /* cladiri */
@@ -2117,7 +2219,7 @@ function cityDetail(g,L,BL){
    SG.p.push(xs,y,z,xs,y,z-sw,xs,y+sh,z-sw,xs,y,z,xs,y+sh,z-sw,xs,y+sh,z);SG.u.push(a,v0,c,v0,c,v1,a,v0,c,v1,a,v1);
    const C=new THREE.Color(M.NC[ix]);HP.push(xs-b.sd*1.4,y+sh/2,z-sw/2);HC.push(C.r,C.g,C.b)}}
  /* felinare: halou la capul lampii + balta de lumina pe asfalt */
- for(const sd of[-1,1])for(let z=-15;z>-L;z-=36){HP.push(sd*9.1,8.6,z);HC.push(1,.78,.4);
+ for(const sd of[-1,1])for(let z=-15;z>-L;z-=36){if(cityNoLamp(z))continue;HP.push(sd*9.1,8.6,z);HC.push(1,.78,.4);
   const x=sd*7.6;PO.p.push(x-6,.07,z-8,x+6,.07,z-8,x+6,.07,z+8,x-6,.07,z-8,x+6,.07,z+8,x-6,.07,z+8);PO.u.push(0,0,1,0,1,1,0,0,1,1,0,1);for(let i=0;i<6;i++)PO.c.push(1,.78,.4)}
  /* macarale de santier care se rotesc incet */
  const cr=[],cm=M.crane,cl=OLM(cm,LB);g.userData.cranes=cr;
@@ -2605,7 +2707,7 @@ const NSKY=new THREE.Color(0x2a4a9a);
 function envUpdate(rdt){const ins=!!zn&&zn.g.position.z>-8&&zn.g.position.z-zn.L<8;if(zn)envType=zn.type;
  const tgt=ins?((zn&&zn.type==='tunnel')?Math.max(0,Math.min(1,(zn.L-zn.g.position.z)/130)):1):0;envK+=(tgt-envK)*Math.min(1,rdt*(ins?7:3.5));
  envC.copy(ZC0).lerp(envType!=='tunnel'?ZC0:ZCT,envK);scene.background.copy(envC);scene.fog.color.copy(envC);
- const tn=envType==='tunnel';tunK=tn?envK:0;{const w=document.getElementById('sunw');if(w)w.style.opacity=((1-tunK)*(1-(window.nightK||0))).toFixed(3);const t=document.getElementById('tnd');if(t){t.style.setProperty('--hk',(window.hlK||0).toFixed(3));t.style.opacity=(tunK*.62*(1-.4*NG.k)*(1-.1*(window.hlK||0))).toFixed(3)}}{const NN=(window.nightK||0)*(1-tunK);scene.fog.near=(FOGN-70*tunK)*(1-NN)+60*NN;scene.fog.far=(VIEW+40-(VIEW-260)*tunK)*(1-NN)+330*NN;scene.background.lerp(NSKY,NN);scene.fog.color.copy(scene.background)}}
+ const tn=envType==='tunnel';tunK=tn?envK:0;{const w=document.getElementById('sunw');if(w)w.style.opacity=((1-tunK)*(1-(window.nightK||0))).toFixed(3);const t=document.getElementById('tnd');if(t){t.style.setProperty('--hk',(window.hlK||0).toFixed(3));t.style.opacity=(tunK*.62*(1-.4*NG.k)*(1-.1*(window.hlK||0))).toFixed(3)}}{const NN=(window.nightK||0)*(1-tunK);scene.fog.near=(FOGN-70*tunK)*(1-NN)+60*NN;scene.fog.far=(FOGF+(260-FOGF)*tunK)*(1-NN)+330*NN;scene.background.lerp(NSKY,NN);scene.fog.color.copy(scene.background)}}
 
 
 /* ===== teren: pamant vs cer, in functie de zona (iarba / beton in oras / stanca la tunel / apa sub pod) ===== */
@@ -2733,7 +2835,7 @@ const HLT=(()=>{const PI=Math.PI,sm=u=>u*u*(3-2*u),
  window.LPG=LP.g;window.lpStep=dz=>{LP.D+=dz;const nk=(window.nightK||0)*(1-Math.min(1,(typeof tunK==='number'?tunK:0)*2)),m0=((LP.D%LPC)+LPC)%LPC;LP.l+=((m0<LPL?1:0)-LP.l)*.04;
   if(nk<.01){for(const g of LP.g)g.visible=false;return}
   LP.sm.opacity=0;LP.rm.opacity=0;const i0=Math.ceil((LP.D-14)/LPS);
-  for(let j=0;j<LPN;j++){const i=i0+j,g=LP.g[j],m=((i*LPS)%LPC+LPC)%LPC;g.visible=m<LPL;if(!g.visible)continue;g.position.set((i&1?1:-1)*9.4,0,LP.D-i*LPS);g.rotation.y=i&1?0:PI}};
+  for(let j=0;j<LPN;j++){const i=i0+j,g=LP.g[j],m=((i*LPS)%LPC+LPC)%LPC,zw=LP.D-i*LPS;g.visible=m<LPL&&!cityNoLampW(LP.D-i*LPS);if(!g.visible)continue;g.position.set((i&1?1:-1)*9.4,0,LP.D-i*LPS);g.rotation.y=i&1?0:PI}};
  /* ===== NOAPTE: politie cu girofare vizibile de departe, aurora, stele cazatoare, fulgere, greieri si tacere ===== */
  const OV=css=>{const e=document.createElement('div'),a=document.getElementById('dns');e.style.cssText='position:fixed;pointer-events:none;'+css;a.parentNode.insertBefore(e,a.nextSibling);return e},
   eAur=OV('left:0;right:0;top:0;height:58%;opacity:0;mix-blend-mode:screen;filter:blur(5px) saturate(1.25);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)'),
@@ -2864,13 +2966,13 @@ const GMT=new THREE.ShaderMaterial({uniforms:{tG:{value:TXG},tC:{value:TXC},tR:{
   float mr=band(vP.z,uZ.z,uZ.w,60.)*(1.-smoothstep(270.,390.,abs(vP.x)));
   vec3 col=mix(g,r,mr);col=mix(col,c,mc);
   float d=length(vP-cameraPosition);
-  col=mix(col,uSky,max(.55*smoothstep(90.,900.,d),uNf*smoothstep(50.,230.,d)));
+  col=mix(col,uSky,max(smoothstep(60.,${FOGF}.,d),uNf*smoothstep(50.,230.,d)));
   gl_FragColor=vec4(col,1.);}`});
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(3200,1600).rotateX(-Math.PI/2).translate(0,-.03,-760),GMT);ground.frustumCulled=false;ground.renderOrder=-1;scene.add(ground);
 road.material.onBeforeCompile=sh=>{sh.uniforms.uSky=GMT.uniforms.uSky;sh.uniforms.uTn=RTN;
  sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vHP;').replace('#include <begin_vertex>','#include <begin_vertex>\nvHP=(modelMatrix*vec4(transformed,1.)).xyz;');
  sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vHP;uniform vec3 uSky;uniform float uTn;')
-  .replace('#include <fog_fragment>','float fF=smoothstep(fogNear,fogFar,fogDepth);gl_FragColor.rgb=mix(gl_FragColor.rgb,fogColor,fF*uTn);gl_FragColor.rgb=mix(gl_FragColor.rgb,uSky,(1.-uTn)*.55*smoothstep(90.,900.,length(vHP-cameraPosition)));')};
+  .replace('#include <fog_fragment>','float fF=smoothstep(fogNear,fogFar,fogDepth);gl_FragColor.rgb=mix(gl_FragColor.rgb,fogColor,fF*uTn);gl_FragColor.rgb=mix(gl_FragColor.rgb,uSky,(1.-uTn)*smoothstep(90.,'+FOGF+'.,length(vHP-cameraPosition)));')};
 const gBand=(z,z0,L,f)=>{if(L<=0)return 0;const s=z0-z,sm=x=>{x=Math.max(0,Math.min(1,(x+f*.5)/f));return x*x*(3-2*x)};return sm(s)*sm(L-s)};
 function gdMir(){const z=60,c=zn&&zn.type==='city'?gBand(z,zn.g.position.z,zn.L,60):0,r=zn&&zn.type==='tunnel'?gBand(z,zn.g.position.z+MTE,zn.L+2*MTE,60):0,
  G=[143,206,132],C=[215,200,175],R=[216,204,178],T=[.62,.8,.66];
@@ -3271,7 +3373,7 @@ function heliPolStep(dt){const h=heli;
  const bm=false;if(h.on&&state==='run'){const dd=Math.hypot(h.x-px,h.y,h.z);if(dd<34)shake=Math.max(shake,.045*(1-dd/34))}hBeam.visible=hSpot.visible=hRing.visible=bm;
  if(bm){hSx+=(px-hSx)*Math.min(1,dt*3);const hp=h.g.position,sx=hSx,sz=-5,d=Math.hypot(sx-hp.x,hp.y,sz-hp.z);
   hBeam.position.set(hp.x,hp.y-.8,hp.z);hBeam.scale.set(1,1,d);hBeam.lookAt(sx,.05,sz);hSpot.position.set(sx,.05,sz);hRing.position.set(sx,.06,sz)}}
-function resetExtras(){forU=0;forK=0;rbs.length=0;rbT=4;if(zn){scene.remove(zn.g);zn=null}zoneTrees();znFirst=0;znT=CFG.first?400:2150+Math.random()*3000;znN=0;envK=0;tunK=0;envType='tunnel';envC.copy(ZC0);scene.background.copy(ZC0);scene.fog.color.copy(ZC0);scene.fog.near=FOGN;scene.fog.far=VIEW+40;
+function resetExtras(){crOn=null;crFly=false;crTg=null;forU=0;forK=0;rbs.length=0;rbT=4;if(zn){scene.remove(zn.g);zn=null}zoneTrees();znFirst=0;znT=CFG.first?400:2150+Math.random()*3000;znN=0;envK=0;tunK=0;envType='tunnel';envC.copy(ZC0);scene.background.copy(ZC0);scene.fog.color.copy(ZC0);scene.fog.near=FOGN;scene.fog.far=FOGF;
  heli.on=false;heli.leaving=false;heli.g.visible=false;hlT=16;hlCd=0;polReset();fireClear();yjT=0;YJ.forEach(f=>f.g.visible=false);heliPolHide();$('gr').classList.remove('on');$('tv').classList.remove('on');RF.length=0;RPR.clear();RPon=false;RPf=null;document.body.classList.remove('rp')}
 
 /* ===== RIVAL: masina sport (max 175 km/h) care apare langa tine si te provoaca la o cursa de 4-5 km =====
@@ -3504,7 +3606,7 @@ function frame(now){requestAnimationFrame(frame);/* RELUARE FARA SUNET: in timpu
   
   clrT=Math.max(0,clrT-dt);spawnT-=dt;if(spawnT<=0&&!cr){spawn(-520-Math.random()*40);spawnT=Math.max(.35,1.1-t*.01)*1.25}
 rpT-=dt;if(rpT<=0&&!cr&&t>15&&spawn(-520-Math.random()*40,'carrier'))rpT=16+Math.random()*10;
-  rbStep(dt);rampStep(dt);roadRepStep(dt,cr);const PL={cs:v,l:4.4,w:1.9,x:px,z:0};
+rbStep(dt);rampStep(dt);cityRampStep(dt);roadRepStep(dt,cr);const PL={cs:v,l:4.4,w:1.9,x:px,z:0};
   for(const c of cars){if(c.amb){if(c.hit){c.amb=0;c.em=true}else ambStep(c,dt)}if(c.pol&&!c.hit&&!c.gone&&!c.ut&&state==='run'&&!cr){c.utcd=(c.utcd||0)-dt;if(c.utcd<=0){const ah=c.dir>0&&c.z<-30&&c.z>-300,bh=c.dir<0&&c.z>30;if((ah||bh)&&(utClear(c)||c.z>200||c.z<-250))utStart(c);else c.utcd=.3}}if(c.ut){if(c.hit){c.ut=0;delete c.cw;delete c.cl}else utStep(c,dt)}let tg=c.sp,bd=null,bg=99,rt=2;if(c.pol)rt=4;if(c.esc&&!polOn){c.esc=false;c.lv=performance.now()}if(c.em)tg=c.sp=c.esc?escTg(c):c.pol?polTg(c):c.lv?Math.max(14,v-35):Math.min(88,Math.max(30,v+17));
    if(c.rival){tg=c.sp=rivalTg(c);rt=(c.rvcur&&c.rvcur.ttc<1.8)?7:3.2}
    if(c.pol&&c.dir<0&&!c.ut)tg=c.sp=Math.max(30,Math.min(60,v*.6+18));let nl=null,ns=1e9;if((c.pol||c.esc)&&nt>0&&state==='run')tg=c.sp=Math.min(tg,Math.max(10,v-14));if((c.pol||c.esc)&&c.dg&&!c.hit&&!c.blq)tg=c.sp=Math.min(tg,c.dg>1?6:Math.max(14,tg*.5));
