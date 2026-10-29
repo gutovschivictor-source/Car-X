@@ -2,7 +2,16 @@
 <html lang="ro"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Autostradă</title>
+<meta name="version" content="6">
 <meta name="theme-color" content="#fff4de">
+<script>
+/* === CURSA ONLINE: seed comun din ?room=COD === */
+(function(){var q=new URLSearchParams(location.search),room=(q.get('room')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+window.mpH=function(s){var h=1779033703^s.length;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0};
+window.mpM32=function(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
+window.MP={room:room,host:q.get('host')==='1',on:false,racing:false,cd:0};
+if(room)Math.random=window.mpM32(window.mpH('caini:'+room));})();
+</script>
 <style id="ld-css">
 #ld{--s:5px;position:fixed;inset:0;z-index:98;display:none;align-items:center;justify-content:center;background:#fff;color:var(--ink,#1a1b3a);font-family:-apple-system,'SF Pro Display',system-ui,'Segoe UI',sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}
 #ld.on{display:flex;animation:ldi .001s .14s both}
@@ -183,9 +192,67 @@ body.skp #gv{display:block}
 @keyframes gvb{50%{opacity:.45}}
 #m-skin{background:rgba(13,14,32,.84);color:#fff4de;border-color:#ff5a3c;box-shadow:6px 6px 0 #ff5a3c,0 0 40px rgba(255,43,214,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 #m-skin h2{color:#fff4de;text-shadow:0 0 12px rgba(255,43,214,.75);letter-spacing:.04em;text-transform:uppercase}
-#m-skin small{color:#9aa0c8;opacity:1}#m-skin{max-height:calc(100vh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+#m-skin small{color:#9aa0c8;opacity:1}
 #m-skin .sw button{border-color:#fff4de;box-shadow:2px 2px 0 #000}
 #m-skin .sw button.on{box-shadow:0 0 0 3px #0d0e20,0 0 0 6px #ff5a3c,0 0 18px #ff5a3c}
+/* garaj: tab-uri skin / breloc + previzualizare */
+#m-skin{display:flex;flex-direction:column;max-height:min(58%,440px);overflow:hidden;padding:10px}
+#m-skin[hidden]{display:none}
+@media (orientation:landscape) and (max-height:600px){#m-skin{max-height:100%}}
+.sw[hidden]{display:none}
+#m-skin .gt{display:flex;gap:6px;margin:0 0 8px;flex:none}
+#m-skin .gt button{flex:1;width:auto;height:34px;border-radius:12px;font-size:13px;font-weight:800;background:#1b1d3d;color:#fff4de;border:2px solid #fff4de;box-shadow:2px 2px 0 #000}
+#m-skin .gt button.on{background:#ff5a3c;color:#1a1b3a}
+#m-skin .gsc{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 7px 8px}
+#m-skin .gsc small{margin:0 0 10px;font-size:11px}
+@media (max-height:420px){#m-skin .gsc small{display:none}}
+#m-skin .sw{gap:8px;margin:0 0 4px}
+#m-skin .sw button.pv{outline:3px dashed #ffc233;outline-offset:3px}
+#m-cw button{background:radial-gradient(circle at 50% 40%,#fff8e6,#ffc47a);border-color:#fff4de;box-shadow:2px 2px 0 #000}
+#m-cw button.au{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1b1d3d;color:#fff4de;font-weight:800;line-height:1}
+#m-cw button.au span{font-size:20px}#m-cw button.au i{font-style:normal;font-size:9px;margin-top:2px}
+#m-cw button.on{box-shadow:0 0 0 3px #0d0e20,0 0 0 6px #ff5a3c,0 0 18px #ff5a3c}
+#m-skin .gf{flex:none;display:flex;align-items:center;gap:10px;margin:6px 0 8px;padding:8px 10px;border:2px solid rgba(255,244,222,.35);border-radius:12px;background:rgba(255,255,255,.06);min-height:44px}
+#m-gc{width:64px;height:64px;flex:none;border-radius:10px;background:radial-gradient(circle at 50% 40%,#fff8e6,#ffc47a)}
+#m-gc[hidden]{display:none}
+#m-skin .gi{min-width:0}#m-skin .gi b{display:block;font-size:15px;line-height:1.15}
+#m-skin .gi em{display:block;font-style:normal;font-size:11.5px;line-height:1.25;color:#c9cdee;margin-top:2px}
+#m-skin .gb{flex:none;display:flex;gap:8px}
+#m-skin .gb .mb{flex:1;width:auto;height:42px;margin:0;font-size:14px}
+#m-skin .gb .mb[hidden]{display:none}
+
+/* ===== Car Pass ===== */
+.mb .cpb{display:inline-block;margin-left:8px;padding:1px 8px;border:2px solid var(--ink);border-radius:12px;background:var(--accent);font-size:12px;vertical-align:middle}
+.pn.cp{width:min(94vw,390px);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:14px 12px 12px;display:flex;flex-direction:column;gap:12px}
+.pn.cp,.pn.cp *{touch-action:pan-y}.pn.cp[hidden]{display:none}
+.cp .cph{display:flex;align-items:center;gap:12px}
+.cp .cpbk{width:44px;height:44px;flex:none;border:3px solid var(--ink);border-radius:0;background:var(--paper);box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;justify-content:center;padding:0;font-size:22px;font-weight:800}
+.cp .cpt{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1}.cp .cps{font-size:12px;font-weight:700;margin-top:3px}
+.cp .cpd{margin-left:auto;background:var(--ink);color:var(--paper);padding:6px 10px;border-radius:14px;font-weight:800;font-size:13px;white-space:nowrap}
+.cp .cpx{border:3px solid var(--ink);background:#fff;box-shadow:6px 6px 0 var(--ink);padding:12px;margin:0 6px 0 0}
+.cp .cpst{display:flex;align-items:center;gap:12px;transform:rotate(-1deg)}
+.cp .cpn{width:56px;height:56px;flex:none;border-radius:50%;border:3px solid var(--ink);background:var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.cp .cpn span{font-size:9px;font-weight:800}.cp .cpn b{font-size:24px;font-weight:800}
+.cp .cpxr{flex:1;min-width:0}.cp .cpxl{display:flex;justify-content:space-between;gap:6px;font-weight:800;font-size:13px}
+.cp .cpbr{height:18px;border:3px solid var(--ink);border-radius:9px;background:#eadbb8;margin-top:6px;overflow:hidden}.cp .cpbr div{height:100%;background:var(--accent);border-right:3px solid var(--ink);transition:width .5s}
+.cp .cpch{display:flex;gap:6px;margin-top:10px;font-size:11px;font-weight:800;flex-wrap:wrap}.cp .cpch span{border:2px solid var(--ink);border-radius:10px;padding:3px 7px;background:var(--paper)}
+.cp .cpr{display:grid;grid-template-columns:44px 1fr 1fr;gap:8px;align-items:center;margin:0 6px 10px 0}.cp .cph2{margin-bottom:0;font-size:11px;font-weight:800}
+.cp .cpl{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.cp .cpl.dn{background:#bfe3b0}.cp .cpl.now{background:var(--accent)}.cp .cpl.bg{background:var(--ink);color:#ffc233}
+.cp .cpc{border:3px solid var(--ink);border-radius:14px;background:#fff;box-shadow:3px 3px 0 var(--ink);padding:7px;display:flex;align-items:center;gap:8px;min-height:66px;cursor:pointer;min-width:0}
+.cp .cpc.big{min-height:84px}.cp .cpc b{display:block;font-size:13px;line-height:1.15}.cp .cpc em{display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:2px}
+.cp .cpi.t3{width:52px;height:52px;padding:0;overflow:hidden;background:radial-gradient(circle at 50% 42%,#fff8e6,#ffc47a)}.cp .cpi{flex:none;width:36px;height:36px;border:2px solid var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--paper)}
+.cp .cpc.big .cpi{width:44px;height:44px}.cp .cpc.big .cpi svg{width:28px;height:28px}
+.cp .cpc.ok{background:#bfe3b0}.cp .cpc.pm{background:#ffc233}.cp .cpc.lk{background:#eadbb8;border-style:dashed}.cp .cpc.rd{border-color:var(--accent)}
+.cp .cpg{display:inline-block;border:3px solid var(--ink);background:var(--accent);font-weight:800;font-size:12px;padding:4px 8px;box-shadow:2px 2px 0 var(--ink);margin-top:4px}
+.cp .cpcta{position:sticky;bottom:0;flex:none;width:100%;height:54px;border:3px solid var(--ink);border-radius:0;background:var(--accent);box-shadow:4px 4px 0 var(--ink);font-weight:800;font-size:17px}
+.cp .cpcta[disabled]{background:#bfe3b0;opacity:1}.cp .cpcta[hidden],.cp .cpfree[hidden]{display:none}
+.cp .cpy{background:#ffc233;transform:rotate(-1.5deg);padding:18px 16px}.cp .cpk{font-size:12px;font-weight:800;letter-spacing:.08em}.cp .cpp1{font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-top:4px}.cp .cpp2{font-size:14px;font-weight:700;margin-top:8px;line-height:1.3}
+.cp .cpgr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-right:6px}.cp .cpgr .cpc{flex-direction:column;align-items:flex-start;min-height:104px;cursor:default}.cp .cpgr .cpi{width:44px;height:44px}.cp .cpgr .cpi svg{width:28px;height:28px}.cp .cpgr .cpc.dk{background:var(--ink)}.cp .cpgr .cpc.dk b{color:var(--paper)}.cp .cpgr .cpc.dk em{color:#ffc233}
+.cp .cpbn{display:flex;flex-direction:column;gap:10px;font-size:14px;font-weight:700}.cp .cpbn div{display:flex;gap:10px;align-items:center}
+.cp .cpfree{width:100%;height:auto;background:none;border:0;box-shadow:none;border-radius:0;font-size:12px;font-weight:700;padding:2px;text-decoration:underline}
+#cp-t{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%) translateY(10px);max-width:86vw;background:var(--ink);color:var(--paper);border-radius:14px;padding:9px 14px;font:700 13px/1.3 -apple-system,system-ui,sans-serif;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9}#cp-t.on{opacity:1;transform:translateX(-50%)}
+.sw button.cplk{opacity:.45}.sw button.cplk::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px}
 
 /* Dinamica cinematica: efecte de viteza si vigneta */
 #cinemaFX{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden;opacity:1}
@@ -358,17 +425,97 @@ addEventListener('load',function(){ldHide()});
 <canvas id="sl"></canvas><div id="nf"></div><div id="nt"><i>⚡</i><span id="ntx">NITRO</span></div><div id="hn" title="Claxon (H)">📣</div><div id="cv">🎥</div><div id="al"></div><div id="tip">Trage cu degetul pe ecran ca să privești în jur</div><div id="tv">● LIVE · NEWS</div><div id="rl">● REPLAY</div><div id="rcb"><div id="rct"></div><div id="rcr"><i id="rcq"></i><i id="rcp"></i></div><div id="rcg"></div></div><div id="rco"><button id="rca">Acceptă</button><button id="rcd">Respinge</button></div><button id="rs">Sari ›</button><div id="gr"><span>treapta</span><b id="grn">1</b><i></i></div>
 <div id="ov" class="h"><div id="cd"><h1 id="t1">Autostradă</h1><p id="t2">Rotește volanul ca să depășești mașinile lente. Apasă GAZ ca să accelerezi și FRÂNĂ ca să încetinești. Butonul NITRO (sau tasta N) dă 3 secunde de impuls; se reîncarcă în 25 s. Atenție la sensul opus.</p><button id="go">Start</button><button id="mn" style="width:120px;margin-left:8px">Meniu</button></div></div>
 <div id="mm"><div class="pn" id="m-main"><h1>Autostradă</h1><small id="m-rec"></small>
-<button class="mb p" id="m-play">Joacă</button><button class="mb" id="m-gar">🎨 Garaj · skin</button><button class="mb" id="m-st">⚙️ Setări</button><button class="mb" id="m-quit" hidden>Ieși din cursă</button></div>
+<button class="mb p" id="m-play">Joacă</button><button class="mb" id="m-gar">🎨 Garaj · skin</button><button class="mb" id="m-cpbtn">🏁 Car Pass<span class="cpb" id="m-cpl"></span></button><button class="mb" id="m-st">⚙️ Setări</button><button class="mb" id="m-quit" hidden>Ieși din cursă</button></div>
 <div class="pn" id="m-mode" hidden><h2>Alege harta</h2><div id="m-md">
 <button class="md" data-m="0"><div class="mbg"><canvas class="bgc"></canvas></div><div class="mt"><b>Harta clasică</b></div></button>
 <button class="md" data-m="1"><div class="mbg"><canvas class="bgc"></canvas></div><div class="mt"><b>Duel de aur 🪙</b></div></button>
 <button class="md" data-m="2"><div class="mbg"><canvas class="bgc"></canvas></div><div class="mt"><b>Mod Poliție</b></div></button>
 <button class="md" data-m="3"><div class="mbg"><canvas class="bgc"></canvas></div><div class="mt"><b>Arena: ultimul rămas 💥</b></div></button></div>
 <button class="mb" id="m-b3">Înapoi</button></div>
-<div class="pn" id="m-skin" hidden><h2 id="m-sn"></h2><small style="margin:-8px 0 12px">Camera se rotește în jurul mașinii · trage ca să o rotești tu</small><div class="sw" id="m-sw"></div><button class="mb p" id="m-b1">Gata</button></div>
-<div class="pn" id="m-set" hidden><h2>Setări</h2><div id="m-rows"></div><button class="mb p" id="m-b2" style="margin-top:6px">Înapoi</button></div></div>
+<div class="pn" id="m-skin" hidden><div class="gt" id="m-gt"><button data-t="s" class="on">🎨 Skin</button><button data-t="c">🔑 Breloc</button></div><div class="gsc"><small>Camera se rotește în jurul mașinii · trage ca să o rotești tu. Atinge un element blocat ca să-l previzualizezi.</small><div class="sw" id="m-sw"></div><div class="sw" id="m-cw" hidden></div></div><div class="gf"><canvas id="m-gc" width="128" height="128" hidden></canvas><div class="gi"><b id="m-gn"></b><em id="m-gs"></em></div></div><div class="gb"><button class="mb" id="m-gcp" hidden>🏁 Car Pass</button><button class="mb p" id="m-b1">Gata</button></div></div>
+<div class="pn" id="m-set" hidden><h2>Setări</h2><div id="m-rows"></div><button class="mb p" id="m-b2" style="margin-top:6px">Înapoi</button></div><div class="pn cp" id="m-cp" hidden>
+<div class="cph"><button class="cpbk" id="cp-b" aria-label="Înapoi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div><div class="cpt">Car Pass</div><div class="cps">Sezonul 1 · Pădurea</div></div><div class="cpd" id="cp-d"></div></div>
+<div class="cpx"><div class="cpst"><div class="cpn"><span>NIVEL</span><b id="cp-lv">1</b></div><div class="cpxr"><div class="cpxl"><span id="cp-nx"></span><span id="cp-xp"></span></div><div class="cpbr"><div id="cp-bar"></div></div></div></div>
+<div class="cpch"><span>+10 XP / depășire</span><span>+5 XP / km</span><span id="cp-pb">Premium: +5 XP / depășire</span></div></div>
+<div class="cpr cph2"><span>NIV</span><span>GRATUIT</span><span>PREMIUM</span></div>
+<div id="cp-list"></div>
+<button class="cpcta" id="cp-prem">Deblochează Premium</button>
+</div>
+<div class="pn cp" id="m-cpp" hidden>
+<div class="cph"><button class="cpbk" id="cpp-b" aria-label="Închide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="cps">Sezonul 1 · Pădurea</div></div>
+<div class="cpx cpy"><div class="cpk">CAR PASS</div><div class="cpp1">Premium</div><div class="cpp2">Treci de la nivelul <span id="cpp-l">1</span> la 30 și deblochezi o a doua cale de recompense.</div></div>
+<div class="cpgr" id="cpp-g"></div>
+<div class="cpx cpbn"><div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Toate recompensele premium de pe traseu</span></div><div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>XP în plus la fiecare depășire</span></div><div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1a1b3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span>Recompensele de până acum se deblochează imediat</span></div></div>
+<button class="cpcta" id="cpp-buy">Deblochează Premium</button>
+<button class="cpfree" id="cpp-free">Poți rămâne pe calea gratuită oricând</button>
+</div><div id="cp-t"></div></div>
 <button id="pz">⏸</button>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===== v2: FĂRĂ CONTURURI + UMBRIRE PE FEȚE (cald, echilibrat, alb curat) ===== */
+(function(){
+ /* 1) Contururi: LineSegments / LineLoop rămân instanțe reale, dar invizibile permanent.
+       (THREE.Line simplu — liniile de ghidaj — nu este atins.) */
+ function hide(Base){
+  const W=function(g,m){const o=new Base(g,m);o.visible=false;return o};
+  W.prototype=Base.prototype;return W;
+ }
+ for(const k of['LineSegments','LineLoop']){
+  const B=THREE[k];
+  /* acoperă și clone()/copy(): constructorul original rămâne cel din prototip */
+  Object.defineProperty(B.prototype,'visible',{configurable:true,get(){return false},set(v){}});
+  THREE[k]=hide(B);
+ }
+ /* 2) Umbrire pe față în MeshBasicMaterial */
+ const MB0=THREE.MeshBasicMaterial;
+ const shadeable=m=>!(m.transparent||m.map||m.blending!==THREE.NormalBlending||(m.fog===false&&!m.vertexColors));
+ function onBC(sh){
+  if(!shadeable(this))return;
+  sh.vertexShader=sh.vertexShader
+   .replace('#include <common>','#include <common>\nvarying vec3 vFPos;')
+   .replace('#include <project_vertex>','#include <project_vertex>\nvFPos=mvPosition.xyz;');
+  sh.fragmentShader=sh.fragmentShader
+   .replace('#include <common>','#include <common>\nvarying vec3 vFPos;')
+   .replace('#include <aomap_fragment>',`#include <aomap_fragment>
+  {
+   vec3 fn=normalize(cross(dFdx(vFPos),dFdy(vFPos)));
+   if(dot(fn,-vFPos)<0.)fn=-fn;
+   vec3 wn=normalize(fn*mat3(viewMatrix));            /* = transpose(mat3(viewMatrix))*fn */
+   float d=dot(wn,normalize(vec3(.55,.8,.35)));
+   float k=clamp((d+.7)/1.45,0.,1.);                  /* 0 = umbră, 1 = față de sus */
+   float f=.84+.22*k;                                 /* 0.84 .. 1.06 */
+   vec3 c0=diffuseColor.rgb;
+   float mn=min(c0.r,min(c0.g,c0.b)),mx=max(c0.r,max(c0.g,c0.b));
+   float w=smoothstep(.70,.84,mn)*(1.-smoothstep(.10,.20,mx-mn));  /* aproape alb */
+   /* culori: saturație ~1.18, mai puțin pe alb */
+   float lum=dot(c0,vec3(.299,.587,.114));
+   vec3 cs=mix(vec3(lum),c0,mix(1.18,1.,w));
+   cs=mix(cs,vec3(mx),w*.7);                           /* alb curat: fără tentă crem */
+   diffuseColor.rgb=clamp(cs,0.,1.);
+   /* ton cald: umbre piersică, lumină aurie (normalizate pe luminanță) */
+   vec3 ts=vec3(1.,.86,.74),tl=vec3(1.06,1.02,.94);
+   ts/=dot(ts,vec3(.299,.587,.114));tl/=dot(tl,vec3(.299,.587,.114));
+   vec3 warm=f*mix(ts,tl,k);
+   /* alb: gri neutru-rece fin .90..1.0, sus alb plin */
+   vec3 cool=mix(vec3(.89,.905,.93),vec3(1.),k);
+   reflectedLight.indirectDiffuse*=mix(warm,cool,w);
+  }`);
+  sh.extensions=sh.extensions||{};
+ }
+ function patch(m){
+  m.extensions=Object.assign(m.extensions||{},{derivatives:true});
+  m.onBeforeCompile=onBC;
+  m.customProgramCacheKey=function(){return 'fshade2'+(shadeable(this)?1:0)};
+  return m;
+ }
+ const W=function(p){return patch(new MB0(p))};
+ W.prototype=MB0.prototype;
+ const cp=MB0.prototype.copy;
+ MB0.prototype.copy=function(s){cp.call(this,s);return patch(this)};
+ THREE.MeshBasicMaterial=W;
+ window.__GAME_VERSION=6;
+})();
+</script>
 <script>
 const PAL={ink:'#1a1b3a',paper:'#fff4de',sky:'#ffdf9e',road:'#383644',line:'#fff4dc',median:'#ffc233',accent:'#ff5a3c',blue:'#5aa9ff',sun:'#ffc233',
  leaf:'#346a47',leaf2:'#77be68',wood:'#6b4a34',stone:'#efdec1',stone2:'#63595d',water:'#214e7e',cloud:'#ffffff',cloudLine:'#c6d7d8',
@@ -382,6 +529,17 @@ const $=id=>document.getElementById(id),LANES=[-5.4,-1.8,1.8,5.4];
 const CFG=Object.assign({mute:false,vol:1,hap:true,steer:1,cam:0,gfx:2,skin:0,first:0,mode:0,fxv:100,bgv:100},(()=>{try{return JSON.parse(localStorage.getItem('cfg')||'{}')||{}}catch(e){return{}}})());
 const saveCFG=()=>{try{localStorage.setItem('cfg',JSON.stringify(CFG))}catch(e){}},PR=()=>Math.min(devicePixelRatio||1,[1,1.5,2][CFG.gfx]||2);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(PR());$('g').appendChild(renderer.domElement);
+/* ===== APARITIE LINA IN FUNDAL (efect general): la marginea ceții, tot ce e desenat cu ceata (copaci, masini, cladiri, decor, zone) se "dizolva" treptat cu un dither fin,
+   deci obiectele se materializeaza lin pe masura ce se apropie, in loc sa apara brusc la limita de spawn. Reglaj: DSV0 / DSV1 = fractiuni din distanta ceții (0.78 -> complet solid, 0.97 -> complet dizolvat). ===== */
+{const DSV0='0.78',DSV1='0.97',fd=THREE.ShaderChunk.fog_pars_fragment.indexOf('vFogDepth')>=0?'vFogDepth':'fogDepth';
+ THREE.ShaderChunk.fog_fragment+=`
+#ifdef USE_FOG
+#ifndef FOG_EXP2
+ {float dsv=smoothstep(fogFar*${DSV0},fogFar*${DSV1},${fd});
+  if(dsv>0.){float dn=fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))));if(dn<dsv)discard;}}
+#endif
+#endif
+`}
 const VIEWS=[480,540,600],VIEW=VIEWS[CFG.gfx]||VIEWS[2],FOGF=Math.round(VIEW*.85),FOGN=Math.round(FOGF*.08);/* cat se vede drumul (lungimea planului de drum); decorul si cladirile folosesc aceeasi distanta. Legat de Grafica: Joasa 900 / Medie 1000 / Inalta 1100 (se aplica la pornire); FOGN = inceputul cetii, scalat proportional */
 const scene=new THREE.Scene();scene.background=new THREE.Color(HX(PAL.sky));scene.fog=new THREE.Fog(HX(PAL.sky),FOGN,FOGF);
 const cinemaFX=document.getElementById('cinemaFX');let cinemaFxTimer=0;
@@ -784,6 +942,49 @@ const GPT=[];for(let v=0;v<8;v++){const pos=[],idx=[];for(let t=0;t<40;t++){cons
  o.position.set(sd*(15.4+c*14+Math.random()*1.5),0,-r*dz-Math.random()*dz);o.userData.gz=1;o.userData.gp=1;scene.add(o);trees.push(o)}}
 /* inelul de margine are lungimea drumului; departe e mai rar (de la TRD m), ca sa nu creasca numarul de apeluri de desen */
 const TRL=VIEW,TRD=Math.round(FOGF*.6);
+/* ===== PĂDURE ÎNALTĂ ȘI DENSĂ: 5 tipuri de copaci mari (molid, pin, mesteacăn, stejar, gigant), apar doar în zona de pădure ===== */
+const FST=(()=>{
+ const NS=220,TYPES=[['spruce',34],['pine',22],['birch',14],['oak',14],['giant',16]],TWt=TYPES.reduce((a,t)=>a+t[1],0),rr=(a,b)=>a+Math.random()*(b-a);
+ function build(parts){const P=[],C=[],I=[];let o=0;
+  for(const[w,h,d,x,y,z,col,ry]of parts){const g=new THREE.BoxGeometry(w,h,d);if(ry)g.rotateY(ry);g.translate(x,y,z);
+   const p=g.attributes.position,c=new THREE.Color(col),j=.94+Math.random()*.12;
+   for(let i=0;i<p.count;i++){P.push(p.getX(i),p.getY(i),p.getZ(i));C.push(Math.min(1,c.r*j),Math.min(1,c.g*j),Math.min(1,c.b*j))}
+   for(const i of g.index.array)I.push(i+o);o+=p.count;g.dispose()}
+  const G=new THREE.BufferGeometry();G.setAttribute('position',new THREE.Float32BufferAttribute(P,3));G.setAttribute('color',new THREE.Float32BufferAttribute(C,3));G.setIndex(I);G.computeBoundingSphere();return G}
+ const GR=['#2d6240','#346a47','#3b7650'],GL=['#4f8a4a','#6fb063','#559959'],WOOD='#6b4a34';
+ const mk={
+  spruce(){const h=rr(17,27),n=8+(Math.random()*4|0),P=[[.8,h*.3,.8,0,h*.15,0,WOOD]],y0=h*.1,st=(h*.9)/n;
+   for(let i=0;i<n;i++){const t=i/(n-1),w=(1-t*.88)*(3.4+h*.14)+.5;P.push([w,st*1.35,w,0,y0+i*st+st*.6,0,GR[i%3],i%2?.785:0])}
+   P.push([.9,1.3,.9,0,h+.2,0,GR[1]]);return P},
+  pine(){const h=rr(16,26),P=[[1,h,1,0,h/2,0,'#7a5236'],[1.25,h*.35,1.25,0,h*.175,0,'#6b4a34']],c=Math.random()<.5?GR:GL;
+   P.push([5.8,2.2,5.8,0,h-1.6,0,c[0]],[4.4,2.2,4.4,.4,h+.2,-.3,c[1]],[2.8,2,2.8,-.2,h+1.9,.2,c[2]]);
+   if(Math.random()<.6)P.push([3.2,1.6,3.2,2.6,h*.72,.4,c[1]]);return P},
+  birch(){const h=rr(13,20),au=Math.random()<.25,cl=au?['#e5c24b','#f0b840','#e5a43b']:['#8fce84','#a6d98a','#77be68'],P=[[.7,h,.7,0,h/2,0,'#fff4de']];
+   for(let y=1.2;y<h-3;y+=rr(1.3,2.2))P.push([.74,.2,.74,0,y,0,'#3a3b52']);
+   P.push([4.4,3,4.4,0,h-.6,0,cl[0]],[3.4,2.6,3.4,.5,h+1.6,-.3,cl[1]],[2.2,2,2.2,-.3,h+3.2,.2,cl[2]],[3,2.2,3,-1.8,h-2.6,.8,cl[1]],[2.6,2,2.6,1.9,h-2.2,-.9,cl[2]]);return P},
+  oak(){const h=rr(14,20),P=[[1.7,h*.5,1.7,0,h*.25,0,WOOD],[1,h*.25,1,1.2,h*.5,0,WOOD,.4],[1,h*.22,1,-1.1,h*.52,.2,WOOD,-.4]],c=GL;
+   P.push([8,3.6,8,0,h*.62,0,c[0],.3],[6.4,3.2,6.4,.4,h*.62+3.1,-.3,c[1],.9],[3.8,2.6,3.8,-.2,h*.62+5.6,.2,c[2]],[4.2,3,4.2,3.8,h*.52,1.2,c[1]],[4,2.8,4,-3.6,h*.5,-1.4,c[2]]);return P},
+  giant(){const h=rr(30,40),n=11,P=[[1.8,h*.72,1.8,0,h*.36,0,'#5a3f2c']],st=(h*.55)/n;
+   for(let i=0;i<n;i++){const w=(1-i/n)*5+1,y=h*.4+i*st+st*.5;P.push([w,st*1.4,w,0,y,0,i%2?'#2a5a3d':'#336b46',i%2?.785:0])}P.push([.9,2,.9,0,h*.96+1,0,'#336b46']);return P}
+ };
+ const geo={};for(const[k]of TYPES){geo[k]=[];for(let i=0;i<4;i++)geo[k].push(build(mk[k]()))}
+ const mat=new THREE.MeshBasicMaterial({vertexColors:true}),L=[];
+ for(let sd of[-1,1])for(let i=0;i<NS;i++){let r=Math.random()*TWt,ty=TYPES[0][0];for(const t of TYPES){if(r<t[1]){ty=t[0];break}r-=t[1]}
+  const o=new THREE.Mesh(geo[ty][Math.random()*4|0],mat),b=ty==='giant'?rr(.95,1.2):rr(.9,1.25);
+  o.userData.b=b;o.userData.al=false;o.scale.setScalar(b);o.rotation.y=Math.random()*6.28;o.frustumCulled=true;o.visible=false;
+  o.position.set(sd*(10.8+Math.pow(Math.random(),1.5)*27),0,-(i+Math.random())*TRL/NS);scene.add(o);L.push(o)}
+ let lt=0,was=false;window.FSTL=L;
+ /* copacii NU cresc: fiecare apare la capătul îndepărtat al drumului (acoperit de ceață) și vine spre tine odată cu drumul;
+    la ieșirea din pădure nu mai sunt reciclați în față, deci marginea pădurii trece pur și simplu pe lângă tine */
+ window.fstReset=()=>{was=false;for(const o of L){o.userData.al=false;o.visible=false}};
+ window.fstStep=dz=>{const n=performance.now(),dt=Math.min(.05,(n-lt)/1000);lt=n;let d=0,U=window.FSTU||0;try{d=dist}catch(e){}
+  const on=d<U;
+  if(on&&!was){for(const o of L)if(o.position.z<-400){const u=o.userData;u.al=true;/* primii copaci (cei mai apropiati de intrarea in padure) sunt mai mici si cresc treptat ca marime pana la cei normali -> tranzitie lina */const t=Math.min(1,(-o.position.z-400)/(TRL*.4));o.scale.setScalar(u.b*(.4+.6*t*t*(3-2*t)))}}
+  was=on;
+  for(const o of L){let z=o.position.z+dz;if(z>14){z-=TRL;o.userData.al=on;o.scale.setScalar(o.userData.b)}o.position.z=z;
+   const vis=!!o.userData.al;if(o.visible!==vis)o.visible=vis}};
+ return{L}})();
+
 /* unitatile de peisaj din fasia apropiata (cutii x0,x1,z0,z1); peticele de iarba nu se mai suprapun cu ele */
 function scSolids(dz){const A=[];for(const s of SCN){const u=s.userData;if(u.hill||u.x0>72)continue;const x=s.position.x,hw=Math.abs(x)-u.x0,z=s.position.z+dz;A.push(x-hw-1,x+hw+1,z-u.hz-1,z+u.hz+1)}return A}
 let tsF=0,zoneWas=false;
@@ -794,7 +995,7 @@ function treeScroll(dz,zt){
  if(zt&&(zn||zoneWas)){zoneTrees();zoneWas=!!zn}
  for(const o of trees){const u=o.userData;if(u.tr===undefined){u.tr=Math.random();u.dv=TRD/u.tr}
   const vis=!u.hz&&!u.sc&&(u.tr<.2||-o.position.z<u.dv);if(o.visible!==vis)o.visible=vis}
- window.anStep&&window.anStep();window.bdStep&&window.bdStep(dz);window.skbStep&&window.skbStep(dz);window.lpStep&&window.lpStep(dz);window.lgStep&&window.lgStep();window.stkStep&&window.stkStep(dz)}
+ window.anStep&&window.anStep();window.fstStep&&window.fstStep(dz);window.deerStep&&window.deerStep(dz);window.bdStep&&window.bdStep(dz);window.skbStep&&window.skbStep(dz);window.lpStep&&window.lpStep(dz);window.lgStep&&window.lgStep();window.stkStep&&window.stkStep(dz)}
 /* ===== peisaj indepartat: munti, campuri, paduri, sate, ferme, turbine eoliene ===== */
 const SCN=[],SCT=[],SCLEN=VIEW+30,SCWH=new THREE.Color(0xffffff),scC=h=>new THREE.Color(HX(h)),
  scPal=h=>{const b=scC(h);return{T:b.clone().lerp(SCWH,.3),S:b.clone().lerp(SCWH,.06),D:b.clone().multiplyScalar(.74),B:b.clone().multiplyScalar(.55)}},
@@ -930,7 +1131,7 @@ function scenScroll(dz){for(const o of SCN){const u=o.userData;o.position.z+=dz;
 let scnF=0;
   function scenUpdate(rdt){const T=zn?zn.type:'',z0=zn?zn.g.position.z:0,L=zn?zn.L:0,xl=T==='tunnel'?360:T==='city'?215:T==='bridge'?58:T==='rail'?40:0,a=T==='tunnel'?MTE+10:T==='rail'?RLE+10:10;
  
-   if((scnF=(scnF+1)%6)===0)for(const o of SCN){const u=o.userData;let h=false;if(T==='coast'){const z=o.position.z;h=z-u.hz<z0+a&&z+u.hz>z0-L-a&&(o.position.x<0||u.x0<45)}else if(xl&&!u.hill&&u.x0<xl){const z=o.position.z;h=z-u.hz<z0+(T==='rail'?RLS+90:a)&&z+u.hz>z0-L-(T==='rail'?RLE+90:a)}o.visible=!h}
+   if((scnF=(scnF+1)%6)===0)for(const o of SCN){const u=o.userData;let h=false;if(T==='coast'||T==='munte'){const z=o.position.z;h=z-u.hz<z0+a&&z+u.hz>z0-L-a&&(o.position.x*(zn.mir||1)<0||u.x0<(T==='munte'?70:45))}else if(xl&&!u.hill&&u.x0<xl){const z=o.position.z;h=z-u.hz<z0+(T==='rail'?RLS+90:a)&&z+u.hz>z0-L-(T==='rail'?RLE+90:a)}o.visible=!h}
  for(const r of SCT)r.rotation.z+=rdt*r.userData.w;
  const k=Math.max(0,1-tunK*1.15);{const NN=(window.nightK||0)*(1-tunK),r=k*(1-NN*.5),g=k*(1-NN*.42),b=k*(1-NN*.2);SCBM.color.setRGB(r,g,b);SCBLN.color.setRGB(r*.8,g*.8,b*.85)}}
 
@@ -1210,6 +1411,13 @@ const SKINS=[{n:'Clasic',q:PAL.car},
  {n:'Anduranță',q:{base:'#f3f1ea',beige:'#f3f1ea',a:'#f3f1ea',b:'#16295e',c:'#16295e',d:'#1a1d33',ink:'#c42b2b',w:'#f3f1ea',np:1},sw:'linear-gradient(135deg,#f3f1ea 50%,#16295e 50% 75%,#c42b2b 75%)'},
  {n:'Pick-up fermă',q:{base:'#a84a30',beige:'#a04830',a:'#9d4529',b:'#222222',c:'#7c828c',d:'#2a2e33',ink:'#4e535b',np:1,hw:1,hs:1},sw:'linear-gradient(135deg,#a84a30 60%,#7a3a1e 60%)'},
  {n:'Coupe GT',q:{base:'#1f4a35',beige:'#1f4a35',a:'#1f4a35',b:'#1f4a35',c:'#173828',d:'#26332c',ink:'#12201a',np:1,hw:1,hs:1},sw:'linear-gradient(#1f4a35 42%,#d4af4f 42% 58%,#1f4a35 58%)'}];
+/* skin-uri Car Pass (se deblochează din Car Pass) */
+const SK_PAD=SKINS.length,SK_AUR=SK_PAD+1,SK_SEZ=SK_PAD+2;
+SKINS.push({n:'Pădurar',ch:3,q:{base:'#3f6b3a',beige:'#6b4a34',a:'#2c5a48',b:'#8a6238',c:'#d9a521',d:'#1f2a1c',ink:'#16241a'},sw:'linear-gradient(135deg,#3f6b3a 55%,#8a6238 55%)'},
+ {n:'Aur',ch:0,q:{base:'#d4af4f',beige:'#c9a227',a:'#f6e08a',b:'#1a1b3a',c:'#fff4de',d:'#8a6a1a',ink:'#5a430e'},fx:{g:['#d4af4f','#f6e08a','#c9a227'],spd:.18,p:'spark',pc:['#ffe9a0','#fff4de']},sw:'linear-gradient(135deg,#f6e08a,#c9a227 60%,#fff4de)'},
+ {n:'Pădurea · toamnă',ch:9,q:{base:'#c8602a',beige:'#e0a040',a:'#fff4de',b:'#5a3a1c',c:'#ffc233',d:'#3a2a1f',ink:'#3a1f10'},sw:'linear-gradient(135deg,#c8602a 55%,#e0a040 55%)'});
+SKR.push('six','star','wheel');
+const SK_GLD=SKINS.length;SKINS.push({n:'Gold ✨',ch:0,q:{base:'#e8b923',beige:'#d9a21b',a:'#fff0a8',b:'#1a1b3a',c:'#fff4de',d:'#7a5a10',ink:'#4a3508'},fx:{g:['#ffd24a','#fff2b0','#e0a21a','#fff2b0'],spd:.25,gold:1,shine:1,p:'gold',pc:['#ffd24a','#fff4de','#ffe9a0','#ffc233']},sw:'linear-gradient(135deg,#fff2b0,#e8b923 55%,#b8860b)'});SKR.push('star');
 function paintPC(Q){while(skP.length){const m=skP.pop();if(m.parent)m.parent.remove(m)}pc.m=colMat(Q.base,0);
  const M=c=>colMat(c,0),F=(w,h,l)=>PBODY.children.filter(m=>m.isMesh&&m.geometry.parameters&&m.geometry.parameters.width===w&&m.geometry.parameters.height===h&&m.geometry.parameters.depth===l),
  P1=(a,c)=>{for(const m of a)if(m)reMat(m,M(c))},pt=(m,w,h,l,x,y,z,c)=>{if(m&&!Q.np)skP.push(box(w,h,l,x,y,z,M(c),LB,m))};
@@ -1329,19 +1537,24 @@ function repSpawn(){repInit();const lane=LANES[Math.random()*4|0],x=lane+(Math.r
  const nc=2+(Math.random()*3|0);
  for(let i=0;i<nc;i++)repList.push(repCone(x+(i-(nc-1)/2)*.9,z0+7));/* conurile stau inaintea gropilor, intr-un rand drept peste banda */
  repT=14+Math.random()*12}
-function repKnock(o,wx,wz,pw){if(o.hit)return;o.hit=true;o.fly=true;const sd=Math.sign(o.g.position.x-wx)||1;o.vx=sd*(5+Math.random()*3);o.vy=7+Math.random()*2;o.vz=(wz>0?1:-1)*16;o.sx=(Math.random()-.5)*14;o.sz=(Math.random()-.5)*14;
+function repKnock(o,wx,wz,pw){o.hit=true;o.fly=true;o.cd=.6;const sd=Math.sign(o.g.position.x-wx)||1;o.vx=sd*(5+Math.random()*3);o.vy=7+Math.random()*2;o.vz=(wz>0?1:-1)*16;o.sx=(Math.random()-.5)*14;o.sz=(Math.random()-.5)*14;
  if(Math.abs(o.g.position.z)<40){noiseBurst(.12,2600,700,.08);blip(640,.07,0,.07,'triangle')}}
 function repJolt(h,az,k,sx){if(state!=='run'||air||py>.3||pc.dead)return;susKick(16*k,Math.sign(px-h.x));sbYv-=4.4*k;sbPv-=(az<0?.35:-.2)*k;shake=Math.max(shake,.25+.3*k);v=Math.max(6,v*(1-.07*k)-1.6*k);sfxHit(3.4*k);noiseBurst(.25,500,90,.25*k,'lowpass');sparkBurst(px,.15,az,12,vx,-v*.3,3);hap([40,30,40])}
+const _rcB=new THREE.Box3();
 function roadRepStep(dt,cr){
  const on=(CFG.mode===0||CFG.mode===2)&&state==='run'&&!cr;
  if(on&&!zn){repT-=dt;if(repT<=0)repSpawn()}
  for(let i=repList.length;i--;){const o=repList[i],g=o.g,p=g.position;
   if(o.t==='cone'){
-   if(!o.hit){p.z+=v*dt;if(on&&!pc.dead&&Math.abs(px-p.x)<1.25&&Math.abs(p.z)<2.5&&py<1){repKnock(o,px,-v*.8,v);sparkBurst(p.x,.3,p.z,6,vx,-v*.3,3)}
-    else for(const c of cars){if(c.gone)continue;if(Math.abs(c.x-p.x)<c.w/2+.3&&Math.abs(c.z-p.z)<c.l/2+.3){repKnock(o,c.x,(c.dir>0?-c.cs:c.cs)*.8,c.cs);break}}}
-   else if(o.fly){o.vy-=24*dt;p.x+=o.vx*dt;p.y+=o.vy*dt;p.z+=o.vz*dt;g.rotation.x+=o.sx*dt;g.rotation.z+=o.sz*dt;
-    if(p.y<=0){p.y=0;if(o.vy<-3){o.vy*=-.35;o.vx*=.6;o.vz*=.6;o.sx*=.5;o.sz*=.5}else{o.fly=false;o.vx=o.vz=0;g.rotation.set(0,g.rotation.y,(o.sz>0?1:-1)*1.45);p.y=.3}}}
-   else p.z+=v*dt}
+   o.cd=Math.max(0,(o.cd||0)-dt);
+   if(o.fly){o.vy-=24*dt;p.x+=o.vx*dt;p.y+=o.vy*dt;p.z+=o.vz*dt;g.rotation.x+=o.sx*dt;g.rotation.z+=o.sz*dt;
+    /* contact cu sosea calculat pe punctul cel mai de jos al conului (rotit), ca sa nu patrunda niciodata in asfalt */
+    g.updateMatrixWorld(true);_rcB.setFromObject(g);
+    if(_rcB.min.y<=0){p.y-=_rcB.min.y;if(o.vy<-3){o.vy*=-.35;o.vx*=.6;o.vz*=.6;o.sx*=.5;o.sz*=.5}else{o.fly=false;o.vx=o.vz=0;g.rotation.set(0,g.rotation.y,(o.sz>0?1:-1)*1.45);g.updateMatrixWorld(true);_rcB.setFromObject(g);p.y-=_rcB.min.y}}}
+   else p.z+=v*dt;
+   /* conurile pot fi lovite din nou chiar daca au fost deja atinse (si cele cazute pe jos), cu o scurta pauza dupa fiecare lovitura ca sa nu se declanseze de mai multe ori */
+   if(o.cd<=0&&p.y<1.2){if(on&&!pc.dead&&Math.abs(px-p.x)<1.25&&Math.abs(p.z)<2.5&&py<1){repKnock(o,px,-v*.8,v);v=Math.max(0,v-2/KMH);/* fiecare con atins te incetineste cu 2 km/h */sparkBurst(p.x,.3,p.z,6,vx,-v*.3,3)}
+    else for(const c of cars){if(c.gone)continue;if(Math.abs(c.x-p.x)<c.w/2+.3&&Math.abs(c.z-p.z)<c.l/2+.3){repKnock(o,c.x,(c.dir>0?-c.cs:c.cs)*.8,c.cs);break}}}}
   else{p.z+=v*dt;
    if(on){const rx=o.w*.5+.2,rz=o.l*.5+.2;
     for(const[az,k,fl]of[[-1.45,1,'f'],[1.45,.7,'r']]){if(o[fl])continue;
@@ -1426,7 +1639,7 @@ function mirror(){const K=34,H=1.2*K,hz=11,P=(x,d)=>[64+(x-px)*K/d,hz+H/d];mx.fi
 /* volan */
 /* breloc agatat de oglinda: forma depinde de skin, se leagana cu virajele */
 const cp=new THREE.Group();cp.position.set(.27,1.33,-.38);ck.add(cp);
-const chG=new THREE.Group();chG.position.y=-.15;cp.add(chG);mk(BM,0,-.075,0,.012,.15,.012,cp);
+const chG=new THREE.Group();chG.position.y=-.15;cp.add(chG);window.__chG=chG;mk(BM,0,-.075,0,.012,.15,.012,cp);
 const C_=c=>colMat(c,0),cm=(c,x,y,z,a,b,d,r)=>{const e=mk(C_(c),x,y,z,a,b,d,chG,LB);if(r)e.rotation.z=r;return e},dt_=(x,y,a)=>mk(BM,x,y,.047,a,a,.006,chG);
 const CHS=[
  ()=>{cm('#ffc233',0,0,0,.11,.11,.03,Math.PI/4);cm('#ffc233',0,0,0,.11,.11,.03,0)},                       /* stea */
@@ -1456,6 +1669,17 @@ const CHS=[
  ()=>{cm('#c9a23a',0,.05,0,.07,.07,.02);cm('#c9a23a',0,-.01,0,.02,.1,.02);cm('#c9a23a',.025,-.04,0,.03,.02,.02);cm('#c9a23a',.025,-.065,0,.03,.02,.02)} /* cheie veche de alama */
 ];
 function setCharm(i){while(chG.children.length)chG.remove(chG.children[0]);CHS[((i%CHS.length)+CHS.length)%CHS.length]()}
+const CH_CONG=CHS.push(()=>{cm('#ffc233',0,-.045,0,.1,.02,.04);cm('#ffc233',0,-.012,0,.075,.045,.04);cm('#ffc233',0,.03,0,.045,.04,.04);cm('#fff4de',0,-.012,.0,.08,.01,.045)})-1,
+ CH_CONR=CHS.push(()=>{cm('#ff5a3c',0,-.045,0,.1,.02,.04);cm('#ff5a3c',0,-.012,0,.075,.045,.04);cm('#ff5a3c',0,.03,0,.045,.04,.04);cm('#fff4de',0,-.012,.0,.08,.01,.045)})-1;
+/* Breloc dragon: profil, cap spre dreapta, aripi desfăcute în afară, în stilul cutiilor cu contur */
+const CH_DRG=CHS.push(()=>{const k=.86,B=(c,x,y,z,a,b,d,r)=>cm(c,x*k,y*k,z*k,a*k,b*k,d*k,r),R='#e8452c',S='#ffd9a0',G='#ffc233',W='#ff8a2a',K='#1a1b3a';
+ for(const sg of[-1,1]){const w1=B(W,-.03,.062,sg*.027,.022,.05,.006,.3),w2=B(W,-.05,.05,sg*.03,.016,.036,.006,.5);w1.rotation.y=w2.rotation.y=sg*.5}
+ B(R,0,.034,0,.03,.04,.028);B(R,.034,.058,0,.046,.032,.032);B(R,.066,.05,0,.024,.02,.026);B(S,.062,.04,0,.02,.006,.022);
+ B(R,-.006,0,0,.042,.046,.03);B(S,.013,0,0,.012,.04,.032);B(R,-.016,-.04,0,.036,.032,.03);
+ B(R,.004,-.064,0,.032,.02,.024);B(R,.028,-.072,0,.026,.014,.02);B(G,.05,-.072,0,.016,.016,.02,Math.PI/4);
+ for(const q of[[-.03,.04,.014],[-.036,.012,.016],[-.04,-.02,.016],[-.04,-.05,.013]])B(G,q[0],q[1],0,q[2],q[2],.012,Math.PI/4);
+ for(const z of[-.011,.011]){B(G,.015,.082,z,.01,.022,.01,.5);B(R,.018,-.032,z,.012,.026,.012);B(G,.022,-.048,z,.016,.008,.014);B(R,-.012,-.062,z,.012,.02,.012);B(G,-.008,-.073,z,.016,.008,.014)}
+ for(const z of[-.0175,.0175])B(K,.042,.064,z,.008,.008,.004)})-1;
 let chZ=0,chZv=0,chX=0,chXv=0,chPv=20,chAf=0;
 function charmStep(dt){dt=Math.min(dt,.05);const af=Math.max(-40,Math.min(40,(v-chPv)/Math.max(dt,.001)));chPv=v;chAf+=(af-chAf)*Math.min(1,dt*8);
  const la=Math.max(-40,Math.min(40,axs)),jt=shake*(Math.random()-.5)*30;
@@ -1525,7 +1749,7 @@ function spawn(z,fT){const x=fT?LANES[2+(Math.random()*2|0)]:LANES[Math.random()
  const k=mkVeh(ty,Math.random()<Y.dk),sp=Y.sp[0]+Math.random()*(Y.sp[1]-Y.sp[0]),
  c={x,z,dir,w:k.w,l:k.l,sp,cs:sp,g:k.g,spin:k.spin,counted:false,sport:!!Y.fast,vx:0,m:MS[ty],rd:k.rd,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:k.rd?1.3:(HTC[ty]||(HTC[ty]=Math.max(1,new THREE.Box3().setFromObject(k.g).max.y)))};
  if(!fT)addLoad(k.g,ty);if(ty==='carrier')c.rampT=1;if(ty==='dump'){c.dmp=1;c.rk=Math.random()<.65}if(dir<0)k.g.rotation.y=Math.PI;k.g.position.set(x,0,z);scene.add(k.g);cars.push(c);return true}
-function reset(){if(window.AR)AR.end();repClear();window.stkClear&&window.stkClear();window.GDCS=null;epT=0;jcK=0;jcT=0;jkT=0;jk=0;for(const m of epR){m.visible=false;m.userData.t=-1}window.bdClear&&window.bdClear();window.skbClear&&window.skbClear();window.rcReset&&window.rcReset();window.lgClear&&window.lgClear();nmT=nmCd=swT=swCd=swK=0;nmCar=null;nmK=0;resetExtras();cars.forEach(c=>scene.remove(c.g));cars=[];debris.forEach(r=>scene.remove(r.g));debris.length=0;pc.dead=false;pc.g.visible=!fp;pc.lost=0;pc.pull=0;pc.smk=0;pc.det.forEach(m=>m.visible=true);pc.det.length=0;pc.hl.forEach(h=>h.parent&&h.parent.remove(h));pc.hl.length=0;smk.forEach(q=>{q.l=0;q.m.visible=false});dist=0;shN=0;lvI=0;emT=3;wV=0;wTg=0;alS='';$('al').classList.remove('on');riders.forEach(r=>scene.remove(r.g));riders.length=0;sparkClear();accT=6;vx=axs=yaw=roll=pitch=0;camX=1.8;sk.forEach(m=>m.visible=false);px=1.8;v=30;t=0;score=0;passed=0;wAng=wTarget=0;spawnT=0;shake=0;dmg=0;hitT=0;nt=ntCd=0;rtk=null;air=false;sbR=sbRv=sbP=sbPv=sbY=sbYv=swk=0;py=pvy=spin=spinR=0;rpT=8;airK=0;clrT=0;
+function reset(){radClear();window.cpAw=0;if(window.AR)AR.end();repClear();window.stkClear&&window.stkClear();window.GDCS=null;epT=0;jcK=0;jcT=0;jkT=0;jk=0;for(const m of epR){m.visible=false;m.userData.t=-1}window.deerClear&&window.deerClear();window.bdClear&&window.bdClear();window.skbClear&&window.skbClear();window.rcReset&&window.rcReset();window.lgClear&&window.lgClear();nmT=nmCd=swT=swCd=swK=0;nmCar=null;nmK=0;resetExtras();cars.forEach(c=>scene.remove(c.g));cars=[];debris.forEach(r=>scene.remove(r.g));debris.length=0;pc.dead=false;pc.g.visible=!fp;pc.lost=0;pc.pull=0;pc.smk=0;pc.det.forEach(m=>m.visible=true);pc.det.length=0;pc.hl.forEach(h=>h.parent&&h.parent.remove(h));pc.hl.length=0;smk.forEach(q=>{q.l=0;q.m.visible=false});dist=0;shN=0;lvI=0;emT=3;wV=0;wTg=0;alS='';$('al').classList.remove('on');riders.forEach(r=>scene.remove(r.g));riders.length=0;sparkClear();accT=6;vx=axs=yaw=roll=pitch=0;camX=1.8;sk.forEach(m=>m.visible=false);px=1.8;v=30;t=0;score=0;passed=0;wAng=wTarget=0;spawnT=0;shake=0;dmg=0;hitT=0;nt=ntCd=0;rtk=null;air=false;sbR=sbRv=sbP=sbPv=sbY=sbYv=swk=0;py=pvy=spin=spinR=0;rpT=8;airK=0;clrT=0;
  pc.lost=0;pc.pull=0;pc.smk=0;pc.lsm=0;fallOn=false;fallY=0;fallV=0;
 for(let z=-60;z>-540;z-=30)spawn(z-Math.random()*10);}
 function hud(){if(fp)scr();$('sc').textContent='Depășiri: '+score;$('sp').textContent=Math.round(dispKmh())+' km/h';$('ds').textContent=(dist/1000).toFixed(1)+' km'}
@@ -1541,7 +1765,7 @@ let MEM=null;const LS={g(k){try{return localStorage.getItem(k)}catch(e){return n
 function ldS(){if(MEM)return MEM;let o={};try{o=JSON.parse(LS.g('st')||'{}')||{}}catch(e){}o.s=Math.max(o.s||0,+LS.g('best')||0);o.d=o.d||0;o.z=o.z||0;o.g=o.g||0;MEM=o;return o}
 const km=m=>(m/1000).toFixed(1)+' km';
 function showStats(){const S=ldS(),nS=score>S.s,nD=dist>S.d;if(nS)S.s=score;if(nD)S.d=dist;S.z+=shN;S.g++;LS.s('st',JSON.stringify(S));LS.s('best',S.s);
- $('t2').innerHTML='Depășiri: <b>'+score+'</b>'+(nS?' 🏆 record nou':' · Record: '+S.s)+'<br>Distanță: <b>'+km(dist)+'</b>'+(nD?' 🏆 record nou':' · Record: '+km(S.d))+'<br>Dezintegrări: <b>'+shN+'</b> · Total: '+S.z}
+ $('t2').innerHTML='Depășiri: <b>'+score+'</b>'+(nS?' 🏆 record nou':' · Record: '+S.s)+'<br>Distanță: <b>'+km(dist)+'</b>'+(nD?' 🏆 record nou':' · Record: '+km(S.d))+'<br>Dezintegrări: <b>'+shN+'</b> · Total: '+S.z+(window.cpAward?cpAward(score,dist):'')}
 $('go').onclick=start;let fp=false;$('cv').onclick=()=>{fp=!fp;$('cv').classList.toggle('on',fp);pc.g.visible=!fp&&!pc.dead;ck.visible=fp;lookY=lookP=0;if(fp){scShown=-1;scr();showTip('Trage cu degetul pe ecran ca să privești în jur')}};
 
 /* fizica coliziunilor: conservarea impulsului, mase reale, coeficient de restituire */
@@ -1580,7 +1804,7 @@ function shatterReal(g,X,Z,wvx,wvz,pw,w,l){g.updateMatrixWorld(true);const pp=Ma
 function shatterCar(c,pw){if(c.gone)return;c.gone=true;shN++;if(!c.pb&&state==='run'&&(c.pol||c.esc||c.rb||c.amb)){c.pb=1;score+=5;hud();showTip('🚔💥 Poliție distrusă! +5 depășiri');blip(660,.14,0,.12);blip(990,.2,.1,.12)}const hz=c.dir>0?-c.cs:c.cs;if(c.rd&&!c.ej)eject(c,c.vx||0,hz);
  shatterReal(c.g,c.x,c.z,c.vx||0,hz,pw,c.w,c.l);scene.remove(c.g);
  const zz=Math.abs(c.z);if(zz<90)sfxShatter(1-zz/90)}
-function shatterP(pw){if(pc.dead)return;pc.dead=true;shN++;fxKill();shatterReal(pc.g,px,0,vx*.8,-v*.8,pw,1.9,4.4);pc.g.visible=false;sfxShatter(1)}
+function shatterP(pw){if(pc.dead)return;pc.dead=true;shN++;fxKill();window.goldBurst&&goldBurst();shatterReal(pc.g,px,0,vx*.8,-v*.8,pw,1.9,4.4);pc.g.visible=false;sfxShatter(1)}
 
 /* ===== avarie in etape: impact mediu = piese desprinse + fum; impact mare = dezintegrare ===== */
 const DM=6,DB=24,PH=2;function DK(c){return(c.pol||c.rb||(c.rival&&CFG.mode===1))?2:1}
@@ -2126,7 +2350,7 @@ function zoneTrees(){const z0=zn?zn.g.position.z:0,L=zn?zn.L:0,T=zn?zn.type:'',t
 
 function cityBuild(g,L){
  /* paleta calda pentru apartamente: 0 = beton crem (autostrazi, parapet), 1 = lemn inchis cald (felinare, balustrade), 2.. = fatade */
- const WP=['#fbe3c2','#f6cfa4','#f3d58a','#efb98f','#f0c3b0','#e6a98a','#d9b48f','#fde9cf'],WDK=['#c98f6b','#b9785a','#d49c78'],
+ const WP=['#fbe3c2','#f6cfa4','#f3d58a','#efb98f','#f0c3b0','#e6a98a','#d9b48f','#fde9cf','#f4a3a0','#f7b6cf','#f4c26b','#e98f78','#a6dccb','#a9cdee','#c8b6e8','#b9e08f','#8fcdd1','#f9e07a'],WDK=['#c98f6b','#b9785a','#d49c78','#c76b5a','#8f78b5','#5f9fae','#6fa371','#d9826b'],
  S=[{p:[],l:[]},{p:[],l:[]}],BL=[],
  Q=(s,a,b,c,d)=>{S[s].p.push(a[0],a[1],a[2],b[0],b[1],b[2],c[0],c[1],c[2],a[0],a[1],a[2],c[0],c[1],c[2],d[0],d[1],d[2])},
  Ln=(s,x0,y0,z0,x1,y1,z1)=>{S[s].l.push(x0,y0,z0,x1,y1,z1)},
@@ -2167,7 +2391,32 @@ function cityBuild(g,L){
   lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(S[i].l,3));const ln=new THREE.LineSegments(lg,lms[i]);m.frustumCulled=ln.frustumCulled=false;m.userData.dg=ln.userData.dg=1;g.add(m,ln)}
  /* pentru vegetatie: cladirile indexate pe z (cutii de 40 m) + culoarele de autostrazi etajate */
  {const bk={};for(const b of BL){const a=Math.floor((b.zc-b.d/2-12)/40),e=Math.floor((b.zc+b.d/2+12)/40);for(let k=a;k<=e;k++)(bk[k]||(bk[k]=[])).push(b)}g.userData.BLX=bk;g.userData.CO=CO}
- cityDetail(g,L,BL);cityRamps(g,L)}
+ cityDetail(g,L,BL);cityRamps(g,L);cityZebra(g,L);cityRadar(g,L)}
+/* ===== zebre (treceri de pietoni) in oras: 1–4 pe zona, marcaj alb pe asfalt + indicatoare de pietoni pe margine ===== */
+let ZBM=null;
+function cityZebra(g,L){
+ if(!ZBM){const cv=document.createElement('canvas');cv.width=cv.height=128;const q=cv.getContext('2d');
+  q.fillStyle='#fff';q.fillRect(0,0,128,128);q.fillStyle='#1f62b5';q.fillRect(7,7,114,114);
+  q.fillStyle='#fff';q.beginPath();q.moveTo(64,16);q.lineTo(114,110);q.lineTo(14,110);q.closePath();q.fill();
+  q.strokeStyle='#173f7a';q.fillStyle='#173f7a';q.lineWidth=7;q.lineCap='round';q.beginPath();q.arc(64,58,7,0,6.283);q.fill();
+  q.beginPath();q.moveTo(64,68);q.lineTo(64,88);q.moveTo(64,74);q.lineTo(51,84);q.moveTo(64,74);q.lineTo(77,82);q.moveTo(64,88);q.lineTo(54,103);q.moveTo(64,88);q.lineTo(75,103);q.stroke();
+  const po={polygonOffset:true,polygonOffsetFactor:-3,polygonOffsetUnits:-3};
+  ZBM={st:new THREE.MeshBasicMaterial(Object.assign({color:0xfdf3df,side:THREE.DoubleSide},po)),pl:new THREE.MeshBasicMaterial({color:0x6b6670,side:THREE.DoubleSide}),sg:new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv)})}}
+ const rn=Math.random,n=1+(rn()*4|0),zs=[],CO=g.userData.CO||[],bad=z=>CRZ.some(r=>Math.abs(z-r)<CRL/2+30)||CO.some(c=>Math.abs(z-c.z)<20);
+ /* minim 1, maxim 4; departate intre ele, departe de rampe si de capetele zonei */
+ for(let t=0;t<300&&zs.length<n;t++){const z=-(150+rn()*(L-300));if(!bad(z)&&zs.every(q=>Math.abs(q-z)>180))zs.push(z)}
+ if(!zs.length)zs.push(-L*.37);
+ const sp=[],pp=[],gp=[],gu=[],qd=(A,a,b,c,d)=>A.push(...a,...b,...c,...a,...c,...d),
+  bxp=(A,x0,y0,z0,x1,y1,z1)=>{qd(A,[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]);qd(A,[x1,y0,z1],[x0,y0,z1],[x0,y1,z1],[x1,y1,z1]);qd(A,[x0,y0,z1],[x0,y0,z0],[x0,y1,z0],[x0,y1,z1]);qd(A,[x1,y0,z0],[x1,y0,z1],[x1,y1,z1],[x1,y1,z0]);qd(A,[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1])};
+ for(const zc of zs){
+  for(let i=0;i<7;i++){const x=-5.4+i*1.8;qd(sp,[x-.6,.05,zc-3.4],[x+.6,.05,zc-3.4],[x+.6,.05,zc+3.4],[x-.6,.05,zc+3.4])}
+  /* un singur indicator pe banda mea (dreapta, inainte de trecere, cu fata spre mine) + unul pe sensul opus (stanga, dupa trecere, spre mine se vede doar spatele gri) */
+  for(const[x,dz,fc]of[[8.5,4.5,1],[-8.5,-4.5,-1]]){const z=zc+dz,y0=2.3,y1=3.4;bxp(pp,x-.06,0,z-.06,x+.06,2.35,z+.06);
+   if(fc>0)qd(gp,[x-.55,y0,z],[x+.55,y0,z],[x+.55,y1,z],[x-.55,y1,z]);else qd(gp,[x+.55,y0,z],[x-.55,y0,z],[x-.55,y1,z],[x+.55,y1,z]);
+   gu.push(0,0,1,0,1,1,0,0,1,1,0,1);
+   qd(pp,[x-.55,y0,z-fc*.04],[x+.55,y0,z-fc*.04],[x+.55,y1,z-fc*.04],[x-.55,y1,z-fc*.04])}}
+ const mk=(P,U,mat)=>{const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(P,3));if(U)ge.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));const m=new THREE.Mesh(ge,mat);m.frustumCulled=false;m.userData.dg=1;g.add(m)};
+ mk(sp,null,ZBM.st);mk(pp,null,ZBM.pl);mk(gp,gu,ZBM.sg);g.userData.zebre=zs}
 /* raza de ocupare la sol a unei piese de vegetatie (copac cu coroana, tufa, piatra, petic de iarba) */
 function vegR(u){if(u.vr===undefined){const c=u.cr0!==undefined?u.cr0:(u.cr||0);u.vr=u.gp?7.4:u.gz?.8:u.br?2.7*u.br.k+.3:c?c+.9:.5}return u.vr}
 function cityClash(o,z0,ud,pad){const u=o.userData,x=o.position.x,ax=Math.abs(x),lz=o.position.z-z0,R=vegR(u)+pad;
@@ -2199,7 +2448,7 @@ function cityMats(){if(CDM)return CDM;
  return CDM}
 function cityDetail(g,L,BL){
  const M=cityMats(),G=scNew(),PLc={},PL=h=>PLc[h]||(PLc[h]=scPal(h)),rn=Math.random,pk=a=>a[rn()*a.length|0],
- CL=['#e86a4a','#f2a34a','#f6c85f','#d98a6c','#9cc08a','#e58fa0','#f1e0c0'],
+ CL=['#e86a4a','#f2a34a','#f6c85f','#d98a6c','#9cc08a','#e58fa0','#f1e0c0','#6fb7e8','#b58ad6','#52c4a8','#ff7fa0','#ffd34d'],
  WG={p:[],c:[]},WL={p:[],c:[]},SG={p:[],u:[],c:[]},HP=[],HC=[],BP=[],PO={p:[],u:[],c:[]},topOf=b=>b.h>75?b.h*1.5:b.h>40?b.h*1.3:b.h;let nw=0;
  const qx=(A,x,y,z,w,h,r,gg,bb)=>{A.p.push(x,y,z,x,y,z-w,x,y+h,z-w,x,y,z,x,y+h,z-w,x,y+h,z);for(let i=0;i<6;i++)A.c.push(r,gg,bb)};
  for(const b of BL){const xf=b.cx-b.sd*(b.w/2+.06),top=topOf(b),tw=b.h>75?b.w*.4:b.h>40?b.w*.68:b.w,td=b.h>75?b.d*.4:b.h>40?b.d*.68:b.d;
@@ -2210,7 +2459,7 @@ function cityDetail(g,L,BL){
   if(b.row===0){scBox(G,b.cx-b.sd*(b.w/2+.12),0,b.zc,.24,3.4,b.d*.92,PL(pk(CL)),1);scBox(G,b.cx-b.sd*(b.w/2+.3),3.5,b.zc,.6,.3,b.d*.92,PL(pk(CL)),1)}
   /* acoperis: unitati AC, rezervoare de apa, antene */
   if(b.h>=10){const n=1+(rn()*3|0);for(let i=0;i<n;i++){const px=b.cx+(rn()-.5)*tw*.55,pz=b.zc+(rn()-.5)*td*.55,t=rn();
-   if(t<.5)scBox(G,px,top,pz,2+rn()*1.4,1.1+rn()*.8,1.6+rn()*1.2,PL('#c2ae98'),1);
+   if(t<.5)scBox(G,px,top,pz,2+rn()*1.4,1.1+rn()*.8,1.6+rn()*1.2,PL(pk(['#c2ae98','#9fbfd6','#bfa9dc','#a9d1a0','#e6b48e','#f0a8a8'])),1);
    else if(t<.8){scCyl(G,px,top,pz,1.5,1.5,2.4,8,PL('#b07a4a'),1);scCyl(G,px,top+2.4,pz,1.7,0,.9,8,PL('#6b4a2c'),1)}
    else scBox(G,px,top,pz,.3,6+rn()*10,.3,PL('#e6d6c0'),1)}}
   if(b.h>60){const ph=b.h>90?10:6;scBox(G,b.cx,top,b.zc,.3,ph,.3,PL('#e6d6c0'),0);BP.push(b.cx,top+ph+.4,b.zc)}
@@ -2233,7 +2482,7 @@ function cityDetail(g,L,BL){
  {const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(G.p,3));ge.setAttribute('color',new THREE.Float32BufferAttribute(G.c,3));const m=new THREE.Mesh(ge,SCM);m.frustumCulled=false;m.userData.dg=1;g.add(m);
   const lg=new THREE.BufferGeometry();lg.setAttribute('position',new THREE.Float32BufferAttribute(G.l,3));lg.setAttribute('color',new THREE.Float32BufferAttribute(G.lc,3));const ln=new THREE.LineSegments(lg,SCLM);ln.frustumCulled=false;ln.userData.dg=1;g.add(ln)}}
 function cityAnim(g,dt){if(!CDM)return;const NK=window.nightK||0,T=performance.now()/1000;
- CDM.lit.opacity=.3+.7*NK;CDM.halo.opacity=0;CDM.pool.opacity=0;CDM.bcn.opacity=0;
+ CDM.lit.opacity=.3+.7*NK;if(ZBM){const k=1-.5*NK;ZBM.st.color.setRGB(.99*k,.95*k,.87*k);ZBM.sg.color.setScalar(1-.4*NK)}CDM.halo.opacity=0;CDM.pool.opacity=0;CDM.bcn.opacity=0;
  const c=g.userData.cranes;if(c)for(let i=0;i<c.length;i++)c[i].rotation.y+=dt*(i%2?.11:-.09)}
 /* ===== coasta cu faleza: mare in stanga (sub drum), stanca in dreapta, vant lateral spre mare ===== */
 let fallOn=false,fallY=0,fallV=0;
@@ -2589,7 +2838,198 @@ function railAnim(zo,dt){
 function railClr(o,u,pd,z0,L){const lz=o.position.z-z0,x=o.position.x,r=vegR(u)+pd,
  near=(lz>RLS-12&&lz<RLS+80)||(lz<-L-RLE+12&&lz>-L-RLE-80);
  return x+r>12.5&&x-r<(near?50:RLX+8.5)}
-const ZN5=['tunnel','bridge','forest','city','coast','rail'];function spawnZone(){const ty=(!znFirst&&CFG.first)?ZN5[CFG.first-1]:ZN5[Math.random()*6|0];znFirst=1;if(ty==='forest'){znT=dist+2150+Math.random()*3000;forU=dist+1500;showTip('🌲 Zonă de pădure');return}if(ty==='rail'){const L=Math.round(4200+Math.random()*1800),g=new THREE.Group();railBuild(g,L);forU=dist+(L+VIEW+RLS+RLE)*KMH;g.position.z=-(VIEW+RLS);scene.add(g);zn={g,L,type:'rail',seen:false};return}const type=ty,L=type==='tunnel'?Math.round(460*(2+Math.random()*2)):type==='city'?2150:type==='coast'?700:480,g=new THREE.Group();
+/* ===== zona MUNTE: terase de stânca spre vârfuri cu zăpadă (dreapta), prăpastie + vale cu râu (stânga), pădure de molid, dealuri fațetate în ceață.
+   Geometrie unită (câteva draw-call-uri), culori pe vârfuri; umbrirea pe fețe și ceața cu dither vin din patch-urile globale ale jocului ===== */
+const munteBuild=(()=>{
+ const BXV=[];for(let i=0;i<8;i++)BXV.push([i&1?1:-1,i&2?1:-1,i&4?1:-1]);
+ const BXF=[[1,3,7,5,1,0,0],[0,4,6,2,-1,0,0],[2,6,7,3,0,1,0],[0,1,5,4,0,-1,0],[4,5,7,6,0,0,1],[0,2,3,1,0,0,-1]];
+ for(const f of BXF){const a=BXV[f[0]],b=BXV[f[1]],c=BXV[f[2]],u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],w=[c[0]-a[0],c[1]-a[1],c[2]-a[2]],n=[u[1]*w[2]-u[2]*w[1],u[2]*w[0]-u[0]*w[2],u[0]*w[1]-u[1]*w[0]];if(n[0]*f[4]+n[1]*f[5]+n[2]*f[6]<0){const t=f[1];f[1]=f[3];f[3]=t}}
+ const rr=(a,b)=>a+Math.random()*(b-a),CC={},cc=h=>CC[h]||(CC[h]=new THREE.Color(h));
+ const nb=()=>({p:[],c:[],i:[]});
+ function bx(g,w,h,d,x,y,z,col,ry,rz,j){ry=ry||0;rz=rz||0;const c=cc(col),k=j?(.94+Math.random()*.12):1,cr=Math.min(1,c.r*k),cg=Math.min(1,c.g*k),cb=Math.min(1,c.b*k),cy=Math.cos(ry),sy=Math.sin(ry),cz=Math.cos(rz),sz=Math.sin(rz),o=g.p.length/3;
+  for(const v of BXV){const lx=v[0]*w/2,ly=v[1]*h/2,lz=v[2]*d/2,x1=lx*cz-ly*sz,y1=lx*sz+ly*cz;g.p.push(x+x1*cy+lz*sy,y+y1,z-x1*sy+lz*cy);g.c.push(cr,cg,cb)}
+  for(const f of BXF)g.i.push(o+f[0],o+f[1],o+f[2],o+f[0],o+f[2],o+f[3])}
+ function flush(g,par){if(!g.p.length)return;const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(g.p,3));ge.setAttribute('color',new THREE.Float32BufferAttribute(g.c,3));if(g.i)ge.setIndex(g.i);
+  const me=new THREE.Mesh(ge,new THREE.MeshBasicMaterial({vertexColors:true,side:g.i?THREE.FrontSide:THREE.DoubleSide}));me.frustumCulled=false;me.userData.dg=1;par.add(me)}
+ function Sink(par){let g=nb();return{box(...a){bx(g,...a);if(g.p.length>180000){flush(g,par);g=nb()}},end(){flush(g,par)}}}
+ /* copaci: aceleași tipuri ca pădurea din joc (molid, pin, mesteacăn, stejar, uriaș) */
+ const GR=['#2d6240','#346a47','#3b7650'],GL=['#4f8a4a','#6fb063','#559959'],WOOD='#6b4a34';
+ const TM={
+  spruce(){const h=rr(17,27),n=8+(Math.random()*4|0),P=[[.8,h*.3,.8,0,h*.15,0,WOOD]],y0=h*.1,st=(h*.9)/n;
+   for(let i=0;i<n;i++){const t=i/(n-1),w=(1-t*.88)*(3.4+h*.14)+.5;P.push([w,st*1.35,w,0,y0+i*st+st*.6,0,GR[i%3],i%2?.785:0])}
+   P.push([.9,1.3,.9,0,h+.2,0,GR[1]]);return P},
+  pine(){const h=rr(16,26),P=[[1,h,1,0,h/2,0,'#7a5236'],[1.25,h*.35,1.25,0,h*.175,0,'#6b4a34']],c=Math.random()<.5?GR:GL;
+   P.push([5.8,2.2,5.8,0,h-1.6,0,c[0]],[4.4,2.2,4.4,.4,h+.2,-.3,c[1]],[2.8,2,2.8,-.2,h+1.9,.2,c[2]]);
+   if(Math.random()<.6)P.push([3.2,1.6,3.2,2.6,h*.72,.4,c[1]]);return P},
+  birch(){const h=rr(13,20),au=Math.random()<.25,cl=au?['#e5c24b','#f0b840','#e5a43b']:['#8fce84','#a6d98a','#77be68'],P=[[.7,h,.7,0,h/2,0,'#fff4de']];
+   for(let y=1.2;y<h-3;y+=rr(1.3,2.2))P.push([.74,.2,.74,0,y,0,'#3a3b52']);
+   P.push([4.4,3,4.4,0,h-.6,0,cl[0]],[3.4,2.6,3.4,.5,h+1.6,-.3,cl[1]],[2.2,2,2.2,-.3,h+3.2,.2,cl[2]],[3,2.2,3,-1.8,h-2.6,.8,cl[1]],[2.6,2,2.6,1.9,h-2.2,-.9,cl[2]]);return P},
+  oak(){const h=rr(14,20),P=[[1.7,h*.5,1.7,0,h*.25,0,WOOD],[1,h*.25,1,1.2,h*.5,0,WOOD,.4],[1,h*.22,1,-1.1,h*.52,.2,WOOD,-.4]],c=GL;
+   P.push([8,3.6,8,0,h*.62,0,c[0],.3],[6.4,3.2,6.4,.4,h*.62+3.1,-.3,c[1],.9],[3.8,2.6,3.8,-.2,h*.62+5.6,.2,c[2]],[4.2,3,4.2,3.8,h*.52,1.2,c[1]],[4,2.8,4,-3.6,h*.5,-1.4,c[2]]);return P},
+  larch(){const h=rr(15,22),c=['#e5a43b','#f0b840','#d9822b'],n=7,st=h*.85/n,P=[[.7,h*.3,.7,0,h*.15,0,WOOD]];for(let i=0;i<n;i++){const w=(1-i/n*.85)*4+.5;P.push([w,st*1.3,w,0,h*.12+i*st+st*.6,0,c[i%3],i%2?.785:0])}return P},
+  giant(){const h=rr(30,40),n=11,P=[[1.8,h*.72,1.8,0,h*.36,0,'#5a3f2c']],st=(h*.55)/n;
+   for(let i=0;i<n;i++){const w=(1-i/n)*5+1,y=h*.4+i*st+st*.5;P.push([w,st*1.4,w,0,y,0,i%2?'#2a5a3d':'#336b46',i%2?.785:0])}P.push([.9,2,.9,0,h*.96+1,0,'#336b46']);return P}
+ };
+ const TYP=[['spruce',48],['pine',20],['birch',9],['oak',7],['giant',16],['larch',11]],TWt=TYP.reduce((a,t)=>a+t[1],0);
+ function tree(S,x,y,z,s){let r=Math.random()*TWt,ty=TYP[0][0];for(const t of TYP){if(r<t[1]){ty=t[0];break}r-=t[1]}
+  const th=Math.random()*6.28,ct=Math.cos(th),st=Math.sin(th);
+  for(const[w,h,d,px,py,pz,col,ry]of TM[ty]())S.box(w*s,h*s,d*s,x+px*s*ct+pz*s*st,y+py*s,z-px*s*st+pz*s*ct,col,(ry||0)+th,0,1)}
+ function tuft(S,x,y,z,k){const n=4+(Math.random()*3|0),c=Math.random()<.33?'#77be68':'#346a47';for(let j=0;j<n;j++){const h=(.3+Math.random()*.4)*k,w=(.06+Math.random()*.04)*k;S.box(w,h,w,x+rr(-.2,.2),y+h/2,z+rr(-.2,.2),c,Math.random()*3.14,(Math.random()-.5)*.5)}}
+ /* dealuri fațetate, umbrite după soare, în ceață (ca munții din zare ai jocului) */
+ const SKc=cc(PAL.sky),LDv=new THREE.Vector3(-.5,.7,.5).normalize(),HG=[cc('#71a46e'),cc('#86b37a')],HS=cc('#b1a5a7'),HW=cc('#fffaee'),_u=new THREE.Vector3(),_w=new THREE.Vector3();
+ function hface(g,a,b,c,col,hz){_u.set(b[0]-a[0],b[1]-a[1],b[2]-a[2]);_w.set(c[0]-a[0],c[1]-a[1],c[2]-a[2]);const n=_u.cross(_w).normalize();if(n.y<0)n.negate();const k=col.clone().multiplyScalar(.66+.34*Math.max(0,n.dot(LDv))).lerp(SKc,hz);g.p.push(...a,...b,...c);for(let i=0;i<3;i++)g.c.push(k.r,k.g,k.b)}
+ function hill(g,cx,cz,r,h,hz,y0){const N=7,a0=Math.random()*6.28,R0=[],R1=[],R2=[],sn=h>105;
+  for(let i=0;i<N;i++){const a=a0+i/N*6.2832+rr(-.2,.2),ca=Math.cos(a),sa=Math.sin(a);R0.push([cx+ca*r*rr(.85,1.15),y0,cz+sa*r*rr(.85,1.15)]);R1.push([cx+ca*r*rr(.5,.7),y0+h*rr(.38,.52),cz+sa*r*rr(.5,.7)]);R2.push([cx+ca*r*rr(.2,.34),y0+h*rr(.72,.82),cz+sa*r*rr(.2,.34)])}
+  const ap=[cx+rr(-.1,.1)*r,y0+h,cz+rr(-.1,.1)*r];
+  for(let i=0;i<N;i++){const j=(i+1)%N,f=HG[Math.random()<.6?0:1];hface(g,R0[i],R0[j],R1[j],f,hz);hface(g,R0[i],R1[j],R1[i],f,hz);hface(g,R1[i],R1[j],R2[j],HS,hz);hface(g,R1[i],R2[j],R2[i],HS,hz);hface(g,R2[i],R2[j],ap,sn?HW:HS,hz)}}
+ /* panouri cu text (texturile se fac o singură dată) */
+ let TXG=null,TXP=null;
+ const tx=(w,h,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);return new THREE.CanvasTexture(c)};
+ function board(g,w,h,x,y,z,t){const ge=new THREE.PlaneGeometry(w,h),m=new THREE.Mesh(ge,new THREE.MeshBasicMaterial({map:t}));m.position.set(x,y,z);m.userData.dg=1;g.add(m)}
+ const MDX=1.1,ST=['#efdec1','#b1a5a7','#63595d','#b1a5a7'],GRS='#346a47',GRL='#77be68',SNW='#fffaee';
+ /* telegondole peste sosea: cablu dublu de pe munte (dreapta) spre vale (stanga), gondolele coboara; A = statia de sus, B = turnul de jos, GZ = pozitia in segment */
+ const GA=[52,74],GB=[-34,12],GZ=-60,GD=2.6,GN=4,GLN=Math.hypot(GA[0]-GB[0],GA[1]-GB[1]),GS=GLN/GN,GU=[(GB[0]-GA[0])/GLN,(GB[1]-GA[1])/GLN];
+ function gondolaBuild(g,L,SEG){const gc=nb();
+  for(let k=0;k<GN;k++){const px=GA[0]+GU[0]*GS*k,py=GA[1]+GU[1]*GS*k,col=k%2?PAL.sun:PAL.accent;
+   bx(gc,.6,.5,.6,px,py-.1,0,ST[2]);bx(gc,.16,2,.16,px,py-1.1,0,ST[2]);/* carucior + brat */
+   bx(gc,4.4,.4,3.6,px,py-2.3,0,SNW);bx(gc,3.4,.25,2.6,px,py-2.62,0,ST[2]);/* acoperis in doua trepte */
+   bx(gc,4,2.4,3.2,px,py-3.7,0,col);bx(gc,4.04,.3,3.24,px,py-4.75,0,SNW);bx(gc,4.2,.3,3.4,px,py-5.05,0,ST[2]);/* caroserie + banda + podea */
+   for(const sz of[-1,1]){bx(gc,3.2,1.1,.1,px,py-3.5,sz*1.62,PAL.blue);bx(gc,.1,1.1,2.4,px+sz*2.02,py-3.5,0,PAL.blue);bx(gc,.12,2.4,.12,px+sz*1.0,py-3.7,sz*1.63,ST[2])}}
+  const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(gc.p,3));ge.setAttribute('color',new THREE.Float32BufferAttribute(gc.c,3));ge.setIndex(gc.i);
+  const ma=new THREE.MeshBasicMaterial({vertexColors:true}),ms=[];
+  for(let k=0;k*SEG<L;k++)for(const sd of[-1,1]){const m=new THREE.Mesh(ge,ma);m.frustumCulled=false;m.userData.dg=1;m.userData.ph=sd>0?.5:0;m.position.z=-k*SEG+GZ+sd*GD;g.add(m);ms.push(m)}
+  g.userData.gon={ms,S:GS,ux:GU[0],uy:GU[1],t:Math.random()*GS,v:6}}
+ function seg(L,tun){const g=new THREE.Group(),S=Sink(g),Z=-L/2,rnd=Math.random;
+  /* borduri + parapet + prăpastie stânga + vale cu râu */
+  for(const s of[-1,1])S.box(1.4,.5,L,s*7.9,-.25,Z,ST[0]);
+  S.box(.15,.35,L,-8,.85,Z,ST[1]);for(let z=-2;z>-L;z-=5)S.box(.18,1,.18,-8,.5,z,ST[2]);
+  S.box(1,30,L,-9.1,-15.2,Z,ST[2]);for(let y=-4;y>-28;y-=6)S.box(1.1,.5,L,-9.1,y,Z,ST[1]);
+  S.box(900,1,L+300,-450,-30.5,Z,GRL);S.box(34,.1,L+300,-62,-30,Z,PAL.water);
+  for(let z=-20;z>-L;z-=40)for(let j=0;j<2;j++){const h=rr(8,20)*(j?1.6:1),x=-30-j*38;S.box(24,h,40,x,h/2-30,z,ST[1]);S.box(24,.5,40,x,h-30,z,GRL);for(let k=0;k<3;k++)tree(S,x+rr(-9,9),h-30,z+rr(-16,16),rr(.8,1.2))}
+  /* stâlpi de iluminat cu braț peste drum (ca în joc) */
+  for(let z=-12;z>-L;z-=24)for(const sd of[-1,1]){S.box(.16,8.4,.16,sd*8.3,4.4,z,ST[2]);S.box(3.3,.12,.12,sd*6.65,8.55,z,ST[2]);S.box(1.3,.18,.5,sd*5.1,8.42,z,'#ffe2a0')}
+  /* ===== stâncă low-poly monocromă (verdele mormanului din zona de tunel): fațete mari, deformate de zgomot; aceeași pentru terase și pentru muntele de deasupra tunelului ===== */
+  const RK={p:[],c:[]},so=rnd()*80,hs=(x,y,z)=>{const t=Math.sin(x*127.1+y*311.7+z*74.7+so)*43758.5453;return t-Math.floor(t)},
+   sm3=t=>t*t*(3-2*t),lp=(a,b,t)=>a+(b-a)*t,
+   vn=(x,y,z)=>{const X=Math.floor(x),Y=Math.floor(y),Z=Math.floor(z),u=sm3(x-X),v=sm3(y-Y),w=sm3(z-Z);
+    return lp(lp(lp(hs(X,Y,Z),hs(X+1,Y,Z),u),lp(hs(X,Y+1,Z),hs(X+1,Y+1,Z),u),v),lp(lp(hs(X,Y,Z+1),hs(X+1,Y,Z+1),u),lp(hs(X,Y+1,Z+1),hs(X+1,Y+1,Z+1),u),v),w)},RCl=HG[0];
+  function rock(B){const{x0,x1,z0,z1,yb,yt,a0,a1,c0,c1,amp,pk}=B,NX=B.n||24,NZ=B.nz||NX,M=B.m||16,mk=B.mk||(()=>1);
+   const dp=(x,y,z,w)=>{const f=.7*vn(x*.06,y*.06,z*.06)+.3*vn(x*.14,y*.14,z*.14)-.5;return amp*f*1.7*w*mk(x,y,z)},
+    tri=(a,b,c)=>{RK.p.push(...a,...b,...c);for(let i=0;i<3;i++)RK.c.push(RCl.r,RCl.g,RCl.b)},
+    TY=(x,z)=>{const u=(x-a0)/(a1-a0),v=(z-c0)/(c1-c0),e=Math.max(0,Math.min(1,3*Math.min(u,1-u,v,1-v))),r=Math.hypot(u-.5,v-.5)*2;return yt+e*((pk||0)*Math.max(0,1-r*.9)+amp*(vn(x*.04,0,z*.04)-.4)*1.6)};
+   for(let f=0;f<4;f++){const N=f<2?NX:NZ,G=[];for(let i=0;i<=N;i++){G[i]=[];for(let j=0;j<=M;j++){const u=i/N,v=j/M,X0=lp(x0,a0,v),X1=lp(x1,a1,v),Z0=lp(z0,c0,v),Z1=lp(z1,c1,v),y=lp(yb,yt,v);let x,z,nx=0,nz=0;
+      if(f===0){x=lp(X0,X1,u);z=Z1;nz=1}else if(f===1){x=lp(X0,X1,u);z=Z0;nz=-1}else if(f===2){x=X0;z=lp(Z0,Z1,u);nx=-1}else{x=X1;z=lp(Z0,Z1,u);nx=1}
+      const w=Math.min(1,3*Math.min(u,1-u),3*(1-v),3*v+.3);let d=dp(x,y,z,w);if(B.inw&&f===2&&d>0)d=0;G[i][j]=[x+nx*d,y,z+nz*d]}}
+    for(let i=0;i<N;i++)for(let j=0;j<M;j++){tri(G[i][j],G[i+1][j],G[i+1][j+1]);tri(G[i][j],G[i+1][j+1],G[i][j+1])}}
+   if(B.top!==false){const G=[];for(let i=0;i<=NX;i++){G[i]=[];for(let j=0;j<=NZ;j++){const x=lp(a0,a1,i/NX),z=lp(c0,c1,j/NZ);G[i][j]=[x,TY(x,z),z]}}
+    for(let i=0;i<NX;i++)for(let j=0;j<NZ;j++){tri(G[i][j],G[i+1][j],G[i+1][j+1]);tri(G[i][j],G[i+1][j+1],G[i][j+1])}}
+   return{ty:TY}}
+  const MSH=3;/* deplasare munte verde (terase, case, telecabina) spre spate (x+), ca peretele */
+  const WSH=3;/* deplasare perete de beton spre spate (x+), fata de felinare */
+  /* intervalele peretelui [capat apropiat, capat departat, prelungire apropiata, prelungire departata]; in zona cu tunel ajunge pana la tunel (T0=-300, T1=-420) */
+  const WSP=tun?[[0,-300,4,0],[-420,-L,0,4]]:[[0,-L,4,4]];
+  /* true daca punctul (x,z) cade in volumul peretelui (x 8.9+WSH .. 19.7+WSH), cu o garda p -> vegetatia nu mai creste prin perete */
+  const inWall=(x,z,p)=>{if(x<8.9+WSH-p||x>19.7+WSH+p)return false;for(const[za,zb,ea,eb]of WSP)if(z<za+ea+p&&z>zb-eb-p)return true;return false};
+  /* ===== perete de sprijin din beton (anti-alunecari), simplu, pe dreapta; nu se pune in zona tunelului ===== */
+  {const CW='#cdbfae',WH=17.4,spans=WSP;
+   for(const[za,zb,ea,eb]of spans){const zl=(za-zb)+ea+eb,zm=((za+ea)+(zb-eb))/2;/* +8 = capetele peretelui prelungite cu cate 4 */S.box(3.8,WH+2,zl,10.8+WSH,WH/2-1,zm,CW);/* fata la x=8.9: in fata muntelui, dar dupa felinare (x=8.3) */S.box(7,3.4,zl,16.2+WSH,WH+.1,zm,CW);S.box(.35,1.3,zl,19.55+WSH,WH+2.45,zm,CW);S.box(.35,1.3,zl,9.05+WSH,WH+1.1,zm,CW)}}
+  /* terase = muntele care continuă de-a lungul șoselei: aceleași forme și aceeași culoare ca muntele de deasupra tunelului, dar mai înalte, ca să se lege de el */
+  const XS=[[8.6,22.5],[19.1,35],[30,46],[41,82]],EX=[[10.6,18.5],[21,29.5],[32,41],[44,72]],HT=[17,33,50,67],R=[];
+  const TR=(j,z0,z1)=>rock({x0:XS[j][0],x1:XS[j][1],z0,z1,yb:-2,yt:HT[j],a0:XS[j][0]+1.2,a1:XS[j][1]-1.2,c0:z0,c1:z1,amp:3.4+j*.4,n:j===3?10:6,nz:Math.max(2,Math.round(Math.abs(z1-z0)/9)),m:5,inw:1,mk:(x,y,z)=>Math.max(0,Math.min(1,Math.min(Math.abs(z-z0),Math.abs(z-z1))/16))});
+  for(let j=0;j<4;j++){if(tun){const A=TR(j,0,-240),B=TR(j,-480,-L);R[j]={ty:(x,z)=>(z>-360?A:B).ty(x,z)}}else R[j]=TR(j,0,-L)}
+  const SY=(j,x,z)=>R[j].ty(x-MDX-MSH,z)-.15,px=j=>rr(EX[j][0],EX[j][1])+MDX+MSH;
+  const PERK=.6;/* scara copacilor de la periferie (sus pe perete / capetele peretelui): 1 = marimea veche, mai mic = copaci mai mici */
+  /* copaci mari (ca in padure) care acopera capetele peretelui de beton: spre tunel (in fata capatului) si la intrarea/iesirea din zona (pe prelungire) */
+  /* (copacii de la capetele peretelui dinspre tunel au fost scosi: peretele ajunge acum pana la tunel si ei ar fi iesit prin el) */
+  /* copaci mari si jos, la nivelul soselei, in fata capetelor peretelui de la intrarea/iesirea din zona */
+  for(const[zs,dz]of[[8,1],[-L-8,-1]])for(let i=0;i<18;i++){const x=rr(13.5,21),z=zs+dz*rr(0,14);tree(S,x,-.1,z,rr(.6,.95))}
+  /* in spatele copacilor (spre dreapta): copaci din ce in ce mai mari, treptat, cu cat sunt mai departe de sosea */
+  for(const[zs,dz]of[[8,1],[-L-8,-1]])for(let i=0;i<40;i++){const t=Math.random(),x=21+t*40,z=zs+dz*rr(0,22);tree(S,x,-.1,z,rr(.6,.95)+t*1.1)}
+  if(tun)for(const[zs,dz]of[[-242,-1],[-478,1]])for(let i=0;i<26;i++){const t=Math.random(),x=21+t*40+MSH,z=zs+dz*rr(0,18),j=x<33+MSH?1:x<44+MSH?2:3;tree(S,x,SY(j,x,z)+.8,z,rr(.6,.95)+t*1.1)}
+  for(const[zs,dz]of[[-2,-1],[-L+2,1]])for(let i=0;i<14;i++){const x=rr(14.8,18.6)+WSH,z=zs+dz*rr(0,12);tree(S,x,19.1,z,rr(.8,1.1)*PERK)}
+  for(let z0=0;z0>-L;z0-=36)for(let j=0;j<3;j++)for(let k=0;k<(j?2:3);k++){const x=px(j),z=z0-rr(2,34);if(tun&&z<-236&&z>-484)continue;if(inWall(x,z,1.6))continue;tree(S,x,SY(j,x,z),z,rr(.55,.85))}
+  for(let i=0;i<Math.round(L*.4);i++){const j=rnd()*3|0,x=px(j),z=-rnd()*L;if(tun&&z<-236&&z>-484)continue;if(inWall(x,z,.3))continue;tuft(S,x,SY(j,x,z),z,.8+rnd()*.8)}
+  /* căsuțe de munte */
+  for(const c of[3,10,15,22]){const x=25+MSH,z=-(c*36+18),h=SY(1,x,z);if(z<-L)continue;if(tun&&z<-236&&z>-484)continue;S.box(7.4,3.2,5.8,x,h-1.4,z,ST[1]);
+S.box(7,3.6,5.4,x,h+1.8,z,'#eadbb8');S.box(7.6,.8,6,x,h+4,z,PAL.accent);S.box(5.4,.8,4.4,x,h+4.8,z,PAL.accent);S.box(3.2,.8,2.8,x,h+5.6,z,PAL.accent);S.box(3,.3,2.6,x,h+6.1,z,SNW);S.box(1.2,1.6,.2,x-1.6,h+1,z+2.7,PAL.sun);S.box(.9,2.4,.9,x+1.8,h+5.4,z,ST[2]);
+   S.box(7.3,.9,5.7,x,h+.45,z,ST[1]);S.box(7,.2,1.5,x,h+2.4,z+3.4,WOOD);S.box(7,.5,.15,x,h+3,z+4.1,WOOD);
+   for(const k of[-2.6,2.6])S.box(1.3,.5,.3,x+k,h+1.5,z+2.9,PAL.accent);
+   S.box(.9,.9,.9,x+1.8,h+7,z,SNW,.5);S.box(1.4,1.2,1.4,x+2.3,h+8.4,z-.2,'#efdec1',.9);S.box(1.8,1.3,1.8,x+3,h+10,z-.4,'#fff4de',.3);
+   for(let k=-3;k<=3;k+=1.5)S.box(.2,1,.2,x+k,h+.5,z+5.4,WOOD);S.box(7,.15,.15,x,h+.8,z+5.4,WOOD);
+   S.box(1.6,1.1,1.6,x-5,h+.55,z+1,WOOD);S.box(1.6,1.1,1.6,x-5,h+1.65,z+1,'#8a5a38')}
+  /* flori alpine pe pajiști */
+  {const FL=['#ff5a3c','#ffc233','#fff4de','#b57be0','#ff8fb1'];for(let i=0;i<Math.round(L*1.1);i++){const j=rnd()*3|0,x=px(j),z=-rnd()*L;if(tun&&z<-236&&z>-484)continue;if(inWall(x,z,.3))continue;S.box(.24,.24,.24,x,SY(j,x,z)+.2,z,FL[rnd()*5|0],0,0,1)}}
+  /* ===== vegetatie in fata peretelui, pana la sosea (x 8.6 .. fata peretelui): fasie de iarba, pietricele, bolovani, flori, tufe si arbusti mici ===== */
+  {const xa=8.6,xb=8.9+WSH-.05,GG=['#6fae5e','#5f9e56','#7bbb68','#86b37a'],PB=[ST[1],ST[2],'#d8cdb8','#8d8386'],FV=['#ff5a3c','#ffc233','#fff4de','#b57be0','#ff8fb1'];
+   for(const[za,zb,ea,eb]of WSP){const zt=za+ea,zf=zb-eb,zl=zt-zf,zm=(zt+zf)/2,rz=()=>zf+rnd()*zl;
+    S.box(xb-xa,.5,zl,(xa+xb)/2,-.23,zm,GG[1]);   /* solul de iarba, pana la bordura */
+    for(let i=0;i<Math.round(zl*.12);i++)S.box(rr(1,2.6),.03,rr(2,6),rr(xa+.8,xb-.8),.035,rz(),GG[rnd()*4|0],rnd()*3);   /* petice de iarba mai deschisa/inchisa */
+    for(let i=0;i<Math.round(zl*.9);i++){const x=rr(xa+.5,xb-.2);tuft(S,x,.02,rz(),.7+rnd()*(x>xb-1.1?1:.6))}   /* fire de iarba, mai inalte langa perete */
+    for(let i=0;i<Math.round(zl*.55);i++){const w=rr(.1,.3),h=rr(.06,.2);S.box(w,h,w*rr(.7,1.3),rr(xa+.4,xb-.15),.02+h/2,rz(),PB[rnd()*4|0],rnd()*3,0,1)}   /* pietricele */
+    for(let i=0;i<Math.round(zl*.05);i++){const x=rr(xa+1,xb-.6),z=rz(),w=rr(.5,.9),h=rr(.3,.55);S.box(w,h,w*.9,x,.02+h/2,z,ST[2],rnd()*3,0,1);S.box(w*.6,h*.6,w*.6,x+rr(-.3,.3),.02+h+h*.3,z+rr(-.3,.3),ST[1],rnd()*3,0,1)}   /* bolovani cu piatra deasupra */
+    for(let i=0;i<Math.round(zl*.3);i++){const x=rr(xa+.5,xb-.2);S.box(.2,.2,.2,x,.2,rz(),FV[rnd()*5|0],rnd()*3,0,1)}   /* flori */
+    for(let i=0;i<Math.round(zl*.06);i++){const x=rr(xa+1,xb-.5),z=rz(),w=rr(.6,1.1),h=rr(.35,.6);S.box(w,h,w,x,.02+h/2,z,GRS,rnd()*3,0,1);S.box(w*.65,h*.6,w*.65,x+rr(-.12,.12),.02+h+h*.25,z+rr(-.12,.12),GG[2],rnd()*3,0,1)}}   /* arbusti mici */
+  }
+  /* telecabina: piloni, cabluri duble, cabine roșii */
+  for(let ci2=0;ci2*36<L;ci2++){if(tun&&ci2>=7&&ci2<=12)continue;const zc=-(ci2*36+18),y=Math.min(SY(0,14+MSH,zc),SY(0,17.2+MSH,zc))-1;S.box(.14,.14,36.2,14+MSH,41,zc,ST[2]);S.box(.14,.14,36.2,17.2+MSH,41,zc,ST[2]);
+   if(ci2%2===0){S.box(.8,41-y,.8,14+MSH,(41+y)/2,zc,ST[2]);S.box(.8,41-y,.8,17.2+MSH,(41+y)/2,zc,ST[2]);S.box(4.6,.6,.8,15.6+MSH,41.3,zc,ST[2])}
+   if(ci2%3===1){const dz=rr(-10,10);for(const[cx2,col]of[[14+MSH,PAL.accent],[17.2+MSH,PAL.sun]]){S.box(.1,2.4,.1,cx2,39.8,zc+dz,ST[2]);S.box(2.8,1.9,2.2,cx2,38,zc+dz,col);S.box(3.1,.3,2.5,cx2,39.1,zc+dz,SNW);S.box(2.9,.7,.1,cx2,38.4,zc+dz+1.12,PAL.blue)}}}
+  /* telegondole peste sosea: 2 cabluri, statie sus pe munte, turn cu statie jos in vale (gondolele sunt animate separat, in gondolaBuild) */
+  {const zc=GZ,ang=Math.atan2(GA[1]-GB[1],GA[0]-GB[0]),cx=(GA[0]+GB[0])/2,cy=(GA[1]+GB[1])/2,yb=SY(3,GA[0],zc)-3;
+   for(const sd of[-1,1]){const z=zc+sd*GD;S.box(GLN,.16,.16,cx,cy,z,ST[2],0,ang);S.box(1.1,GA[1]+1-yb,1.1,GA[0],(GA[1]+1+yb)/2,z,ST[2]);S.box(1.1,GB[1]+32,1.1,GB[0],(GB[1]-30)/2,z,ST[2])}
+   for(const[p,y]of[GA,GB]){S.box(7.6,6.6,10,p,y-1.9,zc,ST[1]);S.box(8.4,.6,10.8,p,y+1.6,zc,ST[2])}
+   for(let y=GB[1]-6;y>-28;y-=9)S.box(.4,.4,GD*2,GB[0],y,zc,ST[2])}
+  /* lac alpin în vale, cu mal, pini și barcă */
+  for(const lz of[-170,-520]){S.box(84,.1,84,-62,-29.9,lz,'#efdec1');S.box(70,.16,70,-62,-29.8,lz,PAL.blue);S.box(40,.18,34,-60,-29.7,lz+4,'#8cc5ff');S.box(2.6,.5,1.1,-55,-29.5,lz+8,PAL.accent);S.box(1.8,.1,.1,-55,-29.2,lz+8,ST[2]);
+   for(let k=0;k<14;k++){const a=k/14*6.283;tree(S,-62+Math.cos(a)*rr(38,46),-30,lz+Math.sin(a)*rr(38,46),rr(.9,1.4))}
+   S.box(1.6,.25,18,-30,-29.5,lz-6,WOOD)}
+  /* nori joși în vale și printre vârfuri */
+  for(let z=-25;z>-L;z-=55){const sd=rnd()<.5?-1:1;S.box(rr(28,60),rr(2.5,5),rr(14,28),-rr(40,150),rr(-24,-12),z+rr(-20,20),SNW,rnd()*3);S.box(rr(30,60),rr(3,6),rr(14,26),rr(70,160),rr(60,115),z+rr(-25,25),SNW,rnd()*3);S.box(rr(20,36),rr(2,4),rr(10,18),rr(50,110)*sd,rr(80,130),z+rr(-25,25),'#fff4de',rnd()*3)}
+  /* păsări */
+  for(let i=0;i<Math.round(L*.025);i++){const x=rr(-50,60),y=rr(20,55),z=-rr(0,L);S.box(1.4,.12,.45,x-.65,y,z,'#1a1b3a',.2,.4);S.box(1.4,.12,.45,x+.65,y,z,'#1a1b3a',-.2,-.4)}
+  if(tun){/* ===== TUNEL prin munte: portal de piatră, lămpi, iar la ieșire se vede lacul din vale ===== */
+   const T0=-300,T1=-420,TZ=-360,TL=122,DK='#8a8294';/* TL=122: tunelul iese cu 1 m in fata la ambele capete, ca sa nu se suprapuna cu fetele muntelui (z-fighting) */
+   S.box(4.9,9.5,TL,-11.05,4.75,TZ,ST[2]);S.box(11.4,10,TL,14.3,5,TZ,ST[1]);
+   S.box(35.5,2.5,TL,4.25,10.75,TZ,ST[1]);
+   /* piciorul muntelui: flancul continuă în jos pe stânga drumului până în valea de la -30 m, lățindu-se spre bază și depășind capetele tunelului */
+   rock({x0:-78,x1:-9.5,z0:-475,z1:-245,yb:-30,yt:12,a0:-13.5,a1:-9.5,c0:-420,c1:-300,amp:5,pk:0,top:false,n:12,m:8,mk:(x,y,z)=>Math.max(0,Math.min(1,(-x-9.6)/2.4))});
+   /* muntele de deasupra tunelului: câmp de înălțimi continuu (versanți netezi, creastă și vârfuri), legat la capete de terasele de pe margine */
+   {const cl=(v,a,b)=>Math.max(a,Math.min(b,v)),PT=[[-13.5,26],[8.6,52],[25,78],[42,98],[60,90],[82,72]],RP=[[8.6,17],[19.1,31],[30,46],[41,62],[82,67]],
+    ip=(T,x)=>{for(let i=1;i<T.length;i++)if(x<=T[i][0])return lp(T[i-1][1],T[i][1],sm3(cl((x-T[i-1][0])/(T[i][0]-T[i-1][0]),0,1)));return T[T.length-1][1]},
+    WZ=z=>sm3(cl((120-Math.abs(z+360))/55,0,1)),
+    H=(x,z,sv)=>{const d=Math.abs(z+360),w=WZ(z),E=Math.max(0,1-(d/125)*(d/125));
+     let m=ip(PT,x)*E+10*Math.exp(-(((x-42)/16)**2+((z+350)/28)**2))+8*Math.exp(-(((x-62)/14)**2+((z+395)/25)**2));
+     m+=w*((vn(x*.05,3,z*.05)-.5)*16+(vn(x*.11,7,z*.11)-.5)*8);
+     if(x>=8.6)m=Math.max(m,ip(RP,x));else m=Math.max(m,16);
+     return x<8.6?m:lp(sv,m,w)},
+    col=(a,b,c)=>{const y=Math.max(a[1],b[1],c[1]),w=WZ((a[2]+b[2]+c[2])/3),k=RCl.clone().lerp(HS,sm3(cl((y-68)/24,0,1))*w).lerp(HW,sm3(cl((y-96)/10,0,1))*w);return k},
+    T3=(a,b,c)=>{const k=col(a,b,c);RK.p.push(...a,...b,...c);for(let i=0;i<3;i++)RK.c.push(k.r,k.g,k.b)},
+    quad=(a,b,c,d)=>{T3(a,b,c);T3(a,c,d)},
+    skirt=(a,b,yb)=>quad(a,b,[b[0],yb,b[2]],[a[0],yb,a[2]]),
+    grid=(XC,z0,z1,dz,fn)=>{const n=Math.round(Math.abs(z1-z0)/dz),V=[];for(let r=0;r<=n;r++){const z=lp(z0,z1,r/n);V.push(XC.map(([x,sv])=>[x,H(x,z,sv),z]))}
+     for(let r=0;r<n;r++)for(let c=0;c<XC.length-1;c++)quad(V[r][c],V[r][c+1],V[r+1][c+1],V[r+1][c]);fn(V,n,XC.length-1)},
+    XM=[];for(const[a,b,sv]of[[8.6,19.1,17],[19.1,30,33],[30,41,50],[41,82,67]]){const n=Math.max(2,Math.round((b-a)/4.5));for(let i=0;i<=n;i++)XM.push([lp(a,b,i/n),sv])}
+    grid(XM,-240,-480,6,(V,n,m)=>{for(let r=0;r<n;r++){skirt(V[r][m],V[r+1][m],-2);if(Math.abs((V[r][0][2]+V[r+1][0][2])/2+360)>60)skirt(V[r][0],V[r+1][0],-2)}
+     for(let c=0;c<m;c++){skirt(V[0][c],V[0][c+1],-2);skirt(V[n][c],V[n][c+1],-2)}});
+    const XCp=[];for(let i=0;i<=5;i++)XCp.push([lp(-13.5,8.6,i/5),0]);
+    grid(XCp,-300,-420,6,(V,n,m)=>{for(let r=0;r<n;r++)skirt(V[r][0],V[r+1][0],11);for(let c=0;c<m;c++){skirt(V[0][c],V[0][c+1],11);skirt(V[n][c],V[n][c+1],11)}})}
+   S.box(.3,9.5,TL,-8.45,4.75,TZ,DK);S.box(.3,9.5,TL,8.45,4.75,TZ,DK);S.box(17.2,.3,TL,0,9.35,TZ,'#b9b4c4');
+   S.box(.12,.5,TL,-8.28,2.4,TZ,PAL.sun);S.box(.12,.5,TL,8.28,2.4,TZ,PAL.sun);
+   for(let z=T0-6;z>T1;z-=12)for(const x of[-3.5,3.5]){S.box(.6,.25,3.2,x,9.1,z,'#ffe2a0');S.box(1.2,.05,3.8,x,9.2,z,'#fff4de')}
+   for(const z of[T0,T1])for(const sd of[-1,1])S.box(1.8,10.6,2,sd*9.5,5.3,z+(z===T0?.6:-.6),ST[0]);
+   for(const z of[T0,T1])S.box(21,1.6,2,0,10.3,z+(z===T0?.6:-.6),ST[0]);
+   }
+  /* muntele de pe dreapta se muta cu 1.1 m mai in spate (la fel ca peretele de beton) */for(let i=0;i<RK.p.length;i+=3)if(RK.p[i]>8.55)RK.p[i]+=MDX+MSH;
+  flush(RK,g);S.end();
+  /* dealuri fațetate în ceață, de o parte și de alta */
+  {const h={p:[],c:[]};for(let z=-60;z>-L;z-=120)for(const s of[-1,1])hill(h,s*rr(120,230),z+rr(-30,30),rr(55,100),rr(70,150),.1,-30);for(let z=-30;z>-L;z-=85)hill(h,rr(85,150),z+rr(-25,25),rr(40,65),rr(160,260),.04,-30);
+   for(let z=-70;z>-L;z-=140)hill(h,-rr(250,340),z+rr(-30,30),rr(70,100),rr(170,240),.12,-30);
+   for(let z=-60;z>-L;z-=110)hill(h,rr(190,300),z+rr(-30,30),rr(60,90),rr(220,320),.3,-30);flush(h,g)}
+  return g}
+ return function(g,L){g.userData.mt={SEG:720,a:300,b:420};const SEG=720,NS=Math.ceil(L/SEG),TI=Math.random()<.5?-1:(Math.random()*NS|0),V=[TI>=0?seg(SEG,1):null,seg(SEG,0)];/* tuneluri in zona de munte: minim 0, maxim 1 */for(let k=0;k*SEG<L;k++){const q=k===TI?V[0]:V[1];for(const m of q.children){const c=new THREE.Mesh(m.geometry,m.material);c.frustumCulled=false;c.position.z=-k*SEG;c.userData.dg=1;g.add(c)}}gondolaBuild(g,L,SEG)}})();
+
+function munteAnim(g,dt){const q=g.userData.gon;if(!q)return;q.t=(q.t+dt*q.v)%q.S;for(const m of q.ms){const d=(q.t+m.userData.ph*q.S)%q.S;m.position.x=q.ux*d;m.position.y=q.uy*d}}
+const ZN5=['tunnel','bridge','forest','city','coast','rail','munte'];function spawnZone(){const ty=(!znFirst&&CFG.first)?ZN5[CFG.first-1]:ZN5[Math.random()*7|0];znFirst=1;if(ty==='forest'){forU=dist+4000+Math.random()*1000;znT=forU+700+Math.random()*3000;window.FSTU=forU;showTip('🌲 Zonă de pădure');return}if(ty==='rail'){const L=Math.round(4200+Math.random()*1800),g=new THREE.Group();railBuild(g,L);forU=dist+(L+VIEW+RLS+RLE)*KMH;g.position.z=-(VIEW+RLS);scene.add(g);zn={g,L,type:'rail',seen:false};return}const type=ty,L=type==='tunnel'?Math.round(460*(2+Math.random()*2)):type==='city'?2150:type==='coast'?700:type==='munte'?720*(3+(Math.random()<.5?0:1)):480,g=new THREE.Group();
  const A=(w,h,l,x,y,z,m)=>{const me=new THREE.Mesh(ZG,m);me.scale.set(w,h,l);me.position.set(x,y,z);g.add(me);return me};
  if(type==='tunnel'){
   const H=9,MB=(c,fg)=>new THREE.MeshBasicMaterial({color:c,fog:fg!==0}),ZK=MB(0x6e6a68),ZLW=MB(0xf2a448,0),SL=MB(0xffc766,0),SG=new THREE.MeshBasicMaterial({color:0xffa23c,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false,fog:false}),ZLD=MB(0xa8641f,0),ZV=MB(0x2a9d66,0),ZF=MB(0x3a3a44),ZR=MB(0xb02a2a,0);
@@ -2694,13 +3134,52 @@ const ZN5=['tunnel','bridge','forest','city','coast','rail'];function spawnZone(
    for(const k of['n','l']){const o=QA[k];if(!o.p.length)continue;const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(o.p,3));ge.setAttribute('uv',new THREE.Float32BufferAttribute(o.u,2));ge.setIndex(o.i);
     const me=new THREE.Mesh(ge,new THREE.MeshBasicMaterial({map:MTX.at,transparent:true,alphaTest:.4,side:D2,fog:k==='n'}));me.frustumCulled=false;me.userData.dg=1;g.add(me)}}
   g.add(mtnBuild(L))
- }else if(type==='city'){cityBuild(g,L)}else if(type==='coast'){coastBuild(g,L)}else{bridgeBuild(g,L)}
- g.position.z=-VIEW;scene.add(g);zn={g,L,type,seen:false}}
+ }else if(type==='city'){cityBuild(g,L)}else if(type==='coast'){coastBuild(g,L)}else if(type==='munte'){munteBuild(g,L);/* 50%: zona de munte oglindita pe axa x (perete/munte pe stanga, valea pe dreapta) */if(Math.random()<.5)g.scale.x=-1}else{bridgeBuild(g,L)}
+ g.position.z=-VIEW;scene.add(g);zn={g,L,type,seen:false,mir:g.scale.x<0?-1:1}}
 function inZone(){return !!zn&&zn.g.position.z>2&&zn.g.position.z-zn.L<-2}
-function zoneStep(dt,cr){if(!zn){if(state==='run'&&!cr&&dist>=znT)spawnZone();return}
- zn.g.position.z+=v*dt;const z=zn.g.position.z;if(zn.type==='coast')coastAnim(zn.g);if(zn.type==='bridge')bridgeAnim(zn.g);if(zn.type==='rail')railAnim(zn,dt);
+/* ===== radar cu bliț: peste RAD_KMH => bliț pe ecran, -RAD_PEN puncte si te urmareste politia. In oras: 4–7 pe zona; pe autostrada libera: rar ===== */
+var RAD_KMH=120,RAD_PEN=5,radCd=0,radSolo=[],radT=900,RDM=null,radFl=null;
+function rdQuad(A,a,b,c,d){A.push(...a,...b,...c,...a,...c,...d)}
+function rdBox(A,x0,y0,z0,x1,y1,z1){rdQuad(A,[x0,y0,z0],[x1,y0,z0],[x1,y1,z0],[x0,y1,z0]);rdQuad(A,[x1,y0,z1],[x0,y0,z1],[x0,y1,z1],[x1,y1,z1]);rdQuad(A,[x0,y0,z1],[x0,y0,z0],[x0,y1,z0],[x0,y1,z1]);rdQuad(A,[x1,y0,z0],[x1,y0,z1],[x1,y1,z1],[x1,y1,z0]);rdQuad(A,[x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]);rdQuad(A,[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1])}
+function radarMats(){if(RDM)return RDM;
+ const cv=document.createElement('canvas');cv.width=256;cv.height=96;const q=cv.getContext('2d');
+ q.fillStyle='#fff';q.fillRect(0,0,256,96);q.fillStyle='#143c7a';q.fillRect(5,5,246,86);
+ q.fillStyle='#ffd400';q.beginPath();q.arc(46,48,24,0,6.283);q.fill();q.fillStyle='#143c7a';q.beginPath();q.arc(46,48,12,0,6.283);q.fill();
+ q.fillStyle='#fff';q.font='bold 44px Arial,sans-serif';q.textAlign='center';q.textBaseline='middle';q.fillText('RADAR',160,50);
+ RDM={pg:new THREE.MeshBasicMaterial({color:0x6f7480}),pd:new THREE.MeshBasicMaterial({color:0x2a2d35}),pl:new THREE.MeshBasicMaterial({color:0x4d8fe0}),
+  sg:new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv)}),fl:new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:1,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide})};
+ return RDM}
+/* radare pe marginea din dreapta: stalp + brat peste benzi + carcasa cu obiectiv spre cel care vine (+z) + panou "RADAR" */
+function radarBuild(zs){const M=radarMats(),g=new THREE.Group(),pg=[],pd=[],pl=[],ps=[],pu=[];
+ for(const z of zs){rdBox(pg,8.85,0,z-.15,9.15,6.4,z+.15);rdBox(pg,3.9,6.15,z-.12,9.15,6.4,z+.12);
+  rdBox(pd,4.1,5.3,z-.6,5.7,6.15,z+.6);rdBox(pl,4.55,5.5,z+.6,5.25,5.95,z+.68);
+  rdQuad(ps,[8.05,3.3,z+.17],[9.95,3.3,z+.17],[9.95,4.1,z+.17],[8.05,4.1,z+.17]);pu.push(0,0,1,0,1,1,0,0,1,1,0,1)}
+ const mk=(P,U,mat)=>{const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(P,3));if(U)ge.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));const m=new THREE.Mesh(ge,mat);m.frustumCulled=false;m.userData.dg=1;g.add(m);return m};
+ mk(pg,null,M.pg);mk(pd,null,M.pd);mk(pl,null,M.pl);mk(ps,pu,M.sg);
+ const fp=[];rdQuad(fp,[-1.6,-1.6,0],[1.6,-1.6,0],[1.6,1.6,0],[-1.6,1.6,0]);const fm=mk(fp,null,M.fl);fm.visible=false;g.userData.fl=fm;return g}
+function radarScreenFlash(){let f=document.getElementById('rflash');if(!f){f=document.createElement('div');f.id='rflash';f.style.cssText='position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:60';document.body.appendChild(f)}
+ const go=o=>{f.style.transition='none';f.style.opacity=o;void f.offsetWidth;f.style.transition='opacity .45s ease-out';f.style.opacity='0'};go(.95);setTimeout(()=>go(.6),170)}
+function radarFire(g,z){const k=dispKmh();if(state!=='run'||radCd>0||k<=RAD_KMH)return;
+ radCd=4;const fl=g.userData.fl;if(fl){fl.position.set(4.9,5.72,z+.9);fl.scale.set(1,1,1);RDM.fl.opacity=1;fl.visible=true;radFl={m:fl,t:.22}}
+ score=Math.max(0,score-RAD_PEN);hud();showTip('📸 Radar! '+Math.round(k)+' km/h (limită '+RAD_KMH+') · −'+RAD_PEN+' puncte · Poliția e pe urmele tale');
+ radarScreenFlash();blip(2200,.04,0,.14,'square');blip(1100,.06,.07,.12,'square');hap([60,40,60]);
+ if(!polOn){polCd=0;hat=100;polWn=true}else polT=Math.max(polT,30)}
+function radClear(){if(typeof radSolo==='undefined')return;for(const o of radSolo){scene.remove(o.g);o.g.traverse(m=>{if(m.geometry)m.geometry.dispose()})}radSolo=[];radT=700+Math.random()*900;radCd=0;if(radFl){radFl.m.visible=false;radFl=null}}
+function radarStep(dt,cr){radCd=Math.max(0,radCd-dt);
+ const chk=(R,base)=>R.zs.forEach((z,i)=>{const w=base+z,pw=R.pw[i];R.pw[i]=w;if(pw!==undefined&&pw<0&&w>=0&&!R.done[i]){R.done[i]=true;if(!cr)radarFire(R.g,z)}});
+ if(zn&&zn.g.userData.rad)chk(zn.g.userData.rad,zn.g.position.z);
+ for(let i=radSolo.length-1;i>=0;i--){const o=radSolo[i];o.g.position.z+=v*dt;chk(o,o.g.position.z);if(o.g.position.z>40){scene.remove(o.g);o.g.traverse(m=>{if(m.geometry)m.geometry.dispose()});radSolo.splice(i,1)}}
+ /* autostrada libera (fara zona): un radar la ~1,5–3 km */
+ if(state==='run'&&!cr&&!zn&&v>5){radT-=v*dt;if(radT<=0){radT=1500+Math.random()*1500;const g=radarBuild([0]);g.position.z=-470;scene.add(g);radSolo.push({g,zs:[0],pw:[],done:[]})}}
+ if(radFl){radFl.t-=dt;const k=Math.max(0,radFl.t/.22),sc=1+(1-k)*2.2;radFl.m.scale.set(sc,sc,1);RDM.fl.opacity=k;if(radFl.t<=0){radFl.m.visible=false;radFl=null}}}
+function cityRadar(g,L){const rn=Math.random,n=4+(rn()*4|0),zs=[],CO=g.userData.CO||[],ZB=g.userData.zebre||[],
+  bad=z=>CRZ.some(r=>Math.abs(z-r)<CRL/2+16)||CO.some(c=>Math.abs(z-c.z)<22)||ZB.some(q=>Math.abs(z-q)<18);
+ for(let t=0;t<600&&zs.length<n;t++){const z=-(120+rn()*(L-240));if(!bad(z)&&zs.every(q=>Math.abs(q-z)>150))zs.push(z)}
+ if(!zs.length)return;const rg=radarBuild(zs);g.add(rg);g.userData.rad={g:rg,zs,pw:[],done:[]}}
+function zoneStep(dt,cr){radarStep(dt,cr);if(!zn){if(state==='run'&&!cr&&dist>=znT)spawnZone();return}
+ zn.g.position.z+=v*dt;const z=zn.g.position.z;if(zn.type==='coast')coastAnim(zn.g);if(zn.type==='bridge')bridgeAnim(zn.g);if(zn.type==='rail')railAnim(zn,dt);if(zn.type==='munte')munteAnim(zn.g,dt);
  if(zn.type==='city'){cityAnim(zn.g,dt);for(const q of zn.g.userData.cars){const p=q.m.position;p.x+=q.vx*dt;if(q.vx>0&&p.x>58)p.x=-58;else if(q.vx<0&&p.x<-58)p.x=58}}
- if(!zn.seen&&z>0){zn.seen=true;if(!cr)showTip(zn.type==='tunnel'?'🚇 Tunel':zn.type==='city'?'🏙️ Oraș':zn.type==='coast'?'🌊 Coastă · fără parapet, vânt spre mare':zn.type==='rail'?'🚆 Pădure + cale ferată · abur, marfă, expres':'🌉 Pod')}
+ if(!zn.seen&&z>0){zn.seen=true;if(!cr)showTip(zn.type==='tunnel'?'🚇 Tunel':zn.type==='city'?'🏙️ Oraș · radare cu bliț, zebre':zn.type==='munte'?'⛰️ Munte · perete de beton, 0–1 tunel, lac în vale, telegondole':zn.type==='coast'?'🌊 Coastă · fără parapet, vânt spre mare':zn.type==='rail'?'🚆 Pădure + cale ferată · abur, marfă, expres':'🌉 Pod')}
  if(z-zn.L>(zn.type==='tunnel'?135:zn.type==='rail'?RLE+80:40)){zn.g.traverse(o=>{if(o.userData.dg&&o.geometry)o.geometry.dispose()});scene.remove(zn.g);zn=null;znT=dist+2150+Math.random()*3000}}
 /* cer de noapte: albastru inchis, adanc */
 const NSKY=new THREE.Color(0x2a4a9a);
@@ -2752,6 +3231,92 @@ const ANM=(()=>{const PI=Math.PI,P={or:MB_('#e0812f'),cr:MB_('#fff4de'),ink:MB_(
   else if(A.st===7){const u=Math.min(1,T/.9);p.x=trx+sd*3*ease(u);p.z=0;p.y=GY+Math.abs(Math.sin(T*18))*.06;fl(sd*PI/2,10);g.rotation.x=-1.3*(1-Math.min(1,T/.25));if(u>=1)drop(A)}}
  window.anStep=()=>{const n=performance.now(),dt=Math.min(.05,(n-lt)/1000);lt=n;if(!(dt>0))return;sa+=dt;if(sa>.35){sa=0;if(forK>.55&&free.length)spawn()}
   if(!act.length)return;pc.g.getWorldPosition(CP);for(const A of act.slice())upd(A,dt)};
+ return{pool}})();
+/* ===== căprioară: apare pe marginea drumului în zona de pădure, paște și privește spre tine, apoi fuge în pădure când te apropii ===== */
+const DER=(()=>{
+/* ===== CĂPRIOARĂ (macheta 3D, stil bloc) ===== 
+   Privește spre -Z (ca mașinile din joc). 1 unitate = 1 m, înălțime la spate ~1.15, cu capul ~1.55.
+   Folosire:  const d = makeDeer(); scene.add(d); d.position.set(x,0,z);
+              în bucla de joc:  d.userData.update(dt, viteza)   // viteza 0 = stă, ~1 = pas, ~2 = trap
+              d.userData.graze(true/false) = pășește cu capul jos                                      */
+function makeDeer(){
+ const MB=c=>new THREE.MeshBasicMaterial({color:c});
+ const M={body:MB('#c98a52'),top:MB('#b87743'),dark:MB('#8a5a34'),belly:MB('#f1e0c0'),white:MB('#fff4de'),pink:MB('#e6a98a'),ink:MB('#1a1b3a'),hoof:MB('#2a2a3c')};
+ const g=new THREE.Group(),box=(m,w,h,d,x,y,z,p)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);(p||g).add(o);return o};
+ /* corp: piept, trunchi, crupă + burtă + spate mai închis */
+ box(M.body,.42,.46,.30,0,.95,-.50);
+ box(M.body,.44,.44,.62,0,.93,0);
+ box(M.body,.42,.42,.30,0,.94,.50);
+ box(M.top,.30,.06,.95,0,1.17,.02);
+ box(M.belly,.36,.08,.80,0,.69,.03);
+ /* crupă albă + codiță */
+ box(M.white,.30,.22,.04,0,.97,.66);
+ const tail=new THREE.Group();tail.position.set(0,1.06,.67);g.add(tail);box(M.white,.09,.16,.08,0,-.04,.04,tail);tail.rotation.x=.35;
+ /* gât (pivot la umeri) + cap */
+ const neck=new THREE.Group();neck.position.set(0,1.08,-.58);g.add(neck);
+ box(M.body,.20,.20,.52,0,0,-.22,neck);box(M.belly,.14,.08,.40,0,-.10,-.22,neck);
+ const head=new THREE.Group();head.position.set(0,0,-.50);neck.add(head);
+ box(M.body,.17,.19,.26,0,0,-.08,head);          /* craniu */
+ box(M.belly,.12,.11,.17,0,-.04,-.25,head);      /* bot */
+ box(M.ink,.08,.07,.04,0,-.02,-.34,head);        /* nas */
+ for(const s of[-1,1]){box(M.ink,.03,.045,.045,s*.09,.03,-.14,head)}                   /* ochi */
+ const ears=[];
+ for(const s of[-1,1]){const e=new THREE.Group();e.position.set(s*.09,.10,.0);head.add(e);
+  box(M.body,.04,.17,.09,0,.08,0,e);box(M.pink,.02,.12,.06,-s*.012,.08,0,e);e.rotation.z=-s*.55;e.rotation.x=-.1;ears.push(e)}
+ /* picioare: șold + genunchi + copită */
+ const legs=[];
+ const leg=(x,z,front)=>{const h=new THREE.Group();h.position.set(x,.72,z);g.add(h);
+  box(front?M.body:M.dark,.12,.30,.14,0,-.15,0,h);
+  const k=new THREE.Group();k.position.y=-.30;h.add(k);
+  box(M.dark,.07,.36,.08,0,-.18,0,k);box(M.hoof,.09,.06,.11,0,-.39,-.005,k);
+  legs.push({h,k,front,ph:0});return legs[legs.length-1]};
+ const FL=leg(-.14,-.50,1),FR=leg(.14,-.50,1),RL=leg(-.14,.50,0),RR=leg(.14,.50,0);
+ FL.ph=0;RR.ph=0;FR.ph=Math.PI;RL.ph=Math.PI;       /* mers în diagonală */
+ /* animație */
+ const S={t:0,ph:0,sp:0,gz:0,gzT:0,ear:0,tw:0,idle:0};
+ g.userData.graze=on=>{S.gzT=on?1:0};
+ g.userData.update=(dt,speed)=>{
+  speed=speed||0;S.t+=dt;S.sp+=(speed-S.sp)*Math.min(1,dt*6);S.gz+=(S.gzT-S.gz)*Math.min(1,dt*3);
+  S.ph+=dt*(3.2+S.sp*3.2)*(S.sp>.02?1:0);
+  const A=Math.min(1,S.sp)*.55+Math.max(0,S.sp-1)*.25,B=Math.min(1,S.sp)*.9;
+  for(const l of legs){const p=S.ph+l.ph;l.h.rotation.x=Math.sin(p)*A*(l.front?1:.9);
+   l.k.rotation.x=-Math.max(0,Math.cos(p))*B*(l.front?1.1:.8)}
+  const bob=Math.sin(S.ph*2)*.02*Math.min(1,S.sp);
+  neck.rotation.x=.95-S.gz*1.7+Math.sin(S.ph*2)*.04*Math.min(1,S.sp)+Math.sin(S.t*.8)*.02;
+  head.rotation.x=-.55+S.gz*.3;
+  g.position.y=bob;
+  S.tw-=dt;if(S.tw<=0){S.tw=1.5+Math.random()*3;S.ear=1}S.ear=Math.max(0,S.ear-dt*5);
+  ears[0].rotation.x=-.1-Math.sin(S.ear*Math.PI)*.35;ears[1].rotation.x=-.1+Math.sin(S.ear*Math.PI*2)*.12*S.ear;
+  tail.rotation.x=.35+Math.sin(S.t*(S.sp>.1?9:3))*.12;
+ };
+ g.userData.update(0,0);
+ return g;
+}
+
+ const PI=Math.PI,pool=[0,1,2].map(()=>{const g=makeDeer();g.scale.setScalar(1.4);g.visible=false;scene.add(g);return{g,st:-1,t:0,x:0,z:0,vx:0,vz:0,gz:0,hd:0,rd:0,ph:Math.random()*6.28}}),free=pool.slice(),act=[];let lt=0,cd=5+Math.random()*5;
+ const ang=(c,t,k)=>{const d=((t-c+PI)%(2*PI)+2*PI)%(2*PI)-PI;return c+d*k},face=(dx,dz)=>Math.atan2(-dx,-dz);
+ function drop(A){A.g.visible=false;A.st=-1;const i=act.indexOf(A);if(i>=0)act.splice(i,1);free.push(A)}
+ function spawn(){if(!free.length||act.length>=2)return;
+  for(let n=0;n<14;n++){const sd=Math.random()<.5?-1:1,x=sd*(10+Math.random()*4.5),z=-(250+Math.random()*150);let ok=true;
+   for(const o of trees){if(o.userData.gz)continue;if(Math.abs(o.position.x-x)<2.8&&Math.abs(o.position.z-z)<2.8){ok=false;break}}
+   if(ok&&window.FSTL)for(const o of window.FSTL){if(Math.abs(o.position.x-x)<3.4&&Math.abs(o.position.z-z)<3.4){ok=false;break}}
+   if(ok)for(const B of act)if(Math.hypot(B.x-x,B.z-z)<40){ok=false;break}
+   if(!ok)continue;
+   const A=free.pop();A.x=x;A.z=z;A.st=0;A.t=0;A.gz=Math.random()<.6?1:0;A.hd=2+Math.random()*3;A.rd=0;A.g.visible=true;A.g.rotation.set(0,Math.random()*6.28,0);A.g.userData.graze(!!A.gz);A.g.position.set(x,0,z);act.push(A);return}}
+ function upd(A,dt,dz){const g=A.g,u=g.userData;A.t+=dt;A.z+=dz;const dx=px-A.x,d=Math.hypot(dx,A.z);
+  if(A.st===0){A.hd-=dt;if(A.hd<=0){A.gz=A.gz?0:1;A.hd=A.gz?3+Math.random()*4:1.5+Math.random()*2.5;u.graze(!!A.gz)}
+   if(d<75&&A.gz){A.gz=0;A.hd=2.5;u.graze(false)}
+   if(d<120&&!A.gz)g.rotation.y=ang(g.rotation.y,face(dx,-A.z),Math.min(1,dt*2.5));
+   u.update(dt,0);
+   if(d<46||state==='crash'&&d<80){A.st=1;A.t=0;A.rd=.1+Math.random()*.15;A.vx=-(dx>=0?1:-1)*(7+Math.random()*3);A.vz=-(1+Math.random()*3);A.gz=0;u.graze(false)}}
+  else{if(A.rd>0){A.rd-=dt;g.rotation.y=ang(g.rotation.y,face(dx,-A.z),Math.min(1,dt*10));u.update(dt,0)}
+   else{const k=Math.min(1,A.t*2);A.x+=A.vx*dt*k;A.z+=A.vz*dt*k;g.rotation.y=ang(g.rotation.y,face(A.vx,A.vz),Math.min(1,dt*9));u.update(dt,2.4*k)}}
+  g.position.x=A.x;g.position.z=A.z;if(A.st===1&&A.rd<=0)g.position.y+=Math.abs(Math.sin(A.t*6.5+A.ph))*.28*Math.min(1,A.t*2);
+  if(A.z>16||Math.abs(A.x)>70||(forK<.12&&d>200))drop(A)}
+ window.deerSpawn=spawn;window.deerClear=()=>{for(const A of act.slice())drop(A);cd=5+Math.random()*5};
+ window.deerStep=dz=>{const n=performance.now(),dt=Math.min(.05,(n-lt)/1000);lt=n;if(!(dt>0))return;
+  cd-=dt;if(cd<=0){cd=9+Math.random()*12;if(forK>.55&&state==='run')spawn()}
+  for(const A of act.slice())upd(A,dt,dz||0)};
  return{pool}})();
 /* ===== stoluri de pasari mici in fundal (rare): zboara in V pe cer, traverseaza lent cadrul, nu apar in tunel ===== */
 const SKB=(()=>{const PI=Math.PI,S=2.4,M=MB_(PAL.ink),act=[];let lt=0,sk=7+Math.random()*7;
@@ -2951,14 +3516,14 @@ const GTX=(f)=>{const c=document.createElement('canvas');c.width=c.height=256;co
  /* stanca (zona de munte / tunel) */
  TXR=GTX(q=>{q.fillStyle='#d8ccb2';q.fillRect(0,0,256,256);gR(q,'rgba(150,130,95,.22)',26,18,40);gR(q,'rgba(26,27,58,.10)',700,1,2);gR(q,'rgba(255,250,235,.25)',400,1,2);
   q.strokeStyle='rgba(26,27,58,.28)';q.lineWidth=1;for(let i=0;i<22;i++){let x=Math.random()*256,y=Math.random()*256;q.beginPath();q.moveTo(x,y);for(let j=0;j<4;j++){x+=(Math.random()-.5)*22;y+=(Math.random()-.3)*18;q.lineTo(x,y)}q.stroke()}});
-const GMT=new THREE.ShaderMaterial({uniforms:{tG:{value:TXG},tC:{value:TXC},tR:{value:TXR},uPh:{value:0},uFo:{value:0},uZ:{value:new THREE.Vector4()},uB:{value:new THREE.Vector2()},uC:{value:new THREE.Vector2()},uSky:{value:new THREE.Color(HX(PAL.sky))},uNf:{value:0}},
+const GMT=new THREE.ShaderMaterial({uniforms:{tG:{value:TXG},tC:{value:TXC},tR:{value:TXR},uPh:{value:0},uFo:{value:0},uZ:{value:new THREE.Vector4()},uB:{value:new THREE.Vector2()},uC:{value:new THREE.Vector3(0,0,1)},uSky:{value:new THREE.Color(HX(PAL.sky))},uNf:{value:0}},
  vertexShader:'varying vec3 vP;void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
- fragmentShader:`uniform sampler2D tG,tC,tR;uniform float uPh,uFo;uniform vec4 uZ;uniform vec2 uB;uniform vec2 uC;uniform vec3 uSky;uniform float uNf;varying vec3 vP;
+ fragmentShader:`uniform sampler2D tG,tC,tR;uniform float uPh,uFo;uniform vec4 uZ;uniform vec2 uB;uniform vec3 uC;uniform vec3 uSky;uniform float uNf;varying vec3 vP;
  float band(float z,float z0,float L,float f){if(L<=0.)return 0.;float s=z0-z;return smoothstep(-f*.5,f*.5,s)*smoothstep(-f*.5,f*.5,L-s);}
  void main(){
   if(abs(vP.x)<7.)discard;
   if(uB.y>0.&&abs(vP.x)<38.&&vP.z<uB.x&&vP.z>uB.x-uB.y)discard;
-  if(uC.y>0.&&vP.x<-9.&&vP.z<uC.x&&vP.z>uC.x-uC.y)discard;
+  if(uC.y>0.&&vP.x*uC.z<-9.&&vP.z<uC.x&&vP.z>uC.x-uC.y)discard;
   vec2 uv=vec2(vP.x,vP.z-uPh)/24.;
   vec3 g=texture2D(tG,uv).rgb;g=mix(g,g*vec3(.62,.8,.66),uFo);
   vec3 c=texture2D(tC,uv).rgb,r=texture2D(tR,uv).rgb;
@@ -2982,7 +3547,7 @@ function groundUpdate(rdt){const U=GMT.uniforms,zc=zn&&zn.type==='city'?zn:null,
  forK+=((dist<forU?1:0)-forK)*Math.min(1,rdt*.8);U.uFo.value=forK;
  U.uZ.value.set(zc?zc.g.position.z:0,zc?zc.L:0,zt?zt.g.position.z+MTE:0,zt?zt.L+2*MTE:0);
  U.uB.value.set(zb?zb.g.position.z:0,zb?zb.L:0);
- {const zk=zn&&zn.type==='coast'?zn:null;U.uC.value.set(zk?zk.g.position.z:0,zk?zk.L:0)}
+ {const zk=zn&&(zn.type==='coast'||zn.type==='munte')?zn:null;U.uC.value.set(zk?zk.g.position.z:0,zk?zk.L:0,zk&&zk.mir||1)}
  {const NN=(window.nightK||0)*(1-Math.min(1,tunK*2));U.uSky.value.copy(scene.background);RTN.value=Math.max(Math.min(1,tunK*2),NN);GMT.uniforms.uNf.value=NN}scenUpdate(rdt)}
 
 /* ===== elicopter de stiri ===== */
@@ -3029,9 +3594,11 @@ function heliStep(dt){const h=heli;hlCd=Math.max(0,hlCd-dt);if(!h.on||!(dt>0))re
  h.nl=h.nl||0;h.nl+=((nt>0&&state==='run'&&!h.leaving?1:0)-h.nl)*Math.min(1,dt*(nt>0?1.4:.6));
  h.px+=(px-h.px)*Math.min(1,dt*1.1*(1-.75*h.nl));heliOrb(h.t,_ho0);heliOrb(h.t+.1,_ho1);
  let tx=h.px*.8+_ho0[0],tz=_ho0[1]+32*h.nl,ty=_ho0[2];const fx=(_ho1[0]-_ho0[0])*10,fz=(_ho1[1]-_ho0[1])*10;
+ /* padure: elicopterul te urmareste deasupra copacilor (cei mai inalti ~48), mai in fata ca sa ramana in cadru; urcarea/coborarea e treptata */
+ {const inF=forU>0&&dist<forU+1100&&!h.leaving?1:0;h.fK=(h.fK||0)+(inF-(h.fK||0))*Math.min(1,dt*.7);if(h.fK>.001){ty=ty+(60-ty)*h.fK;tz-=85*h.fK}}
  /* tunel / pod / oras: elicopterul urca deasupra lor, fara salt brusc (altitudinea tinta e filtrata) */
- if(zn){const zh=Math.max(tz,h.z),lim=zn.type==='tunnel'?70:zn.type==='city'?90:zn.type==='bridge'?26:15,near=Math.abs(tx)<lim||Math.abs(h.x)<lim;
-  if(near&&zn.g.position.z+(zn.type==='tunnel'?60:0)>zh-v*2.4-10&&zn.g.position.z-zn.L-(zn.type==='tunnel'?60:0)<zh+12)ty=Math.max(ty,zn.type==='tunnel'?48:zn.type==='city'?125:zn.type==='bridge'?56:20)}
+ if(zn){const zh=Math.max(tz,h.z),lim=zn.type==='tunnel'?70:zn.type==='city'?90:zn.type==='bridge'?26:zn.type==='munte'?60:15,near=Math.abs(tx)<lim||Math.abs(h.x)<lim;
+  if(near&&zn.g.position.z+(zn.type==='tunnel'?60:0)>zh-v*2.4-10&&zn.g.position.z-zn.L-(zn.type==='tunnel'?60:0)<zh+12)ty=Math.max(ty,zn.type==='tunnel'?48:zn.type==='city'?125:zn.type==='bridge'?56:zn.type==='munte'?48:20)}
  if(zn&&zn.type==='rail'){const zh=Math.max(tz,h.z),zp=zn.g.position.z;if((Math.abs(tx)<55||Math.abs(h.x)<55)&&zp+95>zh-v*2.4-10&&zp-zn.L-RLE-95<zh+12)ty=Math.max(ty,96)}
  h.tyS+=(ty-h.tyS)*Math.min(1,dt*1.3);ty=h.tyS;
  let vdx,vdy,vdz,kv;
@@ -3373,7 +3940,7 @@ function heliPolStep(dt){const h=heli;
  const bm=false;if(h.on&&state==='run'){const dd=Math.hypot(h.x-px,h.y,h.z);if(dd<34)shake=Math.max(shake,.045*(1-dd/34))}hBeam.visible=hSpot.visible=hRing.visible=bm;
  if(bm){hSx+=(px-hSx)*Math.min(1,dt*3);const hp=h.g.position,sx=hSx,sz=-5,d=Math.hypot(sx-hp.x,hp.y,sz-hp.z);
   hBeam.position.set(hp.x,hp.y-.8,hp.z);hBeam.scale.set(1,1,d);hBeam.lookAt(sx,.05,sz);hSpot.position.set(sx,.05,sz);hRing.position.set(sx,.06,sz)}}
-function resetExtras(){crOn=null;crFly=false;crTg=null;forU=0;forK=0;rbs.length=0;rbT=4;if(zn){scene.remove(zn.g);zn=null}zoneTrees();znFirst=0;znT=CFG.first?400:2150+Math.random()*3000;znN=0;envK=0;tunK=0;envType='tunnel';envC.copy(ZC0);scene.background.copy(ZC0);scene.fog.color.copy(ZC0);scene.fog.near=FOGN;scene.fog.far=FOGF;
+function resetExtras(){crOn=null;crFly=false;crTg=null;forU=0;forK=0;window.FSTU=0;window.fstReset&&window.fstReset();rbs.length=0;rbT=4;if(zn){scene.remove(zn.g);zn=null}zoneTrees();znFirst=0;znT=CFG.first?400:2150+Math.random()*3000;znN=0;envK=0;tunK=0;envType='tunnel';envC.copy(ZC0);scene.background.copy(ZC0);scene.fog.color.copy(ZC0);scene.fog.near=FOGN;scene.fog.far=FOGF;
  heli.on=false;heli.leaving=false;heli.g.visible=false;hlT=16;hlCd=0;polReset();fireClear();yjT=0;YJ.forEach(f=>f.g.visible=false);heliPolHide();$('gr').classList.remove('on');$('tv').classList.remove('on');RF.length=0;RPR.clear();RPon=false;RPf=null;document.body.classList.remove('rp')}
 
 /* ===== RIVAL: masina sport (max 175 km/h) care apare langa tine si te provoaca la o cursa de 4-5 km =====
@@ -3709,7 +4276,7 @@ reset();requestAnimationFrame(frame);
   if(zn&&zn.type==='tunnel')for(let zz=-4;zz>-170;zz-=10){const lz=zz-zn.g.position.z;if(lz<-zn.L||lz>0)continue;L(0,0,zz,7,.4,1)}
  }})();
 </script><script>
-(()=>{const mm=$('mm'),P={main:$('m-main'),mode:$('m-mode'),skin:$('m-skin'),set:$('m-set')},ref=[],rows=$('m-rows'),sw=$('m-sw');let paused=false,tmp=0,rest=0;
+(()=>{const mm=$('mm'),P={main:$('m-main'),mode:$('m-mode'),skin:$('m-skin'),set:$('m-set'),cp:$('m-cp'),cpp:$('m-cpp')},ref=[],rows=$('m-rows'),sw=$('m-sw');let paused=false,tmp=0,rest=0;
 let SKAN=.55,drag=null,inG=0,SKH=0,SKT=0;
 /* garaj 3D: scena separata, masina e mutata aici cat timp esti in Garaj */
 const GARS=new THREE.Scene();GARS.background=new THREE.Color(0x16100b);GARS.fog=new THREE.Fog(0x16100b,15,46);
@@ -4116,8 +4683,9 @@ function show(n){mm.classList.toggle('mp',n==='mode');window.mdOn&&window.mdOn(n
  if(n==='skin'&&fp){rest=1;tmp=1;$('cv').click();tmp=0}
  mm.classList.remove('h');mm.classList.toggle('sk',n==='skin');for(const k in P)P[k].hidden=k!==n;
  window.SKPREV=n==='skin';if(n==='skin'&&!inG){inG=1;GARS.add(pc.g)}else if(n!=='skin'&&inG){inG=0;scene.add(pc.g)}
+ if(n==='skin'&&window.gcOpen)gcOpen();if(n!=='skin'&&window.gcLeave)gcLeave();
  document.body.classList.toggle('skp',n==='skin');if(n!=='skin'){cam.clearViewOffset();cam.updateProjectionMatrix()}
- if(n==='main'){const S=ldS();$('m-rec').textContent='Record: '+S.s+' depășiri · '+km(S.d);$('m-play').textContent=paused?'Continuă':'Joacă';$('m-quit').hidden=!paused}}
+ if(n==='cp'&&window.cpOpen)cpOpen();if(n==='cpp'&&window.cpOpenP)cpOpenP();if(n==='main'&&window.cpBadge)cpBadge();if(n==='main'){const S=ldS();$('m-rec').textContent='Record: '+S.s+' depășiri · '+km(S.d);$('m-play').textContent=paused?'Continuă':'Joacă';$('m-quit').hidden=!paused}}
 const hide=()=>mm.classList.add('h');
 function row(l,c,u){const r=document.createElement('div');r.className='rw';const e=document.createElement('span');e.textContent=l;r.append(e,c);rows.append(r);ref.push(u);u()}
 function seg(l,o,g,s){const d=document.createElement('div');d.className='sg';const bs=o.map((t,i)=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{s(i);saveCFG();sync()};d.append(b);return b});row(l,d,()=>bs.forEach((b,i)=>b.classList.toggle('on',i===g())))}
@@ -4137,41 +4705,50 @@ seg('Începe cu',['Zi','Noapte'],()=>DN.start?1:0,i=>DN.start=i===1?1:0);
 seg('Schimbare',['O dată','Repetat'],()=>DN.loop?1:0,i=>DN.loop=i===1);
 step('Durată zi/noapte',()=>DN.period,v=>DN.period=v,30,180,30,v=>v+' s');
 seg('Grafică',['Joasă','Medie','Înaltă'],()=>CFG.gfx,i=>{CFG.gfx=i;renderer.setPixelRatio(PR());size();if((VIEWS[i]||VIEWS[2])!==VIEW&&typeof showTip==='function')showTip('Distanța de vizibilitate se aplică la reîncărcarea paginii')});
-{const ZO=['Aleatoriu','🚇 Tunel','🌉 Pod','🌲 Pădure','🏙️ Oraș','🌊 Coastă','🚆 Pădure + tren'],d=document.createElement('div'),b=document.createElement('button');d.className='sg';b.onclick=()=>{CFG.first=(CFG.first+1)%7;saveCFG();sync()};d.append(b);row('Prima zonă',d,()=>{b.textContent=ZO[CFG.first];b.classList.add('on')})}
+{const ZO=['Aleatoriu','🚇 Tunel','🌉 Pod','🌲 Pădure','🏙️ Oraș','🌊 Coastă','🚆 Pădure + tren','⛰️ Munte'],d=document.createElement('div'),b=document.createElement('button');d.className='sg';b.onclick=()=>{CFG.first=(CFG.first+1)%8;saveCFG();sync()};d.append(b);row('Prima zonă',d,()=>{b.textContent=ZO[CFG.first];b.classList.add('on')})}
 $('cv').addEventListener('click',()=>{if(!tmp){CFG.cam=fp?1:0;saveCFG();sync()}});
 
 /* ===== skin-uri cu efecte: gradient animat pe caroserie (culori pe varfuri) + particule ===== */
 const GM=new THREE.MeshBasicMaterial({vertexColors:true}),CC=new THREE.Color();let FXC=null,SC=[],GP=[],TT=0,cur=0,acc=0;
-const N=140,pg=new THREE.BufferGeometry(),pP=new Float32Array(N*3),pC=new Float32Array(N*3),pS=new Float32Array(N),pA=new Float32Array(N),lf=new Float32Array(N),ag=new Float32Array(N),vl=new Float32Array(N*3),kd=new Uint8Array(N),bc=new Float32Array(N*3),ss=new Float32Array(N),rc=Math.random;
+const N=230,pg=new THREE.BufferGeometry(),pP=new Float32Array(N*3),pC=new Float32Array(N*3),pS=new Float32Array(N),pA=new Float32Array(N),lf=new Float32Array(N),ag=new Float32Array(N),vl=new Float32Array(N*3),kd=new Uint8Array(N),bc=new Float32Array(N*3),ss=new Float32Array(N),pQ=new Float32Array(N),rc=Math.random;
 for(let i=0;i<N;i++)pP[i*3+1]=-100;
-pg.setAttribute('position',new THREE.BufferAttribute(pP,3));pg.setAttribute('cl',new THREE.BufferAttribute(pC,3));pg.setAttribute('sz',new THREE.BufferAttribute(pS,1));pg.setAttribute('al',new THREE.BufferAttribute(pA,1));
+pg.setAttribute('position',new THREE.BufferAttribute(pP,3));pg.setAttribute('cl',new THREE.BufferAttribute(pC,3));pg.setAttribute('sz',new THREE.BufferAttribute(pS,1));pg.setAttribute('sq',new THREE.BufferAttribute(pQ,1));pg.setAttribute('al',new THREE.BufferAttribute(pA,1));
 const U={uS:{value:600}},PT=new THREE.Points(pg,new THREE.ShaderMaterial({uniforms:U,transparent:true,depthWrite:false,
- vertexShader:'attribute vec3 cl;attribute float sz;attribute float al;uniform float uS;varying vec3 vC;varying float vA;void main(){vC=cl;vA=al;vec4 mv=modelViewMatrix*vec4(position,1.);gl_PointSize=max(1.,sz*uS/-mv.z);gl_Position=projectionMatrix*mv;}',
- fragmentShader:'varying vec3 vC;varying float vA;void main(){float r=length(gl_PointCoord-.5);if(r>.5||vA<.01)discard;vec3 c=r>.36?vec3(.1,.106,.227):vC;gl_FragColor=vec4(c,min(1.,vA*1.5));}'}));PT.frustumCulled=false;
+ vertexShader:'attribute vec3 cl;attribute float sz;attribute float al;attribute float sq;uniform float uS;varying vec3 vC;varying float vA;varying float vQ;void main(){vC=cl;vA=al;vQ=sq;vec4 mv=modelViewMatrix*vec4(position,1.);gl_PointSize=max(1.,sz*uS/-mv.z);gl_Position=projectionMatrix*mv;}',
+ fragmentShader:'varying vec3 vC;varying float vA;varying float vQ;void main(){float r=length(gl_PointCoord-.5);if(vQ>1.5){vec2 q=abs(gl_PointCoord-.5);if(pow(q.x,.6)+pow(q.y,.6)>.66||vA<.01)discard;gl_FragColor=vec4(mix(vC,vec3(1.),.75-smoothstep(0.,.5,r)),min(1.,vA*1.6));return;}if((vQ<.5&&r>.5)||vA<.01)discard;vec3 c=(vQ<.5&&r>.36)?vec3(.1,.106,.227):vC;gl_FragColor=vec4(c,min(1.,vA*1.5));}'}));PT.frustumCulled=false;
 function gcol(u,f){if(f.rb){CC.setHSL(((u%1)+1)%1,.85,.58);return}const n=SC.length,x=(((u%1)+1)%1)*n,i=x|0,t=x-i,a=SC[i%n],b=SC[(i+1)%n];CC.r=a.r+(b.r-a.r)*t;CC.g=a.g+(b.g-a.g)*t;CC.b=a.b+(b.b-a.b)*t}
-function grad(T){const f=FXC;if(!f)return;for(const m of GP){const ps=m.geometry.attributes.position,cs=m.geometry.attributes.color,mp=m.position;for(let j=0;j<ps.count;j++){gcol((ps.getZ(j)+mp.z+2.3)/4.6+(ps.getY(j)+mp.y)*.15+T*(f.spd||.1),f);cs.setXYZ(j,CC.r,CC.g,CC.b)}cs.needsUpdate=true}}
-function spawn(f){let i=-1;for(let k=0;k<N;k++){const j=(cur+k)%N;if(lf[j]<=0){i=j;break}}if(i<0)return;cur=i+1;const o=pc.g.position,p=f.p;let x,y,z,vx=0,vy=0,vz=0,L,s,k=1;
+function grad(T){const f=FXC;if(!f)return;for(const m of GP){const ps=m.geometry.attributes.position,cs=m.geometry.attributes.color,mp=m.position;for(let j=0;j<ps.count;j++){gcol((ps.getZ(j)+mp.z+2.3)/4.6+(ps.getY(j)+mp.y)*.15+T*(f.spd||.1),f);if(f.shine){const w=(ps.getZ(j)+mp.z+2.3)/4.6+(ps.getX(j)+mp.x)*.22,d=w-(((T*.5)%2.4)-.7),k=Math.max(0,1-Math.abs(d)/.13)*.9;if(k>0){CC.r+=(1-CC.r)*k;CC.g+=(.98-CC.g)*k;CC.b+=(.78-CC.b)*k}}cs.setXYZ(j,CC.r,CC.g,CC.b)}cs.needsUpdate=true}}
+function spawn(f,bur){let i=-1;for(let k=0;k<N;k++){const j=(cur+k)%N;if(lf[j]<=0){i=j;break}}if(i<0)return;cur=i+1;const o=pc.g.position,p=f.p;let x,y,z,vx=0,vy=0,vz=0,L,s,k=1;
  if(p==='spark'){x=o.x+(rc()-.5)*2.2;y=o.y+.3+rc()*1.6;z=o.z+(rc()-.5)*4.6;vy=.5+rc()*.8;L=.8+rc()*.7;s=.3+rc()*.2;k=0}
  else if(p==='flame'){x=o.x+(rc()<.5?-.55:.55);y=o.y+.5;z=o.z+2.3;vx=rc()-.5;vy=1+rc()*1.5;vz=2+rc()*3;L=.35+rc()*.3;s=.5+rc()*.3}
+ else if(p==='gold'){const r=rc();x=o.x+(rc()-.5)*3.4;y=o.y+.3+rc()*1.9;z=o.z+(rc()-.5)*4+.4;vx=(rc()-.5)*.3;vy=.15+rc()*.4;L=1.1+rc()*1;s=.05+rc()*.06;k=3;
+  if(bur){x=o.x;y=o.y+.8;z=o.z;vx=(rc()-.5)*9;vy=1+rc()*5;vz=(rc()-.5)*9;L=.8+rc()*.9;s=.14+rc()*.2;k=rc()<.55?4:5}
+  else if(r>.72){x=o.x+(rc()<.5?-.55:.55);y=o.y+.45;z=o.z+2.4;vx=(rc()-.5)*1.2;vy=.2+rc()*.8;vz=1.5+rc()*3.5;L=.35+rc()*.4;s=.09+rc()*.06;k=5}
+  else if(r>.45){L=.5+rc()*.5;s=.22+rc()*.18;vy=.1;k=4}}
+ else if(p==='glitter'){x=o.x+(rc()-.5)*3.8;y=o.y+.2+rc()*2.3;z=o.z+(rc()-.5)*3.2+1;vx=(rc()-.5)*.3;vy=.15+rc()*.35;L=1.1+rc()*1.1;s=.05+rc()*.06;k=3}
  else{x=o.x+(rc()<.5?-.85:.85);y=o.y+.25;z=o.z+1.8+rc()*.6;vy=.3;L=1.1;s=.4;k=2}
- if(f.rb)CC.setHSL(rc(),.9,.6);else if(f.pc)CC.set(f.pc[(rc()*f.pc.length)|0]);else CC.setRGB(1,.85,.2);
- pP.set([x,y,z],i*3);vl.set([vx,vy,vz],i*3);bc.set([CC.r,CC.g,CC.b],i*3);lf[i]=L;ag[i]=0;kd[i]=k;ss[i]=s}
-function skFx(dt){const f=FXC;TT+=dt;if(f&&GP.length)grad(TT);const par=pc.g.parent;if(par&&PT.parent!==par)par.add(PT);
- if(f&&f.p&&pc.g.visible&&!pc.dead){acc+=({spark:16,flame:46,trail:34})[f.p]*dt;let n=0;while(acc>=1&&n++<6){acc--;spawn(f)}}else acc=0;
+ if(f.rb)CC.setHSL(rc(),.9,.6);else if(k===4)CC.set(rc()<.5?'#fff6c8':'#ffe27a');else if(k===5)CC.set(rc()<.5?'#ffb52e':'#ffe27a');else if(f.pc)CC.set(f.pc[(rc()*f.pc.length)|0]);else CC.setRGB(1,.85,.2);
+ pP.set([x,y,z],i*3);vl.set([vx,vy,vz],i*3);bc.set([CC.r,CC.g,CC.b],i*3);lf[i]=L;ag[i]=0;kd[i]=k;ss[i]=s;pQ[i]=k===4?2:(k===3||k===5)?1:0}
+let NGt=0;window.goldBurst=()=>{const f=FXC;if(f&&f.gold)for(let i=0;i<46;i++)spawn(f,1)};
+function skFx(dt){const f=FXC;TT+=dt;{const gn=f&&f.gold?1:0;if(gn!==NGt){NGt=gn;const q=NF[0];q.o.material.color.set(gn?0xffc233:0x2f9bff);q.i.material.color.set(gn?0xfff4c8:0xeaf7ff);q.r.material.color.set(gn?0xffa01a:0xff7a1a)}}if(f&&GP.length)grad(TT);const par=pc.g.parent;if(par&&PT.parent!==par)par.add(PT);
+ if(f&&f.p&&pc.g.visible&&!pc.dead){acc+=(f.p==='gold'?60+80*Math.min(1,(state==='run'?v:0)/55):({spark:16,flame:46,trail:34,glitter:48})[f.p])*dt;let n=0;while(acc>=1&&n++<6){acc--;spawn(f)}}else acc=0;
  const sc=window.SKPREV?5:(state==='run'||state==='crash'?v:8);
  for(let i=0;i<N;i++){if(lf[i]<=0)continue;ag[i]+=dt;const u=ag[i]/lf[i];if(u>=1){lf[i]=0;pP[i*3+1]=-100;pA[i]=0;continue}
   pP[i*3]+=vl[i*3]*dt;pP[i*3+1]+=vl[i*3+1]*dt;pP[i*3+2]+=(vl[i*3+2]+sc)*dt;let r=bc[i*3],g=bc[i*3+1],b=bc[i*3+2],a=1,z=ss[i];
-  if(kd[i]===0)a=Math.sin(Math.PI*u);else if(kd[i]===1){r=1;g=.85-.55*u;b=.2-.1*u;a=1-u*.8;z*=1-.5*u}else a=1-u;
+  if(kd[i]===4){a=Math.sin(Math.PI*u);z*=.5+.9*Math.sin(Math.PI*u)}else if(kd[i]===3){a=Math.sin(Math.PI*u)*(.4+.6*Math.abs(Math.sin(ag[i]*13+i*1.7)));z*=.7+.3*Math.sin(ag[i]*17+i)}else if(kd[i]===0)a=Math.sin(Math.PI*u);else if(kd[i]===1){r=1;g=.85-.55*u;b=.2-.1*u;a=1-u*.8;z*=1-.5*u}else a=1-u;
   pC[i*3]=r;pC[i*3+1]=g;pC[i*3+2]=b;pA[i]=a;pS[i]=z}
  for(const k in pg.attributes)pg.attributes[k].needsUpdate=true;U.uS.value=innerHeight*renderer.getPixelRatio()/(2*Math.tan(cam.fov*Math.PI/360))}
 window.skFx=dt=>{skFx(dt);if(window.SKPREV&&window.garUpd)window.garUpd(dt)};
 const RUG=new THREE.Group();ck.add(RUG);box(.42,.025,.28,.5,.9525,-.78,colMat('#a33a2c',0),LB,RUG);box(.34,.012,.06,.5,.97,-.78,colMat('#f1e4c0',0),LB,RUG);RUG.visible=false;
-function applySkin(i){RUG.visible=i===19;setCharm(i);RIMST=SKR[((i%SKR.length)+SKR.length)%SKR.length];skAcc(i);const k=SKINS[i]||SKINS[0];for(const m of GP)if(m.userData.og){m.geometry.dispose();m.geometry=m.userData.og;m.userData.og=null}GP=[];paintPC(k.q);FXC=k.fx||null;
+function applySkin(i){RUG.visible=i===19;setCharm(window.gcCharm?gcCharm(i):((window.cpEq&&(cpEq('ch')||{}).v!=null?cpEq('ch').v:((SKINS[i]||{}).ch!=null?SKINS[i].ch:i))));RIMST=(window.cpEq&&(cpEq('rm')||{}).v)||SKR[((i%SKR.length)+SKR.length)%SKR.length];skAcc(i);const k=SKINS[i]||SKINS[0];for(const m of GP)if(m.userData.og){m.geometry.dispose();m.geometry=m.userData.og;m.userData.og=null}GP=[];paintPC(k.q);FXC=k.fx||(window.cpEq&&(cpEq('tr')||{}).v)||null;
  if(FXC&&(FXC.g||FXC.rb)){SC=(FXC.g||[]).map(c=>new THREE.Color(c));const F=(w,h,l)=>PBODY.children.find(m=>m.isMesh&&m.geometry.parameters&&m.geometry.parameters.width===w&&m.geometry.parameters.height===h&&m.geometry.parameters.depth===l);
   for(const m of[F(1.9,.42,4.4),F(1.7,.14,1.7),F(1.86,.14,1.1),F(1.42,.1,1.4),F(2.1,.07,.7)]){if(!m)continue;const og=m.geometry,g=og.clone();g.parameters=og.parameters;g.setAttribute('color',new THREE.BufferAttribute(new Float32Array(og.attributes.position.count*3),3));m.userData.og=og;m.geometry=g;m.material=GM;for(const c of m.children)if(c.isLineSegments)c.material=LB;GP.push(m)}grad(0)}}
-const mark=()=>{[...sw.children].forEach(b=>b.classList.toggle('on',+b.dataset.i===CFG.skin));$('m-sn').textContent=((SKINS[CFG.skin]||SKINS[0]).fx?'✨ ':'')+'Skin: '+(SKINS[CFG.skin]||SKINS[0]).n};
+let pvS=-1,gTab='s';window.__pvC=null;
+const mark=()=>{[...sw.children].forEach(b=>{const i=+b.dataset.i;b.classList.toggle('on',i===CFG.skin);b.classList.toggle('pv',i===pvS)});window.gcMark&&gcMark()};
 const FANT=[8,9,10,11,12,14,15],ORD=[...SKINS.keys()].filter(i=>!FANT.includes(i)).concat(FANT.filter(i=>i<SKINS.length));
-ORD.forEach(i=>{const k=SKINS[i];const b=document.createElement('button');b.dataset.i=i;b.setAttribute('aria-label',k.n);b.style.background=k.sw||'linear-gradient(135deg,'+k.q.base+' 50%,'+k.q.a+' 50%)';if(k.fx)b.className='fx';b.onclick=()=>{CFG.skin=i;saveCFG();applySkin(i);mark()};sw.append(b)});mark();
+ORD.forEach(i=>{const k=SKINS[i];const b=document.createElement('button');b.dataset.i=i;b.setAttribute('aria-label',k.n);b.style.background=k.sw||'linear-gradient(135deg,'+k.q.base+' 50%,'+k.q.a+' 50%)';if(k.fx)b.className='fx';
+ /* skin blocat: doar previzualizare in garaj (nu se echipeaza); skin deblocat: se echipeaza */
+ b.onclick=()=>{if(window.cpLocked&&cpLocked(i)){pvS=i;applySkin(i);mark();return}pvS=-1;CFG.skin=i;saveCFG();applySkin(i);mark()};sw.append(b)});mark();
 const setP=v=>{paused=v;window.PAUSED=v;if(AC)v?AC.suspend():AC.resume()};
 function pause(){if(state!=='run'||paused)return;setP(true);show('main')}
 $('pz').onclick=pause;
@@ -4344,6 +4921,188 @@ addEventListener('contextmenu',e=>e.preventDefault());
 const er=document.createElement('div');er.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:99;background:#ff5a3c;color:#1a1b3a;border:2px solid #1a1b3a;border-radius:10px;padding:6px 10px;font:700 12px/1.3 system-ui,sans-serif;display:none';document.body.append(er);
 window.showErr=m=>{er.textContent='⚠ '+m;er.style.display='block';clearTimeout(window.__et);window.__et=setTimeout(()=>er.style.display='none',12000)};
 addEventListener('error',e=>showErr(e.message+' (linia '+e.lineno+')'));
+/* ===== CAR PASS: XP, nivele, recompense, premium ===== */
+{const CPX=2000,CPN=30,CPEND=new Date(2026,10,16,23,59,59),PRICE='',
+ CPS=(()=>{let o={};try{o=JSON.parse(LS.g('cp')||'{}')||{}}catch(e){}return{x:Math.max(0,+o.x||0),f:Array.isArray(o.f)?o.f:[],q:Array.isArray(o.q)?o.q:[],p:!!o.p}})(),
+ cpSave=()=>LS.s('cp',JSON.stringify(CPS)),fmt=n=>String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' '),
+ TR=(n,c)=>({t:'tr',n,k:'tr',c:c[0],v:{p:'trail',pc:c}}),RM=(n,s)=>({t:'rm',n,k:'rm',c:'#5aa9ff',v:s}),
+ CH=(n,i,k,c)=>({t:'ch',n,k:k||'st',c:c||'#ffc233',v:i}),SKN=(n,i,c)=>({t:'sk',n,k:'sk',c,v:i}),
+ FREE=[CH('Farmec potcoavă',21,'st','#c9ced8'),TR('Urmă fum',['#cfd3da','#fff4de']),RM('Jante inel','ring'),CH('Farmec fulger',4,'tr'),TR('Urmă verde',['#77be68','#d6f0c8']),
+  CH('Con aurit',CH_CONG,'con','#ffc233'),TR('Urmă nitro',['#5aa9ff','#cfe6ff']),CH('Con roșu',CH_CONR,'con','#ff5a3c'),TR('Urmă aurie',['#ffc233','#ffe9a0']),SKN('Skin de sezon',SK_SEZ,'#ff9d2e'),
+  RM('Jante octogon','octa'),CH('Farmec flacără',9,'tr','#ff9d2e'),TR('Urmă roz',['#ff8fb1','#ffe0ea']),RM('Jante turbo','turbo'),CH('Farmec cronometru',20,'st','#d6232a'),
+  TR('Urmă mov',['#b06cff','#e5d0ff']),RM('Jante prismă','prism'),CH('Farmec ancoră',11,'st','#ffc233'),TR('Urmă cyan',['#00f0ff','#d6fdff']),RM('Jante roată','wheel'),
+  CH('Farmec curcubeu',10,'st','#ff5a3c'),TR('Urmă portocalie',['#ff9d2e','#ffd9a8']),RM('Jante cruce','cross'),CH('Farmec cheie veche',22,'st','#c9a23a'),TR('Urmă curcubeu',['#ff5a3c','#ffc233','#77be68','#5aa9ff','#b06cff']),
+  RM('Jante pentagon','pent'),CH('Farmec craniu',5,'st','#fff4de'),TR('Urmă lavă',['#ff5a3c','#ff9d2e','#ffd24a']),RM('Jante dublu 5','dbl5'),CH('Farmec piramidă',6,'st','#5aa9ff')],
+ PREM=[CH('Farmec ciupercă',15,'st','#e8392b'),TR('Urmă cer',['#9fd6ff','#fff4de']),RM('Jante oțel','steel'),CH('Farmec casetă',13,'st','#ff2d95'),TR('Urmă roz neon',['#ff2d95','#ffd0ea']),
+  RM('Jante stea','star'),SKN('Skin Pădurar',SK_PAD,'#77be68'),CH('Farmec stea',0,'st','#fff'),RM('Jante hexagon','hive'),SKN('Skin Aur',SK_AUR,'#d4af4f'),
+  TR('Urmă smarald',['#2f9e6a','#c8f0dc']),CH('Farmec fantomă',12,'st','#e8f0ff'),RM('Jante spițe','wire'),TR('Urmă flacără',['#ff5a3c','#ffd24a']),CH('Farmec broscuță',14,'st','#7ed957'),
+  RM('Jante piuliță','nut'),TR('Urmă argint',['#d1cbc7','#ffffff']),CH('Farmec placă',16,'st','#a9afb7'),RM('Jante multi','multi'),TR('Urmă aur dublu',['#ffc233','#fff4de','#d4af4f']),
+  CH('Farmec volan',18,'st','#1a1a1f'),RM('Jante pline','solid'),TR('Urmă ultramarin',['#2f4bff','#c9d3ff']),CH('Farmec inimă',2,'st','#ff5a3c'),RM('Jante șase brațe','six'),
+  TR('Urmă roșie',['#e8392b','#ffd0c9']),CH('Farmec zar',1,'st','#fff4de'),RM('Jante cadru','sq'),TR('Urmă aurorală',['#00f0ff','#b06cff','#ff2d95']),CH('Breloc dragon',CH_DRG,'st','#e8452c')],
+ SV=(c,p)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="${c}" stroke="#1a1b3a" stroke-width="2" stroke-linejoin="round" aria-hidden="true">${p}</svg>`,
+ ICO={st:c=>SV(c,'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-2.9-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>'),con:c=>SV(c,'<path d="M12 3l6 15H6z"/><path d="M4 21h16"/>'),tr:c=>SV(c,'<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>'),sk:c=>SV(c,'<path d="M3 16l2-7h14l2 7v3H3z"/>'),
+  rm:c=>SV(c,'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="#fff4de"/>')},
+ PASSK={[SK_SEZ]:[0,10],[SK_PAD]:[1,7],[SK_AUR]:[1,10]},
+ lvl=()=>Math.min(CPN,Math.floor(CPS.x/CPX)+1),own=(q,L)=>q?CPS.p&&CPS.q.includes(L):CPS.f.includes(L),
+ rewOf=id=>id?(id[0]==='q'?PREM:FREE)[+id.slice(1)-1]:null,
+ eqId=s=>{const id=(CFG.cr||{})[s];return id&&own(id[0]==='q',+id.slice(1))?id:null};
+window.cpEq=s=>rewOf(eqId(s));
+window.cpLocked=i=>{const k=PASSK[i];return !!k&&!own(!!k[0],k[1])};
+let tt=0;window.cpToast=m=>{const e=$('cp-t');e.textContent=m;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),2000)};
+const eqNow=(q,L,r)=>r.t==='sk'?CFG.skin===r.v:r.t==='ch'?CFG.charm===r.v:eqId(r.t)===(q?'q':'f')+L;
+function card(q,L){const r=(q?PREM:FREE)[L-1],cur=lvl(),got=own(q,L);let c='cpc',sub='',b='';
+ if(q&&!CPS.p){c+=L<=cur?' lk':' pm';sub='Premium'}else if(got){c+=' ok';sub=eqNow(q,L,r)?'✓ Echipat':'Revendicat · alege'}else if(L<=cur){c+=' rd';b='<span class="cpg">Revendică</span>'}else sub='Nivel '+L;
+ return`<div class="${c}${L%10===0?' big':''}" data-t="${q}" data-l="${L}" role="button" tabindex="0"><div class="cpi${TH[(q?'q':'f')+L]?' t3':''}">${TH[(q?'q':'f')+L]?'<img alt="" src="'+TH[(q?'q':'f')+L]+'" style="width:100%;height:100%;object-fit:contain;display:block">':ICO[r.k](r.c)}</div><div><b>${r.n}</b>${sub?'<em>'+sub+'</em>':''}${b}</div></div>`}
+function cpSw(){[...sw.children].forEach(b=>b.classList.toggle('cplk',cpLocked(+b.dataset.i)))}
+window.cpBadge=()=>{$('m-cpl').textContent='Nv '+lvl()};
+function cpRender(){const L=lvl(),mx=L>=CPN,xi=mx?CPX:CPS.x%CPX;
+ $('cp-lv').textContent=L;$('cp-nx').textContent=mx?'Nivel maxim':'Spre nivelul '+(L+1);$('cp-xp').textContent=mx?'Complet':fmt(xi)+' / '+fmt(CPX)+' XP';$('cp-bar').style.width=(xi/CPX*100)+'%';
+ const d=Math.ceil((CPEND-Date.now())/864e5);$('cp-d').textContent=d>0?d+(d===1?' zi':' zile'):'Final de sezon';
+ let h='';for(let n=1;n<=CPN;n++)h+=`<div class="cpr" id="cpr${n}"><div class="cpl${n===L?' now':n<L?' dn':''}${n%10===0?' bg':''}">${n}</div>${card(0,n)}${card(1,n)}</div>`;
+ $('cp-list').innerHTML=h;if(!TH.done&&!TH.busy)setTimeout(thAll,80);$('cp-prem').hidden=CPS.p;$('cp-pb').style.opacity=CPS.p?1:.55;cpSw();cpBadge()}
+window.cpOpen=()=>{cpRender();requestAnimationFrame(()=>{const e=$('cpr'+Math.max(1,lvl()-1)),pn=P.cp;if(e)pn.scrollTop+=e.getBoundingClientRect().top-pn.getBoundingClientRect().top-170})};
+window.cpOpenP=()=>{$('cpp-l').textContent=lvl();$('cpp-g').innerHTML=[7,8,9,10].map(L=>{const r=PREM[L-1];return`<div class="cpc${L===10?' dk':''}"><div class="cpi">${ICO[r.k](r.c)}</div><div><b>${r.n}</b><em>Nivel ${L}${L===10?' · Exclusiv':''}</em></div></div>`}).join('');
+ const bt=$('cpp-buy');bt.disabled=CPS.p;bt.textContent=CPS.p?'Premium activ ✓':'Deblochează Premium'+(PRICE?' · '+PRICE:'');$('cpp-free').hidden=CPS.p};
+function cpEquip(r,id,auto){CFG.cr=CFG.cr||{};
+ if(r.t==='sk'){CFG.skin=r.v;if(auto)CFG.charm=-1;saveCFG();applySkin(r.v);mark();return 1}
+ if(r.t==='ch'){let o=1;if(CFG.charm===r.v&&!auto){CFG.charm=-1;o=0}else CFG.charm=r.v;delete CFG.cr.ch;saveCFG();applySkin(CFG.skin);return o}
+ let on=1;if(CFG.cr[r.t]===id&&!auto){delete CFG.cr[r.t];on=0}else CFG.cr[r.t]=id;saveCFG();applySkin(CFG.skin);return on}
+/* ===== REVELARE 3D: ce ai câștigat în Car Pass, rotit în 3D + etichetă scurtă ===== */
+const RV={R:null,ov:null,cv:null,tg:null,nm:null,sc:null,cm:null,G:null,run:0,lt:0,t0:0,w:0,fail:0,tr:[],own:[],it:null,kk:1,tp:0,sd:1,rx:0,ry:0,rz:0};
+function rvInit(){if(RV.ov)return;const ov=document.createElement('div');ov.style.cssText='position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;background:rgba(26,27,58,.74);padding:16px;box-sizing:border-box';
+ ov.innerHTML='<div style="width:min(320px,100%);background:#fff4de;border:3px solid #1a1b3a;border-radius:18px;box-shadow:4px 4px 0 #1a1b3a;padding:12px;text-align:center;color:#1a1b3a;font-family:inherit"><div style="border:3px solid #1a1b3a;border-radius:12px;overflow:hidden;background:radial-gradient(circle at 50% 42%,#fff8e6,#ffc47a)"><canvas style="display:block;width:100%;aspect-ratio:1/1"></canvas></div><div style="font-size:11px;font-weight:800;letter-spacing:.08em;margin-top:10px;text-transform:uppercase;opacity:.7"></div><div style="font-size:22px;font-weight:900;line-height:1.1;margin:2px 0 10px"></div><button style="background:#ffc233;border:3px solid #1a1b3a;border-radius:10px;padding:7px 30px;font:900 15px inherit;color:#1a1b3a;box-shadow:2px 2px 0 #1a1b3a;cursor:pointer">OK</button></div>';
+ document.body.append(ov);RV.ov=ov;RV.cv=ov.querySelector('canvas');const d=ov.querySelectorAll('div');RV.tg=d[2];RV.nm=d[3];ov.onclick=e=>{if(e.target===ov||e.target.tagName==='BUTTON')rvClose()};
+ try{RV.R=new THREE.WebGLRenderer({canvas:RV.cv,antialias:true,alpha:true});RV.R.setPixelRatio(Math.min(devicePixelRatio||1,2));RV.cm=new THREE.PerspectiveCamera(38,1,.1,100)}catch(e){RV.fail=1}}
+function rvClose(){RV.run=0;if(RV.ov)RV.ov.style.display='none';for(const o of RV.own)o.dispose();RV.own=[];RV.tr=[];RV.sc=null}
+function rvBuild(r){const sc=new THREE.Scene(),G=new THREE.Group();sc.add(G);RV.sc=sc;RV.G=G;RV.it=r;RV.tr=[];let src,tgt=4.6;
+ if(r.t==='sk'||r.t==='tr'){src=pc.g.clone(true);src.visible=true}
+ else if(r.t==='rm'){src=pc.wh[0].clone(true);src.visible=true;RV.sd=Math.sign(pc.wh[0].position.x)||1;tgt=3.4}
+ else{src=new THREE.Group();for(const c of window.__chG.children)src.add(c.clone(true));tgt=3.4}
+ src.position.set(0,0,0);src.rotation.set(0,0,0);src.scale.set(1,1,1);
+ src.traverse(o=>{if(o.isSprite||(o.material&&!Array.isArray(o.material)&&(o.material.blending===THREE.AdditiveBlending||(o.material.transparent&&o.material.opacity<=.01))))o.visible=false});
+ G.add(src);src.updateMatrixWorld(true);const bb=new THREE.Box3();
+ src.traverse(o=>{if(!o.isMesh||!o.geometry)return;for(let p=o;p;p=p.parent)if(!p.visible)return;o.geometry.computeBoundingBox();bb.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld))});
+ if(bb.isEmpty())bb.set(new THREE.Vector3(-1,-1,-1),new THREE.Vector3(1,1,1));
+ const sz=bb.getSize(new THREE.Vector3()),ct=bb.getCenter(new THREE.Vector3()),k=tgt/(Math.max(sz.x,sz.y,sz.z)||1);src.position.sub(ct);G.scale.setScalar(k);RV.kk=k;
+ if(r.t==='tr'){const cs=(r.v.pc||['#ffc233']).map(c=>new THREE.MeshBasicMaterial({color:c})),bg=new THREE.BoxGeometry(.2,.2,.2);RV.own.push(bg,...cs);
+  for(let i=0;i<44;i++){const m=new THREE.Mesh(bg,cs[i%cs.length]);m.visible=false;sc.add(m);RV.tr.push({m,u:i/44*1.5,sx:(Math.random()-.5)*.5,sy:Math.random()*.6})}
+  RV.ex=[-.55,.55].map(x=>new THREE.Vector3((x-ct.x)*k,(.45-ct.y)*k,(2.5-ct.z)*k))}}
+function rvPose(t,dt,cm){const r=RV.it,G=RV.G;
+ if(r.t==='sk'&&window.skFx)try{window.skFx(dt)}catch(e){}
+ if(r.t==='rm'){const a=Math.sin(t*.7)*.8,d=8.5;cm.position.set(RV.sd*d*Math.cos(a),1.3,d*Math.sin(a))}
+ else if(r.t==='tr'){G.rotation.y=Math.sin(t*.5)*.35;cm.position.set(3.4,2.2,9.2);
+  for(const p of RV.tr){p.u+=dt;if(p.u>1.5)p.u-=1.5;const e=RV.ex[(p.u*100|0)%2],s=Math.max(.05,1-p.u/1.5);p.m.visible=true;p.m.position.set(e.x+p.sx*p.u*2,e.y+p.sy*p.u*.5-p.u*.2,e.z+p.u*5.5);p.m.scale.setScalar(s*1.6);p.m.rotation.set(p.u*3,p.u*2,0)}}
+ else{G.rotation.y=t*.9;cm.position.set(0,1.8,r.t==='sk'?9.5:8.5)}
+ cm.lookAt(0,0,0)}
+function rvLoop(ts){if(!RV.run)return;requestAnimationFrame(rvLoop);const t=(ts-RV.t0)/1000,dt=Math.min(.05,Math.max(0,(ts-(RV.lt||ts))/1000));RV.lt=ts;const cv=RV.cv,w=cv.clientWidth|0;
+ if(w&&RV.w!==w){RV.w=w;RV.R.setSize(w,w,false)}
+ rvPose(t,dt,RV.cm);RV.R.render(RV.sc,RV.cm)}
+/* miniaturi 3D pentru cardurile din listă (generate o singură dată, apoi păstrate) */
+const TH={done:0,busy:0};
+function thAll(){if(TH.done||TH.busy)return;TH.busy=1;let R=null;
+ try{const c=document.createElement('canvas');R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true,preserveDrawingBuffer:true});R.setPixelRatio(1);R.setSize(112,112,false)}catch(e){TH.busy=0;TH.done=1;return}
+ const cm=new THREE.PerspectiveCamera(38,1,.1,100),Q=()=>(SKINS[CFG.skin]||SKINS[0]).q;
+ for(const q of[0,1])(q?PREM:FREE).forEach((r,i)=>{const id=(q?'q':'f')+(i+1);if(TH[id])return;
+  try{if(r.t==='ch')setCharm(r.v);else if(r.t==='rm'){RIMST=r.v;paintPC(Q())}else if(r.t==='sk')applySkin(r.v);
+   rvBuild(r);if(r.t==='tr')for(let k=0;k<30;k++)rvPose(.2+k*.05,.05,cm);else rvPose(.8,.016,cm);
+   R.render(RV.sc,cm);TH[id]=R.domElement.toDataURL('image/png')}catch(e){}
+  for(const o of RV.own)o.dispose();RV.own=[];RV.tr=[];RV.sc=null});
+ try{applySkin(CFG.skin)}catch(e){}
+ try{R.dispose();R.forceContextLoss()}catch(e){}
+ TH.busy=0;TH.done=1;const y=P.cp.scrollTop;cpRender();P.cp.scrollTop=y}
+function rvShow(r,q){rvInit();RV.tg.textContent={st:'Farmec',tr:'Urmă',con:'Con',rm:'Jante',sk:'Skin'}[r.k]+(r.t==='sk'?' + breloc '+CHN[chOfSkin(r.v)]:'')+(q?' · Premium':'')+' · echipat';RV.nm.textContent=r.n;RV.ov.style.display='flex';
+ if(RV.fail)return;try{rvBuild(r);RV.run=1;RV.lt=0;RV.t0=performance.now();requestAnimationFrame(rvLoop)}catch(e){RV.run=0}}
+$('cp-list').onclick=e=>{const c=e.target.closest('.cpc');if(!c)return;const q=+c.dataset.t,L=+c.dataset.l,r=(q?PREM:FREE)[L-1];
+ if(q&&!CPS.p){show('cpp');return}
+ if(L>lvl()){cpToast('Ajungi la nivelul '+L+' ca să o primești');return}
+ const a=q?CPS.q:CPS.f,id=(q?'q':'f')+L;
+ if(!a.includes(L)){a.push(L);cpSave();cpEquip(r,id,1);try{blip(660,.1,0,.1);blip(990,.16,.09,.1)}catch(_){}cpToast('Revendicat și echipat: '+r.n+(r.t==='sk'?' · breloc '+CHN[chOfSkin(r.v)]:''));rvShow(r,q)}
+ else{const on=cpEquip(r,id,0);cpToast(on?'Echipat: '+r.n:'Scos: '+r.n);if(on)rvShow(r,q)}
+ const y=P.cp.scrollTop;cpRender();P.cp.scrollTop=y};
+$('m-cpbtn').onclick=()=>show('cp');$('cp-b').onclick=()=>show('main');$('cp-prem').onclick=()=>show('cpp');$('cpp-b').onclick=$('cpp-free').onclick=()=>show('cp');
+/* cumpărare: legați aici plata reală definind window.cpPay (poate întoarce true/false sau un Promise) */
+$('cpp-buy').onclick=()=>{if(CPS.p)return;Promise.resolve(window.cpPay?window.cpPay():true).then(ok=>{if(!ok)return;CPS.p=true;cpSave();cpToast('Premium activat · recompensele se pot revendica');show('cp')})};
+/* XP la finalul cursei: 10 XP / depășire (15 cu Premium) + 5 XP / km */
+window.cpAward=(sc,ds)=>{if(window.cpAw)return'';window.cpAw=1;const g=sc*(CPS.p?15:10)+Math.floor(ds/1000)*5;if(g<=0)return'';const l0=lvl();CPS.x+=g;cpSave();const l1=lvl();cpBadge();
+ return'<br>Car Pass: <b>+'+g+' XP</b>'+(l1>l0?' · 🎉 nivel '+l1+(l1<=CPN?' (recompensă nouă)':''):'')};
+/* ===== GARAJ: breloc separat de skin + previzualizare (doar in garaj) ===== */
+const CHN=['Stea','Zar','Inimă','Brad','Fulger','Craniu','Piramidă','Ramă','Hexagon de miere','Flacără','Curcubeu','Ancoră','Fantomă','Casetă','Broscuță','Ciupercă','Plăcuță militară','Steag în carouri','Volan','Cruciuliță și brad','Cronometru','Potcoavă','Cheie veche','Con aurit','Con roșu','Breloc dragon'],
+ chOfSkin=i=>{const k=SKINS[i];return k&&k.ch!=null?k.ch:((i%CHS.length)+CHS.length)%CHS.length},
+ CPCH={},CHBY={};
+[FREE,PREM].forEach((a,q)=>a.forEach((r,i)=>{if(r.t==='ch')CPCH[r.v]={q,L:i+1}}));
+SKINS.forEach((k,i)=>{const c=chOfSkin(i);(CHBY[c]||(CHBY[c]=[])).push(i)});
+/* breloc deblocat = revendicat din Car Pass SAU vine cu un skin pe care il ai (deblocare automata odata cu skinul) */
+const chUnl=c=>!!((CPCH[c]&&own(!!CPCH[c].q,CPCH[c].L))||(CHBY[c]||[]).some(i=>!cpLocked(i))),
+ skSrc=i=>{const k=PASSK[i];return k?'Car Pass · nivel '+k[1]+(k[0]?' · Premium':''):''},
+ chSrc=c=>{const a=[],p=CPCH[c];if(p&&!own(!!p.q,p.L))a.push('Car Pass · nivel '+p.L+(p.q?' · Premium':''));for(const i of CHBY[c]||[])if(cpLocked(i))a.push('skinul '+SKINS[i].n);return a.join(' sau ')},
+ eqCh=()=>CFG.charm>=0&&CFG.charm<CHS.length&&chUnl(CFG.charm)?CFG.charm:-1,
+ effS=()=>pvS>=0?pvS:CFG.skin;
+window.gcCharm=i=>{if(window.__pvC!=null)return window.__pvC;const c=eqCh();if(c>=0)return c;const e=cpEq('ch');if(e&&e.v!=null)return e.v;return chOfSkin(i)};
+window.gcSkCh=i=>CHN[chOfSkin(i)];
+const live=()=>setCharm(gcCharm(effS()));
+/* migrare din salvarile vechi: brelocul echipat din Car Pass devine alegerea separata */
+if(CFG.charm===undefined){const e=cpEq('ch');CFG.charm=e&&e.v!=null?e.v:-1;if(CFG.cr)delete CFG.cr.ch;saveCFG()}
+/* randare 3D mica: miniaturi pentru grila + breloc rotit in cardul de previzualizare */
+const GC={R:null,sc:null,cm:null,G:null,cv:null,fail:0,th:{},busy:0,done:0,c:-9,t:0,sz:0};
+function gcInit(){if(GC.R||GC.fail)return;try{GC.cv=$('m-gc');GC.R=new THREE.WebGLRenderer({canvas:GC.cv,antialias:true,alpha:true,preserveDrawingBuffer:true});GC.R.setPixelRatio(1);GC.sc=new THREE.Scene();GC.G=new THREE.Group();GC.sc.add(GC.G);GC.cm=new THREE.PerspectiveCamera(38,1,.1,100);GC.cm.position.set(0,1.2,8.5);GC.cm.lookAt(0,0,0)}catch(e){GC.fail=1;GC.R=null}}
+function gcBuild(c){const G=GC.G;while(G.children.length)G.remove(G.children[0]);setCharm(c);const src=new THREE.Group();for(const m of window.__chG.children)src.add(m.clone(true));G.scale.set(1,1,1);G.add(src);G.updateMatrixWorld(true);const bb=new THREE.Box3();
+ src.traverse(o=>{if(!o.isMesh||!o.geometry)return;o.geometry.computeBoundingBox();bb.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld))});
+ if(bb.isEmpty())bb.set(new THREE.Vector3(-1,-1,-1),new THREE.Vector3(1,1,1));const z=bb.getSize(new THREE.Vector3()),ct=bb.getCenter(new THREE.Vector3());src.position.sub(ct);G.scale.setScalar(4.2/(Math.max(z.x,z.y,z.z)||1))}
+function gcFill(){for(const b of $('m-cw').children){const c=+b.dataset.c;if(c>=0&&GC.th[c])b.style.background='center/80% no-repeat url('+GC.th[c]+'),radial-gradient(circle at 50% 40%,#fff8e6,#ffc47a)'}}
+function gcThumbs(){if(GC.busy||GC.done)return;gcInit();if(!GC.R){GC.done=1;return}GC.busy=1;
+ try{GC.R.setSize(96,96,false);GC.R.setClearColor(0,0);for(let c=0;c<CHS.length;c++){gcBuild(c);GC.G.rotation.set(.22,-.6,0);GC.R.render(GC.sc,GC.cm);GC.th[c]=GC.cv.toDataURL('image/png')}}catch(e){}
+ GC.busy=0;GC.done=1;GC.sz=0;GC.c=-9;live();gcFill();gcLive()}
+function gcLive(){}
+/* ===== tab Breloc: camera trece IN cabina, exact ca in joc (brelocul atarnat de oglinda), cu tranzitie lina ===== */
+let gcK=0,gcR=0,cLY=0,cLP=0,gLook=null;const AIM=-Math.atan2(.65,.68),_cE=new THREE.Euler(0,0,0,'YXZ'),_cQ=new THREE.Quaternion(),_cP=new THREE.Vector3(),_tg=new THREE.Vector3(),_dr=new THREE.Vector3(),_pv=new THREE.Vector3(),CBX=[];
+for(const x of[-1.25,1.25])for(const y of[.05,1.65])for(const z of[-2.6,2.6])CBX.push(new THREE.Vector3(x,y,z));
+/* zona libera a ecranului = ce ramane langa panou (dreapta pe landscape, deasupra pe portret), fara zonele nesigure (notch, colturi) */
+function gcFree(){const W=innerWidth,H=innerHeight,cs=getComputedStyle($('mm')),pn=$('m-skin').getBoundingClientRect();
+ let L=parseFloat(cs.paddingLeft)||10,R=W-(parseFloat(cs.paddingRight)||10),T=(parseFloat(cs.paddingTop)||6)+30,B=H-(parseFloat(cs.paddingBottom)||6);
+ if(pn.width>0){if(pn.top>H*.3)B=pn.top-10;else R=pn.left-12}
+ if(R-L<80){L=0;R=W}if(B-T<80){T=0;B=H}return{L,R,T,B}}
+{const _sk=window.skCam;window.skCam=dt=>{_sk(dt);
+ const W=innerWidth,H=innerHeight,F=gcFree(),hw=(F.R-F.L)/2,hh=(F.B-F.T)/2,T=window.__gt||0;
+ cam.setViewOffset(W,H,W/2-(F.L+F.R)/2,H/2-(F.T+F.B)/2,W,H);
+ /* exterior: departam camera pana cand toata masina incape in zona libera, la orice unghi */
+ _tg.set(0,.85+.2*Math.sin(T*.29),0);_dr.copy(cam.position).sub(_tg);let d=_dr.length();_dr.normalize();
+ for(let k=0;k<4;k++){cam.position.copy(_tg).addScaledVector(_dr,d);cam.updateMatrixWorld(true);cam.updateProjectionMatrix();
+  _pv.copy(_tg).project(cam);const cx=_pv.x,cy=_pv.y;let s=0;
+  for(const c of CBX){_pv.copy(c).add(pc.g.position).project(cam);s=Math.max(s,Math.abs(_pv.x-cx)*W/2/hw,Math.abs(_pv.y-cy)*H/2/hh)}
+  d=Math.max(4.5,Math.min(40,d*s*1.05))}
+ gcR=gcR&&d<gcR?gcR+(d-gcR)*Math.min(1,dt*3):d;
+ cam.position.copy(_tg).addScaledVector(_dr,gcR);cam.updateMatrixWorld(true);
+ const on=gTab==='c'&&window.SKPREV;gcK=Math.max(0,Math.min(1,gcK+(on?dt/.6:-dt/.5)));
+ if(gcK<=0){if(ck.parent===GARS){scene.add(ck);ck.visible=false}cam.updateProjectionMatrix();return}
+ const e=gcK*gcK*(3-2*gcK);
+ if(!gLook){const dd=Math.min(1,dt*3);cLY-=cLY*dd;cLP-=cLP*dd}
+ if(ck.parent!==GARS)GARS.add(ck);
+ ck.position.copy(PBODY.position).add(pc.g.position);ck.quaternion.copy(PBODY.quaternion);
+ const inn=gcK>.5;ck.visible=inn;pc.g.visible=!inn;
+ if(inn){try{mirror();charmStep(dt);cp.rotation.z+=.1*Math.sin(T*1.7);cp.rotation.x+=.05*Math.sin(T*1.3+1)}catch(x){}}
+ _cP.set(-.38,1.36,.3).add(ck.position);_cQ.setFromEuler(_cE.set(cLP,AIM+cLY,0,'YXZ'));
+ cam.position.lerp(_cP,e);cam.quaternion.slerp(_cQ,e);cam.fov+=(Math.min(80,fpFov())-cam.fov)*e;cam.updateProjectionMatrix()}}
+{const g=$('g'),cl=(v,a,b)=>Math.max(a,Math.min(b,v));g.addEventListener('pointerdown',e=>{if(window.SKPREV&&gTab==='c')gLook={x:e.clientX,y:e.clientY,ly:cLY,lp:cLP}});
+ addEventListener('pointermove',e=>{if(gLook){cLY=cl(gLook.ly+(e.clientX-gLook.x)*.006,-1.3,1.3);cLP=cl(gLook.lp+(e.clientY-gLook.y)*.004,-.5,.6)}});
+ ['pointerup','pointercancel'].forEach(n=>addEventListener(n,()=>gLook=null))}
+function gcBuildC(){const w=$('m-cw');w.textContent='';const mk=c=>{const b=document.createElement('button');b.dataset.c=c;b.setAttribute('aria-label',c<0?'Automat · brelocul skinului':CHN[c]);if(c<0)b.className='au',b.innerHTML='<span>↺</span><i>Auto</i>';b.onclick=()=>gcPickC(c);w.append(b)};
+ mk(-1);const u=[],l=[];for(let c=0;c<CHS.length;c++)(chUnl(c)?u:l).push(c);u.concat(l).forEach(mk);gcFill()}
+function gcPickC(c){if(c>=0&&!chUnl(c))window.__pvC=c;else{window.__pvC=null;CFG.charm=c;if(CFG.cr)delete CFG.cr.ch;saveCFG()}live();try{chZv+=3}catch(x){}gcMark()}
+function gcMark(){const e=effS(),pv=window.__pvC,q=eqCh();let nm,st,lk=0;
+ for(const b of $('m-cw').children){const c=+b.dataset.c;b.classList.toggle('on',c===q);b.classList.toggle('pv',pv!=null&&c===pv);b.classList.toggle('cplk',c>=0&&!chUnl(c))}
+ if(gTab==='s'){const k=SKINS[e]||SKINS[0],cc=CHN[chOfSkin(e)];nm=(k.fx?'✨ ':'')+k.n;
+  if(cpLocked(e)){lk=1;st='🔒 Previzualizare · '+skSrc(e)+' · include brelocul '+cc}else st=(e===CFG.skin?'✓ Echipat · ':'')+'include brelocul '+cc}
+ else if(pv!=null){lk=1;nm=CHN[pv];st='🔒 Previzualizare · '+chSrc(pv)}
+ else if(q<0){nm='↺ Automat';st='Brelocul skinului · acum: '+CHN[chOfSkin(e)]}
+ else{nm=CHN[q];st='✓ Echipat'}
+ $('m-gn').textContent=nm;$('m-gs').textContent=st;$('m-gcp').hidden=!lk;$('m-gc').hidden=true}
+function gcTab(t){gTab=t;[...$('m-gt').children].forEach(b=>b.classList.toggle('on',b.dataset.t===t));sw.hidden=t!=='s';$('m-cw').hidden=t!=='c';$('m-skin').querySelector('.gsc').scrollTop=0;$('m-skin').querySelector('.gsc small').textContent=t==='c'?'Ești în cabină, ca în joc · trage ca să privești în jur. Atinge un breloc blocat ca să-l previzualizezi.':'Camera se rotește în jurul mașinii · trage ca să o rotești tu. Atinge un element blocat ca să-l previzualizezi.';if(t==='c'){cLY=cLP=0;try{chZv+=3}catch(x){}}gcMark()}
+$('m-gt').onclick=e=>{const b=e.target.closest('button');if(b)gcTab(b.dataset.t)};
+$('m-gcp').onclick=()=>show('cp');
+window.gcMark=gcMark;
+window.gcOpen=()=>{gcK=0;gcR=0;pvS=-1;window.__pvC=null;gcBuildC();gcTab('s');mark();if(!GC.done)setTimeout(gcThumbs,80)};
+window.gcLeave=()=>{gcK=0;if(ck.parent===GARS){scene.add(ck);ck.visible=false}if(pvS>=0||window.__pvC!=null){pvS=-1;window.__pvC=null;applySkin(CFG.skin)}};
+cpBadge();cpSw();}
 applySkin(Math.min(CFG.skin,SKINS.length-1));mark();show('main')})();
 </script>
 <script>
@@ -4434,7 +5193,7 @@ function build(){if(built)return;built=true;S.fog=new R.Fog(0xffdf9e,260,820);
   mg=(g,d,y)=>{const geo=new R.ExtrudeGeometry(shp(r0,r1,a0,a1,g),{depth:d,bevelEnabled:false});geo.rotateX(-Math.PI/2);geo.translate(-cx_,y,-cz_);return geo},
   key=RS[q]+i,G=GC[key]||(GC[key]={b:mg(.3,1.4,-1.6),p:mg(.85,.2,-.2),o:mg(.12,.03,-.24)});
   const b=(i+q+lv)%2,y0=-LH*lv,m=new R.Mesh(G.b,[LT[lv].r[b],SM]),pn=new R.Mesh(G.p,LT[lv].p[b]),ol=new R.Mesh(G.o,INK);
-  m.add(pn,ol);
+  m.add(pn);
   if(r0>=9&&(i*5+q*2+lv)%3===0){const ra=r0+2.2+Math.random()*(r1-r0-4.4),aa=a0+2/ra+Math.random()*(a1-a0-4/ra),d=new R.Mesh(DG,DM[Math.random()*4|0]);d.position.set(Math.cos(aa)*ra-cx_,.03,-Math.sin(aa)*ra-cz_);d.rotation.y=Math.random()*TAU;m.add(d)}
   m.position.set(cx_,y0,cz_);S.add(m);
   const tt={m,pn,b,lv,y0,r0,r1,a0,a1,cx:cx_,cz:cz_,ph:0,n:0,cd:0,t:0,vy:0,rx:0,rz:0,cr:null,sk:0};tl.push(tt);tls[lv].push(tt)}});
@@ -4603,5 +5362,75 @@ window.AR={on:false,
  draw(){renderer.setClearColor(0xffdf9e,1);renderer.clear();renderer.render(S,cam)}};
 }catch(e){if(window.showErr)showErr('Arena: '+e.message)}})();
 window.ldHide&&ldHide();
+</script>
+<script>
+/* === CURSA ONLINE CU PRIETEN (PeerJS / WebRTC, fără server propriu) === */
+(function(){try{
+const MP=window.MP,E=id=>document.getElementById(id),TARGET=3000,OUT=s=>s==='crash'||s==='over'||s==='replay';
+/* 1. trafic si zone deterministe pe pozitie: aceeasi bucata de drum = aceleasi masini la amandoi */
+if(MP.room){
+ const wr=(fn,key)=>function(){const o=Math.random;Math.random=mpM32(mpH(MP.room+key.apply(this,arguments)));try{return fn.apply(this,arguments)}finally{Math.random=o}};
+ const _sp=spawn;spawn=wr(_sp,z=>'s'+Math.floor((dist/KMH-z)/8));
+ const _rs=reset;reset=wr(_rs,()=>'r');
+ if(typeof spawnZone==='function'){const _z=spawnZone;spawnZone=wr(_z,()=>'z'+Math.floor(dist/300))}
+}
+/* 2. masina prietenului: acelasi model, culoare albastra, pusa dupa diferenta de distanta */
+const op=mkVeh('sport',false,PAL.blue);op.g.visible=false;scene.add(op.g);
+const O={d:0,x:0,v:0,s:'ready',t:0,ok:false,ed:0,ex:0};let lt=performance.now();
+function upd(){const n=performance.now(),dt=Math.min(.1,(n-lt)/1000);lt=n;
+ if(!(MP.on&&MP.racing&&O.ok)){op.g.visible=false;return}
+ const age=Math.min(.5,(n-O.t)/1000),td=O.d+(O.s==='run'?O.v*KMH*age:0);
+ O.ed+=(td-O.ed)*Math.min(1,dt*12);const px0=O.ex;O.ex+=(O.x-O.ex)*Math.min(1,dt*12);
+ const z=-(O.ed-dist)/KMH;op.g.position.set(O.ex,.09,z);
+ op.g.rotation.y=-Math.max(-.3,Math.min(.3,(O.x-O.ex)*.8));
+ if(op.spin&&O.s==='run')op.spin.rotation.x-=dt*5;
+ op.g.visible=Math.abs(z)<520}
+const _ds=drawScene;drawScene=function(){try{upd()}catch(e){}return _ds.apply(this,arguments)};
+/* 3. interfata */
+const st=document.createElement('style');st.textContent='#mpo{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(26,27,58,.82)}#mpo .bx{background:#fff4de;border:3px solid #1a1b3a;border-radius:18px;padding:18px;width:min(92vw,360px);text-align:center;color:#1a1b3a;font:600 15px/1.4 -apple-system,system-ui,sans-serif}#mpo h2{margin:0 0 8px;font-size:22px}#mpo button,#mpo input{display:block;width:100%;margin:8px 0;padding:12px;border-radius:12px;border:3px solid #1a1b3a;font:700 16px -apple-system,system-ui,sans-serif;box-sizing:border-box}#mpo button{background:#ffc233;color:#1a1b3a}#mpo button.s{background:#fff}#mpo button:disabled{opacity:.45}#mpo input{text-align:center;text-transform:uppercase;background:#fff}#mp-big{font-size:84px;font-weight:800;line-height:1.1}#mph{position:fixed;top:calc(env(safe-area-inset-top,0px) + 58px);left:50%;transform:translateX(-50%);z-index:60;background:rgba(26,27,58,.8);color:#fff;padding:4px 12px;border-radius:14px;font:700 14px -apple-system,system-ui,sans-serif;display:none}';document.head.appendChild(st);
+const ov=document.createElement('div');ov.id='mpo';ov.innerHTML='<div class="bx"><h2>🏁 Cursă cu prieten</h2><div id="mp-b"></div></div>';document.body.appendChild(ov);
+const hud=document.createElement('div');hud.id='mph';document.body.appendChild(hud);
+let peer=null,conn=null,myRdy=false,opRdy=false,msg='',tries=0;
+const link=()=>location.origin+location.pathname+'?room='+MP.room;
+const send=m=>{try{conn&&conn.open&&conn.send(m)}catch(e){}};
+function draw(){const b=E('mp-b');if(MP.cd){b.innerHTML='<div id="mp-big"></div>';return}
+ if(!MP.room){b.innerHTML='<p>Creezi o cameră și îi trimiți linkul prietenului. Amândoi jucați pe același drum.</p><button id="mp-new">Creează cameră</button><input id="mp-code" maxlength="8" placeholder="sau scrie codul camerei"><button class="s" id="mp-join">Intră în cameră</button><button class="s" id="mp-x">Închide</button>';
+  E('mp-new').onclick=()=>{const c=Math.random().toString(36).slice(2,7).toUpperCase().replace(/[^A-Z0-9]/g,'A');location.search='?room='+c+'&host=1'};
+  E('mp-join').onclick=()=>{const c=E('mp-code').value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(c)location.search='?room='+c};}
+ else{const t=!MP.on?(MP.host?'Aștept prietenul… trimite-i linkul.':'Mă conectez la cameră…'):myRdy?(opRdy?'Pornim…':'Aștept ca prietenul să fie gata…'):(opRdy?'Prietenul e gata ✔ Apasă Gata!':'Conectat ✅ Apasă Gata.');
+  b.innerHTML='<p>Cameră: <b>'+MP.room+'</b></p>'+(msg?'<p><b>'+msg+'</b></p>':'')+'<p>'+t+'</p>'+(MP.host?'<button class="s" id="mp-sh">📤 Trimite linkul</button>':'')+'<button id="mp-rd"'+((!MP.on||myRdy)?' disabled':'')+'>'+(msg?'Revanșă':'Gata ✔')+'</button><button class="s" id="mp-x">Închide</button>';
+  if(MP.host)E('mp-sh').onclick=()=>{const u=link();if(navigator.share)navigator.share({title:'Cursă Autostradă',text:'Hai la o cursă!',url:u}).catch(()=>{});else{try{navigator.clipboard.writeText(u)}catch(e){}prompt('Copiază linkul:',u)}};
+  E('mp-rd').onclick=()=>{if(!MP.on)return;myRdy=true;try{initAudio()}catch(e){}send({t:'rdy'});draw();maybeGo()}}
+ const x=E('mp-x');if(x)x.onclick=()=>{ov.style.display='none'}}
+function openOv(){ov.style.display='flex';draw()}
+const mb=document.createElement('button');mb.className='mb';mb.id='m-mp';mb.textContent='🏁 Cursă cu prieten';mb.onclick=openOv;
+const mn=E('m-main'),ms=E('m-st');if(mn)mn.insertBefore(mb,ms||null);
+/* 4. retea */
+function maybeGo(){if(MP.host&&myRdy&&opRdy&&!MP.cd){send({t:'go'});countdown()}}
+function countdown(){if(MP.cd)return;MP.cd=1;myRdy=opRdy=false;msg='';O.ok=false;ov.style.display='flex';draw();let n=3;
+ const tk=()=>{const el=E('mp-big');if(n>0){if(el)el.textContent=n--;setTimeout(tk,1000)}else{ov.style.display='none';MP.cd=0;go()}};tk()}
+function go(){MP.racing=true;O.ok=false;O.s='ready';try{CFG.mode=0;RVF=1.3}catch(e){}window.PAUSED=false;E('mm').classList.add('h');E('ov').classList.add('h');start()}
+function verdict(win){if(!MP.racing)return;MP.racing=false;hud.style.display='none';op.g.visible=false;msg=win?'🏆 Ai câștigat!':'😅 Ai pierdut';myRdy=opRdy=false;setTimeout(openOv,1200)}
+function onData(m){if(!m)return;
+ if(m.t==='s'){if(!MP.racing)return;O.d=m.d;O.x=m.x;O.v=m.v;O.s=m.s;O.t=performance.now();if(!O.ok){O.ok=true;O.ed=m.d;O.ex=m.x}}
+ else if(m.t==='rdy'){opRdy=true;if(ov.style.display==='flex')draw();maybeGo()}
+ else if(m.t==='go')countdown();
+ else if(m.t==='fin')verdict(false)}
+function onConn(c){conn=c;c.on('open',()=>{MP.on=true;msg='';if(ov.style.display==='flex')draw()});c.on('data',onData);
+ c.on('close',()=>{MP.on=false;MP.racing=false;O.ok=false;msg='Prietenul s-a deconectat';if(ov.style.display==='flex')draw()});}
+function initNet(){const cfg={config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'},{urls:'turn:openrelay.metered.ca:80',username:'openrelayproject',credential:'openrelayproject'},{urls:'turn:openrelay.metered.ca:443?transport=tcp',username:'openrelayproject',credential:'openrelayproject'}]}};
+ const hid='caini-'+MP.room+'-h';
+ peer=MP.host?new Peer(hid,cfg):new Peer(cfg);
+ peer.on('error',e=>{if(e.type==='unavailable-id'){msg='Codul e deja folosit – creează altă cameră';draw()}else if(e.type==='peer-unavailable'&&!MP.host&&tries++<30){setTimeout(()=>{if(!MP.on)onConn(peer.connect(hid,{reliable:true}))},2000)}else{msg='Eroare conexiune: '+e.type;draw()}});
+ if(MP.host)peer.on('connection',c=>{if(conn&&conn.open){c.close();return}onConn(c)});
+ else peer.on('open',()=>onConn(peer.connect(hid,{reliable:true})))}
+if(MP.room){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=initNet;s.onerror=()=>{msg='Nu pot încărca PeerJS (internet?)';draw()};document.head.appendChild(s);setTimeout(openOv,1500)}
+/* 5. trimitere pozitie, HUD, finis */
+setInterval(()=>{if(MP.on&&MP.racing)send({t:'s',d:dist,x:px,v:v,s:state})},50);
+setInterval(()=>{if(!MP.racing)return;
+ if(MP.on&&state==='run'&&dist>=TARGET){send({t:'fin'});verdict(true);return}
+ if(O.ok){const d=O.d-dist;hud.style.display='block';hud.textContent=(OUT(O.s)?'💥 Prieten ieșit · ':'🔵 Prieten: ')+(d>=0?'+':'')+Math.round(d)+' m · țintă '+(TARGET/1000)+' km';
+  if(OUT(state)&&OUT(O.s))verdict(dist>=O.d);else if(state==='run'&&OUT(O.s)&&dist>O.d)verdict(true)}},200);
+}catch(e){console.error('Cursa online:',e)}})();
 </script>
 </body></html>
