@@ -10,7 +10,7 @@
 window.mpH=function(s){var h=1779033703^s.length;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0};
 window.mpM32=function(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
 window.MP={room:room,host:q.get('host')==='1',on:false,racing:false,cd:0};
-if(room)Math.random=window.mpM32(window.mpH('caini:'+room));})();
+window.mpReal=Math.random;if(room)Math.random=window.mpM32(window.mpH('caini:'+room));})();
 </script>
 <style id="ld-css">
 #ld{--s:5px;position:fixed;inset:0;z-index:98;display:none;align-items:center;justify-content:center;background:#fff;color:var(--ink,#1a1b3a);font-family:-apple-system,'SF Pro Display',system-ui,'Segoe UI',sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}
@@ -5420,10 +5420,15 @@ function onConn(c){conn=c;c.on('open',()=>{MP.on=true;msg='';if(ov.style.display
  c.on('close',()=>{MP.on=false;MP.racing=false;O.ok=false;msg='Prietenul s-a deconectat';if(ov.style.display==='flex')draw()});}
 function initNet(){const cfg={config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:global.stun.twilio.com:3478'},{urls:'turn:openrelay.metered.ca:80',username:'openrelayproject',credential:'openrelayproject'},{urls:'turn:openrelay.metered.ca:443?transport=tcp',username:'openrelayproject',credential:'openrelayproject'}]}};
  const hid='caini-'+MP.room+'-h';
- peer=MP.host?new Peer(hid,cfg):new Peer(cfg);
- peer.on('error',e=>{if(e.type==='unavailable-id'){msg='Codul e deja folosit – creează altă cameră';draw()}else if(e.type==='peer-unavailable'&&!MP.host&&tries++<30){setTimeout(()=>{if(!MP.on)onConn(peer.connect(hid,{reliable:true}))},2000)}else{msg='Eroare conexiune: '+e.type;draw()}});
+ /* PeerJS are nevoie de random REAL (Math.random e seedat de cod => token/ID identice) */
+ const real=fn=>{const o=Math.random;Math.random=window.mpReal||o;try{return fn()}finally{Math.random=o}};
+ const rid=()=>{try{return Array.from(crypto.getRandomValues(new Uint8Array(8)),b=>b.toString(16).padStart(2,'0')).join('')}catch(e){return real(()=>Math.random().toString(36).slice(2,12))}};
+ cfg.token=rid();
+ const dial=()=>real(()=>peer.connect(hid,{reliable:true}));
+ peer=real(()=>MP.host?new Peer(hid,cfg):new Peer('caini-'+MP.room+'-g'+rid(),cfg));
+ peer.on('error',e=>{if(e.type==='unavailable-id'){msg='Codul e deja folosit – creează altă cameră';draw()}else if(e.type==='peer-unavailable'&&!MP.host&&tries++<30){setTimeout(()=>{if(!MP.on)onConn(dial())},2000)}else{msg='Eroare conexiune: '+e.type;draw()}});
  if(MP.host)peer.on('connection',c=>{if(conn&&conn.open){c.close();return}onConn(c)});
- else peer.on('open',()=>onConn(peer.connect(hid,{reliable:true})))}
+ else peer.on('open',()=>onConn(dial()))}
 if(MP.room){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=initNet;s.onerror=()=>{msg='Nu pot încărca PeerJS (internet?)';draw()};document.head.appendChild(s);setTimeout(openOv,1500)}
 /* 5. trimitere pozitie, HUD, finis */
 setInterval(()=>{if(MP.on&&MP.racing)send({t:'s',d:dist,x:px,v:v,s:state})},50);
