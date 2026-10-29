@@ -5370,10 +5370,23 @@ window.ldHide&&ldHide();
 (function(){try{
 const MP=window.MP,E=id=>document.getElementById(id),TARGET=3000,OUT=s=>s==='crash'||s==='over'||s==='replay';
 /* 1. trafic si zone deterministe pe pozitie: aceeasi bucata de drum = aceleasi masini la amandoi */
+let trStep=()=>{};
 if(MP.room){
  const wr=(fn,key)=>function(){const o=Math.random;Math.random=mpM32(mpH(MP.room+key.apply(this,arguments)));try{return fn.apply(this,arguments)}finally{Math.random=o}};
- const _sp=spawn;spawn=wr(_sp,z=>'s'+Math.floor((dist/KMH-z)/8));
- const _rs=reset;reset=wr(_rs,()=>'r');
+ /* TRAFIC PE POZITIE DE DRUM (nu pe timp): fiecare "slot" de drum are masina lui, identica la amandoi */
+ const seeded=(key,fn)=>{const o=Math.random;Math.random=mpM32(mpH(MP.room+key));try{return fn()}finally{Math.random=o}};
+ const GAP0=95,GAPMIN=32,GAPK=.0125; /* distanta intre masini: se strange cu cat inaintezi (ca dificultatea din solo) */
+ let inRs=false,nw=540,ni=0,nrp=700,nri=0;
+ const _sp=spawn,_spw=wr(_sp,z=>'s'+Math.floor((dist/KMH-z)/8));
+ spawn=function(z,fT){return(fT||inRs)?_spw.apply(this,arguments):undefined}; /* timerul vechi (pe secunde) e oprit */
+ const _rs=reset,_rsw=wr(_rs,()=>'r');
+ reset=function(){inRs=true;try{return _rsw.apply(this,arguments)}finally{inRs=false;nw=540;ni=0;nrp=700;nri=0}};
+ trStep=function(){if(!MP.racing||state!=='run')return;
+  const h=dist/KMH;if(nw<h+100)nw=h+540;
+  for(let g=0;g<4&&nw<=h+540;g++){const k=ni++,z=h-nw;seeded('k'+k,()=>_sp(z));nw+=Math.max(GAPMIN,GAP0-nw*GAPK)}
+  /* lucrari la drum: pornesc cand orizontul ajunge la punctul fix de pe drum */
+  if(typeof repT!=='undefined'){if(h+470>=nrp){if(repT>0)repT=0}else if(repT<1)repT=1}};
+ if(typeof repSpawn==='function'){const _rp=repSpawn;repSpawn=function(){const k=nri++;nrp+=450+mpM32(mpH(MP.room+'g'+k))()*500;return seeded('p'+k,()=>_rp.apply(this,arguments))}}
  if(typeof spawnZone==='function'){const _z=spawnZone;spawnZone=wr(_z,()=>'z'+Math.floor(dist/300))}
 }
 /* 2. masina prietenului: acelasi model, culoare albastra, pusa dupa diferenta de distanta */
@@ -5387,7 +5400,7 @@ function upd(){const n=performance.now(),dt=Math.min(.1,(n-lt)/1000);lt=n;
  op.g.rotation.y=-Math.max(-.3,Math.min(.3,(O.x-O.ex)*.8));
  if(op.spin&&O.s==='run')op.spin.rotation.x-=dt*5;
  op.g.visible=Math.abs(z)<520}
-const _ds=drawScene;drawScene=function(){try{upd()}catch(e){}return _ds.apply(this,arguments)};
+const _ds=drawScene;drawScene=function(){try{upd()}catch(e){}try{trStep()}catch(e){}return _ds.apply(this,arguments)};
 /* 3. interfata */
 const st=document.createElement('style');st.textContent='#mpo{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(26,27,58,.82)}#mpo .bx{background:#fff4de;border:3px solid #1a1b3a;border-radius:18px;padding:18px;width:min(92vw,360px);text-align:center;color:#1a1b3a;font:600 15px/1.4 -apple-system,system-ui,sans-serif}#mpo h2{margin:0 0 8px;font-size:22px}#mpo button,#mpo input{display:block;width:100%;margin:8px 0;padding:12px;border-radius:12px;border:3px solid #1a1b3a;font:700 16px -apple-system,system-ui,sans-serif;box-sizing:border-box}#mpo button{background:#ffc233;color:#1a1b3a}#mpo button.s{background:#fff}#mpo button:disabled{opacity:.45}#mpo input{text-align:center;text-transform:uppercase;background:#fff}#mp-big{font-size:84px;font-weight:800;line-height:1.1}#mph{position:fixed;top:calc(env(safe-area-inset-top,0px) + 58px);left:50%;transform:translateX(-50%);z-index:60;background:rgba(26,27,58,.8);color:#fff;padding:4px 12px;border-radius:14px;font:700 14px -apple-system,system-ui,sans-serif;display:none}';document.head.appendChild(st);
 const ov=document.createElement('div');ov.id='mpo';ov.innerHTML='<div class="bx"><h2>🏁 Cursă cu prieten</h2><div id="mp-b"></div></div>';document.body.appendChild(ov);
