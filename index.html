@@ -10,7 +10,8 @@
 window.mpH=function(s){var h=1779033703^s.length;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return h>>>0};
 window.mpM32=function(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
 window.MP={room:room,host:q.get('host')==='1',on:false,racing:false,cd:0};
-window.mpReal=Math.random;if(room)Math.random=window.mpM32(window.mpH('caini:'+room));})();
+window.mpReal=Math.random;if(room)Math.random=window.mpM32(window.mpH('caini:'+room));
+window.mpSeed=function(k){if(room)Math.random=window.mpM32(window.mpH('caini:'+room+':'+k))};})();
 </script>
 <style id="ld-css">
 #ld{--s:5px;position:fixed;inset:0;z-index:98;display:none;align-items:center;justify-content:center;background:#fff;color:var(--ink,#1a1b3a);font-family:-apple-system,'SF Pro Display',system-ui,'Segoe UI',sans-serif;touch-action:none;-webkit-user-select:none;user-select:none}
@@ -527,7 +528,8 @@ const HX=c=>parseInt(c.slice(1),16);
 const $=id=>document.getElementById(id),LANES=[-5.4,-1.8,1.8,5.4];
 /* setari salvate (meniu): sunet, volum, vibratii, sensibilitate volan, camera, grafica, skin */
 const CFG=Object.assign({mute:false,vol:1,hap:true,steer:1,cam:0,gfx:2,skin:0,first:0,mode:0,fxv:100,bgv:100},(()=>{try{return JSON.parse(localStorage.getItem('cfg')||'{}')||{}}catch(e){return{}}})());
-const saveCFG=()=>{try{localStorage.setItem('cfg',JSON.stringify(CFG))}catch(e){}},PR=()=>Math.min(devicePixelRatio||1,[1,1.5,2][CFG.gfx]||2);
+const GFX0=CFG.gfx;if(window.MP&&MP.room)CFG.gfx=1;
+const saveCFG=()=>{try{localStorage.setItem('cfg',JSON.stringify(window.MP&&MP.room?Object.assign({},CFG,{gfx:GFX0}):CFG))}catch(e){}},PR=()=>Math.min(devicePixelRatio||1,[1,1.5,2][CFG.gfx]||2);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(PR());$('g').appendChild(renderer.domElement);
 /* ===== APARITIE LINA IN FUNDAL (efect general): la marginea ceții, tot ce e desenat cu ceata (copaci, masini, cladiri, decor, zone) se "dizolva" treptat cu un dither fin,
    deci obiectele se materializeaza lin pe masura ce se apropie, in loc sa apara brusc la limita de spawn. Reglaj: DSV0 / DSV1 = fractiuni din distanta ceții (0.78 -> complet solid, 0.97 -> complet dizolvat). ===== */
@@ -867,7 +869,7 @@ const TREEK=[
  [16,o=>{const k=.7+Math.random()*.7;mk(TGD,0,.45*k,0,1.7*k,.9*k,1.7*k,o,LB);if(Math.random()<.5)mk(TGL,1.6*k,.3*k,.4,.8*k,.6*k,.8*k,o,LB)}],
  [4,o=>{mk(TBR,0,2.2,0,.45,4.4,.45,o);for(const s of[-1,1]){const b=mk(TBR,s*.8,3.5,0,.3,2,.3,o);b.rotation.z=-s*.6}}]
 ],TW=TREEK.reduce((a,t)=>a+t[0],0);
-for(let i=0;i<434;i++){const s=i%2?1:-1,o=new THREE.Group();let r=Math.random()*TW,t=TREEK[0];for(const q of TREEK){if(r<q[0]){t=q;break}r-=q[0]}t[1](o);o.rotation.y=Math.random()*6.28;o.userData.cr=TRAD[TREEK.indexOf(t)];
+mpSeed('tr');for(let i=0;i<434;i++){const s=i%2?1:-1,o=new THREE.Group();let r=Math.random()*TW,t=TREEK[0];for(const q of TREEK){if(r<q[0]){t=q;break}r-=q[0]}t[1](o);o.rotation.y=Math.random()*6.28;o.userData.cr=TRAD[TREEK.indexOf(t)];
  o.position.set(s*(8.6+Math.random()*9),0,-(i>>1)*7.2-Math.random()*4);scene.add(o);trees.push(o)}
 for(let i=0;i<289;i++){const s=Math.random()<.5?-1:1,o=new THREE.Group(),r=Math.random(),big=r<.22,mid=r<.55,k=big?1.4+Math.random()*1.6:mid?.6+Math.random()*.6:.12+Math.random()*.22,white=big||Math.random()<.35,
  sy=k*(.6+Math.random()*.4),sx=k*(1+Math.random()*.5),sz=k*(1+Math.random()*.5),m=mk(white?STL:STD,0,sy/2,0,sx,sy,sz,o,LB);m.rotation.y=Math.random()*6.28;o.userData.cr=Math.hypot(sx,sz)*.4>=.35?Math.hypot(sx,sz)*.4:0;
@@ -931,7 +933,7 @@ for(let i=0;i<104;i++){const s=i%2?1:-1,o=new THREE.Group(),p=new THREE.Mesh(TP,
     s.g.rotation.set(-pt,s.hdg,s.bank);
     if(a>11||g.z>30||g.y>45){scene.remove(s.g);s.st=3}}}}}
 /* fire mici de iarba pe marginea drumului: manunchiuri de lamele subtiri (o singura geometrie unita per manunchi) */
-const GRG=[];for(let v=0;v<6;v++){const pos=[],idx=[],nb=4+(Math.random()*3|0);for(let j=0;j<nb;j++){const h=.3+Math.random()*.4,w=.06+Math.random()*.04,g=new THREE.BoxGeometry(w,h,w).translate(0,h/2,0).rotateZ((Math.random()-.5)*.5).rotateY(Math.random()*3.14).translate((Math.random()-.5)*.4,0,(Math.random()-.5)*.4),pa=g.attributes.position.array,ia=g.index?Array.from(g.index.array):Array.from({length:pa.length/3},(_,q)=>q),b0=pos.length/3;for(const a of pa)pos.push(a);for(const a of ia)idx.push(a+b0)}
+mpSeed('gr');const GRG=[];for(let v=0;v<6;v++){const pos=[],idx=[],nb=4+(Math.random()*3|0);for(let j=0;j<nb;j++){const h=.3+Math.random()*.4,w=.06+Math.random()*.04,g=new THREE.BoxGeometry(w,h,w).translate(0,h/2,0).rotateZ((Math.random()-.5)*.5).rotateY(Math.random()*3.14).translate((Math.random()-.5)*.4,0,(Math.random()-.5)*.4),pa=g.attributes.position.array,ia=g.index?Array.from(g.index.array):Array.from({length:pa.length/3},(_,q)=>q),b0=pos.length/3;for(const a of pa)pos.push(a);for(const a of ia)idx.push(a+b0)}
  const G=new THREE.BufferGeometry();G.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));G.setIndex(idx);GRG.push(G)}
 for(let i=0;i<780;i++){const s=i%2?1:-1,o=new THREE.Mesh(GRG[i%6],i%3?TGD:TGL),k=.8+Math.random()*.8;o.scale.set(k,k*(.8+Math.random()*.6),k);o.rotation.y=Math.random()*6.28;
  o.position.set(s*(8.1+Math.random()*Math.random()*3),0,-(i>>1)*4-Math.random()*4);o.userData.gz=1;scene.add(o);trees.push(o)}
@@ -993,7 +995,7 @@ function treeScroll(dz,zt){
  for(const o of trees){const u=o.userData;let z=o.position.z+dz;if(z>14)z-=TRL;o.position.z=z;
   if(u.gp&&SB){const x=o.position.x,r=u.sc?8.2:7.4;let h=false;for(let i=0;i<SB.length;i+=4)if(x+r>SB[i]&&x-r<SB[i+1]&&z+r>SB[i+2]&&z-r<SB[i+3]){h=true;break}u.sc=h}}
  if(zt&&(zn||zoneWas)){zoneTrees();zoneWas=!!zn}
- for(const o of trees){const u=o.userData;if(u.tr===undefined){u.tr=Math.random();u.dv=TRD/u.tr}
+ for(const o of trees){const u=o.userData;if(u.tr===undefined){u.tr=window.MP&&MP.room?(trees.indexOf(o)*.61803398875)%1:Math.random();u.dv=TRD/u.tr}
   const vis=!u.hz&&!u.sc&&(u.tr<.2||-o.position.z<u.dv);if(o.visible!==vis)o.visible=vis}
  window.anStep&&window.anStep();window.fstStep&&window.fstStep(dz);window.deerStep&&window.deerStep(dz);window.bdStep&&window.bdStep(dz);window.skbStep&&window.skbStep(dz);window.lpStep&&window.lpStep(dz);window.lgStep&&window.lgStep();window.stkStep&&window.stkStep(dz)}
 /* ===== peisaj indepartat: munti, campuri, paduri, sate, ferme, turbine eoliene ===== */
@@ -1108,7 +1110,7 @@ function scUnit(u,x,z){const o=new THREE.Group(),ge=new THREE.BufferGeometry();
   r.add(new THREE.Mesh(SCBL.m,SCM),new THREE.LineSegments(SCBL.l,SCLM));r.userData.w=t.w;o.add(r);SCT.push(r)}
  o.position.set(x,0,z);o.userData={x0:Math.abs(x)-u.w/2,hz:u.d/2,hill:u.hill};scene.add(o);SCN.push(o)}
 function scPick(l){let t=0;for(const q of l)t+=q[1];let r=Math.random()*t;for(const q of l){if(r<q[1])return q[0];r-=q[1]}return l[0][0]}
-{/* benzi pe fiecare parte, de la drum spre orizont; fiecare banda e un inel care se repeta, deci nimic nu se suprapune */
+{mpSeed('scn');/* benzi pe fiecare parte, de la drum spre orizont; fiecare banda e un inel care se repeta, deci nimic nu se suprapune */
  const BD=[[24,58,[[scUGrove,45],[scUField,22],[scUFarm,18],[scURow,15]]],
   [58,130,[[scUGrove,22],[scUField,28],[scUVillage,16],[scUPylons,8],[scUSolar,6],[scUFactory,6],[scUTower,6],[scUMast,4],[scUSilos,4]]],
   [130,260,[[scUField,28],[scUVillage,14],[scUTurbines,24],[scUGrove,14],[scUChurchV,8],[scUFactory,6],[scUSolar,6]]],
@@ -1120,7 +1122,7 @@ function scPick(l){let t=0;for(const q of l)t+=q[1];let r=Math.random()*t;for(co
    scUnit(u,sd*(xa+u.w/2+Math.random()*Math.max(0,xb-xa-u.w)),30-s-u.d/2);s+=u.d+u.gap}}}
 /* lantul de munti din zare (fix, in ceata albastruie) */
 const SCBM=new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide,fog:false}),SCBLN=new THREE.LineBasicMaterial({vertexColors:true,fog:false});
-{const g=scNew();SCHZ=.62;const MK=1.65;/* factor de departare: muntii stau la ~2000-2200, dincolo de VIEW (900-1100) unde apar obiectele si zonele */
+{mpSeed('mt');const g=scNew();SCHZ=.62;const MK=1.65;/* factor de departare: muntii stau la ~2000-2200, dincolo de VIEW (900-1100) unde apar obiectele si zonele */
  for(let i=0;i<22;i++)scHill(g,MK*(-1900+3800*(i+Math.random()*.7)/22),MK*(-1330+scR(-20,20)),MK*scR(150,240),MK*scR(70,190));
  SCHZ=.5; for(let i=0;i<22;i++)scHill(g,MK*(-1800+3600*(i+Math.random()*.7)/22),MK*(-1240+scR(-20,20)),MK*scR(110,180),MK*scR(35,100));SCHZ=.06;
  const ge=new THREE.BufferGeometry(),lg=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(g.p,3));ge.setAttribute('color',new THREE.Float32BufferAttribute(g.c,3));
@@ -1182,7 +1184,7 @@ function cirrus(W,pl){const g={p:[],c:[],l:[],ln:0},n=4+(Math.random()*5|0);let 
 const SUNK=.207,rz=(a,b)=>-(a+Math.random()*(b-a)),
  cx_=(z,av)=>{for(let i=0;i<20;i++){const x=(Math.random()*2-1)*Math.abs(z)*.75;if(!av||Math.abs(x/z-SUNK)>.14)return x}return Math.abs(z)*.75},
  cadd_=(o,x,y,z,sp)=>{o.position.set(x,y,z);o.userData.sp=sp*Math.abs(z)/300;o.userData.wr=Math.abs(z)*1.4+60;skyScene.add(o);clouds.push(o)};
-for(let i=0;i<13;i++){const W=22+Math.random()*26,z=rz(220,380);cadd_(cumulus(W,W*.45,CP.near,1,0),cx_(z,1),30+Math.random()*70,z,.8+Math.random()*1.6)}
+mpSeed('cl');for(let i=0;i<13;i++){const W=22+Math.random()*26,z=rz(220,380);cadd_(cumulus(W,W*.45,CP.near,1,0),cx_(z,1),30+Math.random()*70,z,.8+Math.random()*1.6)}
 for(let i=0;i<7;i++){const W=18+Math.random()*24,z=rz(80,210);cadd_(cumulus(W,W*.5,CP.near,1,0),cx_(z,1),26+Math.random()*50,z,2.5+Math.random()*3)}
 for(let i=0;i<6;i++){const W=40+Math.random()*50,z=rz(120,260);let x=(i%2?-1:1)*(45+Math.random()*Math.abs(z)*.5);if(Math.abs(x/z-SUNK)<.25)x=-x;cadd_(cumulus(W,W*.55,CP.near,1,0),x,14+Math.random()*30,z,2+Math.random()*2.5)}
 for(let i=0;i<22;i++){const W=70+Math.random()*100,z=rz(420,850);cadd_(cumulus(W,W*.55,CP.mid,1,0),cx_(z,1),30+Math.random()*70,z,.6+Math.random()*1.2)}
