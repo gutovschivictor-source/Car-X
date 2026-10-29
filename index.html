@@ -5398,7 +5398,7 @@ function draw(){const b=E('mp-b');if(MP.cd){b.innerHTML='<div id="mp-big"></div>
   E('mp-new').onclick=()=>{const c=Math.random().toString(36).slice(2,7).toUpperCase().replace(/[^A-Z0-9]/g,'A');location.search='?room='+c+'&host=1'};
   E('mp-join').onclick=()=>{const c=E('mp-code').value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(c)location.search='?room='+c};}
  else{const t=!MP.on?(MP.host?'Aștept prietenul… trimite-i linkul.':'Mă conectez la cameră…'):myRdy?(opRdy?'Pornim…':'Aștept ca prietenul să fie gata…'):(opRdy?'Prietenul e gata ✔ Apasă Gata!':'Conectat ✅ Apasă Gata.');
-  b.innerHTML='<p>Cameră: <b>'+MP.room+'</b></p>'+(msg?'<p><b>'+msg+'</b></p>':'')+'<p>'+t+'</p>'+(MP.host?'<button class="s" id="mp-sh">📤 Trimite linkul</button>':'')+'<button id="mp-rd"'+((!MP.on||myRdy)?' disabled':'')+'>'+(msg?'Revanșă':'Gata ✔')+'</button><button class="s" id="mp-x">Închide</button>';
+  b.innerHTML='<p>Cameră: <b>'+MP.room+'</b> <small style="opacity:.5">v7</small></p>'+(msg?'<p><b>'+msg+'</b></p>':'')+'<p>'+t+'</p>'+(MP.host?'<button class="s" id="mp-sh">📤 Trimite linkul</button>':'')+'<button id="mp-rd"'+((!MP.on||myRdy)?' disabled':'')+'>'+(msg?'Revanșă':'Gata ✔')+'</button><button class="s" id="mp-x">Închide</button>';
   if(MP.host)E('mp-sh').onclick=()=>{const u=link();if(navigator.share)navigator.share({title:'Cursă Autostradă',text:'Hai la o cursă!',url:u}).catch(()=>{});else{try{navigator.clipboard.writeText(u)}catch(e){}prompt('Copiază linkul:',u)}};
   E('mp-rd').onclick=()=>{if(!MP.on)return;myRdy=true;try{initAudio()}catch(e){}send({t:'rdy'});draw();maybeGo()}}
  const x=E('mp-x');if(x)x.onclick=()=>{ov.style.display='none'}}
@@ -5426,7 +5426,7 @@ function initNet(){const cfg={config:{iceServers:[{urls:'stun:stun.l.google.com:
  cfg.token=rid();
  const dial=()=>real(()=>peer.connect(hid,{reliable:true}));
  peer=real(()=>MP.host?new Peer(hid,cfg):new Peer('caini-'+MP.room+'-g'+rid(),cfg));
- peer.on('error',e=>{if(e.type==='unavailable-id'){msg='Codul e deja folosit – creează altă cameră';draw()}else if(e.type==='peer-unavailable'&&!MP.host&&tries++<30){setTimeout(()=>{if(!MP.on)onConn(dial())},2000)}else{msg='Eroare conexiune: '+e.type;draw()}});
+ peer.on('error',e=>{if(e.type==='unavailable-id'){msg='Codul e deja folosit – creează altă cameră';draw()}else if(e.type==='peer-unavailable'&&!MP.host&&tries++<30){msg='Gazda nu e online încă… reîncerc ('+tries+'/30). Gazda să țină jocul deschis.';draw();setTimeout(()=>{if(!MP.on)onConn(dial())},2000)}else{msg='Eroare conexiune: '+e.type;draw()}});
  if(MP.host)peer.on('connection',c=>{if(conn&&conn.open){c.close();return}onConn(c)});
  else peer.on('open',()=>onConn(dial()))}
 if(MP.room){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=initNet;s.onerror=()=>{msg='Nu pot încărca PeerJS (internet?)';draw()};document.head.appendChild(s);setTimeout(openOv,1500)}
