@@ -3178,11 +3178,13 @@ function cityRadar(g,L){const rn=Math.random,n=4+(rn()*4|0),zs=[],CO=g.userData.
   bad=z=>CRZ.some(r=>Math.abs(z-r)<CRL/2+16)||CO.some(c=>Math.abs(z-c.z)<22)||ZB.some(q=>Math.abs(z-q)<18);
  for(let t=0;t<600&&zs.length<n;t++){const z=-(120+rn()*(L-240));if(!bad(z)&&zs.every(q=>Math.abs(q-z)>150))zs.push(z)}
  if(!zs.length)return;const rg=radarBuild(zs);g.add(rg);g.userData.rad={g:rg,zs,pw:[],done:[]}}
-function zoneStep(dt,cr){radarStep(dt,cr);if(!zn){if(state==='run'&&!cr&&dist>=znT)spawnZone();return}
+function zoneStep(dt,cr){radarStep(dt,cr);if(!zn){if(state==='run'&&!cr&&dist>=znT){const t0=znT;spawnZone();if(zn)zn.t0=t0}return}
  zn.g.position.z+=v*dt;const z=zn.g.position.z;if(zn.type==='coast')coastAnim(zn.g);if(zn.type==='bridge')bridgeAnim(zn.g);if(zn.type==='rail')railAnim(zn,dt);if(zn.type==='munte')munteAnim(zn.g,dt);
  if(zn.type==='city'){cityAnim(zn.g,dt);for(const q of zn.g.userData.cars){const p=q.m.position;p.x+=q.vx*dt;if(q.vx>0&&p.x>58)p.x=-58;else if(q.vx<0&&p.x<-58)p.x=58}}
  if(!zn.seen&&z>0){zn.seen=true;if(!cr)showTip(zn.type==='tunnel'?'🚇 Tunel':zn.type==='city'?'🏙️ Oraș · radare cu bliț, zebre':zn.type==='munte'?'⛰️ Munte · perete de beton, 0–1 tunel, lac în vale, telegondole':zn.type==='coast'?'🌊 Coastă · fără parapet, vânt spre mare':zn.type==='rail'?'🚆 Pădure + cale ferată · abur, marfă, expres':'🌉 Pod')}
- if(z-zn.L>(zn.type==='tunnel'?135:zn.type==='rail'?RLE+80:40)){zn.g.traverse(o=>{if(o.userData.dg&&o.geometry)o.geometry.dispose()});scene.remove(zn.g);zn=null;znT=dist+2150+Math.random()*3000}}
+ if(z-zn.L>(zn.type==='tunnel'?135:zn.type==='rail'?RLE+80:40)){zn.g.traverse(o=>{if(o.userData.dg&&o.geometry)o.geometry.dispose()});scene.remove(zn.g);const _t0=zn.t0!=null?zn.t0:dist,_L=zn.L;zn=null;
+ const _r=(window.MP&&MP.room)?window.mpM32(window.mpH(MP.room+'e'+Math.floor(_t0)))():Math.random();
+ znT=_t0+_L*KMH+2150+_r*3000}}
 /* cer de noapte: albastru inchis, adanc */
 const NSKY=new THREE.Color(0x2a4a9a);
 function envUpdate(rdt){const ins=!!zn&&zn.g.position.z>-8&&zn.g.position.z-zn.L<8;if(zn)envType=zn.type;
