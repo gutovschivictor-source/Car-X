@@ -1747,10 +1747,10 @@ function clearLane(){clrX=LANES.reduce((a,l)=>Math.abs(l-px)<Math.abs(a-px)?l:a)
 function repBad(x,z,dir,D){return repList.some(o=>{if(o.t==='cone'&&o.hit)return false;const p=o.g.position,dz=dir>0?z-p.z:p.z-z;return Math.abs(p.x-x)<1.5&&dz>-6&&dz<D})}
 function pick(dir){let s=0;const a=[];for(const k in TY){const y=TY[k];if(dir<0&&!y.o)continue;s+=y.wt;a.push([k,s])}const r=Math.random()*s;for(const[k,c]of a)if(r<c)return k;return'car'}
 const HTC={};
-function spawn(z,fT){const x=fT?LANES[2+(Math.random()*2|0)]:LANES[Math.random()*4|0],dir=x>0?1:-1,ty=fT||pick(dir),Y=TY[ty];if((clrT>0&&Math.abs(x-clrX)<1)||(rbs.length&&dir<0)||!free(x,z,Y.l))return;
+function spawn(z,fT,R){const x0=fT?LANES[2+(Math.random()*2|0)]:LANES[Math.random()*4|0],dir=x0>0?1:-1,x=R?R.x:x0,ty=fT||pick(dir),Y=TY[ty];if(R)z=R.z;else if((clrT>0&&Math.abs(x-clrX)<1)||(rbs.length&&dir<0)||!free(x,z,Y.l))return;
  const k=mkVeh(ty,Math.random()<Y.dk),sp=Y.sp[0]+Math.random()*(Y.sp[1]-Y.sp[0]),
- c={x,z,dir,w:k.w,l:k.l,sp,cs:sp,g:k.g,spin:k.spin,counted:false,sport:!!Y.fast,vx:0,m:MS[ty],rd:k.rd,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:k.rd?1.3:(HTC[ty]||(HTC[ty]=Math.max(1,new THREE.Box3().setFromObject(k.g).max.y)))};
- if(!fT)addLoad(k.g,ty);if(ty==='carrier')c.rampT=1;if(ty==='dump'){c.dmp=1;c.rk=Math.random()<.65}if(dir<0)k.g.rotation.y=Math.PI;k.g.position.set(x,0,z);scene.add(k.g);cars.push(c);return true}
+ c={ty,x,z,dir,w:k.w,l:k.l,sp,cs:sp,g:k.g,spin:k.spin,counted:false,sport:!!Y.fast,vx:0,m:MS[ty],rd:k.rd,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:k.rd?1.3:(HTC[ty]||(HTC[ty]=Math.max(1,new THREE.Box3().setFromObject(k.g).max.y)))};
+ if(!fT)addLoad(k.g,ty);if(ty==='carrier')c.rampT=1;if(ty==='dump'){c.dmp=1;c.rk=Math.random()<.65}if(dir<0)k.g.rotation.y=Math.PI;k.g.position.set(x,0,z);if(R)c.cs=R.cs;scene.add(k.g);cars.push(c);return true}
 function reset(){radClear();window.cpAw=0;if(window.AR)AR.end();repClear();window.stkClear&&window.stkClear();window.GDCS=null;epT=0;jcK=0;jcT=0;jkT=0;jk=0;for(const m of epR){m.visible=false;m.userData.t=-1}window.deerClear&&window.deerClear();window.bdClear&&window.bdClear();window.skbClear&&window.skbClear();window.rcReset&&window.rcReset();window.lgClear&&window.lgClear();nmT=nmCd=swT=swCd=swK=0;nmCar=null;nmK=0;resetExtras();cars.forEach(c=>scene.remove(c.g));cars=[];debris.forEach(r=>scene.remove(r.g));debris.length=0;pc.dead=false;pc.g.visible=!fp;pc.lost=0;pc.pull=0;pc.smk=0;pc.det.forEach(m=>m.visible=true);pc.det.length=0;pc.hl.forEach(h=>h.parent&&h.parent.remove(h));pc.hl.length=0;smk.forEach(q=>{q.l=0;q.m.visible=false});dist=0;shN=0;lvI=0;emT=3;wV=0;wTg=0;alS='';$('al').classList.remove('on');riders.forEach(r=>scene.remove(r.g));riders.length=0;sparkClear();accT=6;vx=axs=yaw=roll=pitch=0;camX=1.8;sk.forEach(m=>m.visible=false);px=1.8;v=30;t=0;score=0;passed=0;wAng=wTarget=0;spawnT=0;shake=0;dmg=0;hitT=0;nt=ntCd=0;rtk=null;air=false;sbR=sbRv=sbP=sbPv=sbY=sbYv=swk=0;py=pvy=spin=spinR=0;rpT=8;airK=0;clrT=0;
  pc.lost=0;pc.pull=0;pc.smk=0;pc.lsm=0;fallOn=false;fallY=0;fallV=0;
 for(let z=-60;z>-540;z-=30)spawn(z-Math.random()*10);}
@@ -5369,45 +5369,42 @@ window.ldHide&&ldHide();
 /* === CURSA ONLINE CU PRIETEN (PeerJS / WebRTC, fără server propriu) === */
 (function(){try{
 const MP=window.MP,E=id=>document.getElementById(id),TARGET=3000,OUT=s=>s==='crash'||s==='over'||s==='replay';
+/* 1a. TRAFIC SINCRONIZAT: cine e in fata (liderul) e sursa; celalalt isi aliniaza masinile (id = cheia de seed) la pozitia/viteza/banda liderului */
+const SK=new Map(),ghosts=new Map();let LD=null;
+function snap(){const n=performance.now(),w0=dist/KMH,a=[],seen=new Set();
+ for(const c of cars){if(!c.sk||c.gone||c.z>40||c.z<-690)continue;seen.add(c.sk);const e=[c.sk,c.fT||0,+c.x.toFixed(2),+(w0-c.z).toFixed(1),+c.cs.toFixed(1),c.dir,c.hit?1:0];a.push(e);ghosts.set(c.sk,{e,t:n})}
+ for(const[k,g]of ghosts){if(seen.has(k))continue;const age=(n-g.t)/1000,e=g.e,w=e[3]+(e[5]>0?e[4]:-e[4])*age;if(age>40||w<w0-400||w>w0+700){ghosts.delete(k);continue}a.push([e[0],e[1],e[2],+w.toFixed(1),e[4],e[5],e[6]])}
+ return a}
+function recvSnap(m){if(!MP.racing||!(m.d>dist+5)){LD=null;return}const n=performance.now(),w0=m.d/KMH;SK.clear();for(const e of m.n)SK.set(e[0],{fT:e[1],x:e[2],wz:e[3],cs:e[4],dir:e[5],t:n});LD={t:n,lo:w0-400,hi:w0+690}}
+function covered(z){return !!LD&&performance.now()-LD.t<700&&(dist/KMH-z)>LD.lo+20&&(dist/KMH-z)<LD.hi-60}
+function trafSync(n,dt){if(!MP.on||!MP.racing||!LD||n-LD.t>700||state!=='run')return;const w0=dist/KMH,age=(n-LD.t)/1000+.04;
+ for(const c of cars){if(!c.sk||c.gone)continue;const e=SK.get(c.sk),wz=w0-c.z;
+  if(!e){if(!c.hit&&!c.rampT&&wz>LD.lo+20&&wz<LD.hi-60&&c.z<20){c.gone=true;scene.remove(c.g)}continue}
+  e.u=1;if(c.hit)continue;c.fol=n;const sw=e.dir>0?e.cs:-e.cs,zt=w0-(e.wz+sw*age);
+  c.z+=(zt-c.z)*Math.min(1,dt*6);c.cs+=(e.cs-c.cs)*Math.min(1,dt*5);
+  if(!c.sw&&!c.lc){c.x+=(e.x-c.x)*Math.min(1,dt*10);c.g.position.x=c.x}c.g.position.z=c.z}
+ for(const[k,e]of SK){if(e.u)continue;e.u=1;const sw=e.dir>0?e.cs:-e.cs,zt=w0-(e.wz+sw*age);if(zt<-690||zt>20||cars.some(c=>c.sk===k))continue;spawn(zt,e.fT||undefined,{x:e.x,z:zt,cs:e.cs,k:k})}}
 /* 1. trafic si zone deterministe pe pozitie: aceeasi bucata de drum = aceleasi masini la amandoi */
-let trStep=()=>{};
 if(MP.room){
  const wr=(fn,key)=>function(){const o=Math.random;Math.random=mpM32(mpH(MP.room+key.apply(this,arguments)));try{return fn.apply(this,arguments)}finally{Math.random=o}};
- /* TRAFIC ANCORAT IN LUME + CEAS COMUN: masina k pleaca din B la T=0 si merge cu viteza ei => aceeasi pozitie la amandoi la acelasi moment */
- const seeded=(key,fn)=>{const o=Math.random;Math.random=mpM32(mpH(MP.room+key));try{return fn()}finally{Math.random=o}};
- const GAP0=60,GAPMIN=28,GAPK=.01,BMAX=6000,CARR=.06; /* distanta dintre masini, lungimea drumului pregatit, sansa de transportor */
- let SL=[],nrp=700,nri=0;const R=(k,c)=>mpM32(mpH(MP.room+c+k))();
- const _sp=spawn,_spw=wr(_sp,z=>'s'+Math.floor((dist/KMH-z)/8));
- spawn=function(){return undefined}; /* umplerea initiala si timerele vechi (pe secunde) sunt oprite; sloturile le inlocuiesc */
- const mkSlots=()=>{SL=[];let B=60,k=0;while(B<BMAX){let fT=null,dir,ty;
-   if(B>700&&TY.carrier&&R(k,'c')<CARR){fT='carrier';dir=1;ty='carrier'}
-   else{const d=seeded('k'+k,()=>{const x=LANES[Math.random()*4|0],dr=x>0?1:-1;return{dir:dr,ty:pick(dr)}});dir=d.dir;ty=d.ty}
-   const Y=TY[ty];SL.push({k,B,fT,dir,sp:Y.sp[0]+R(k,'v')*(Y.sp[1]-Y.sp[0]),st:0});
-   B+=Math.max(GAPMIN,GAP0-B*GAPK)*(.75+.5*R(k,'j'));k++}};
- const _rs=reset,_rsw=wr(_rs,()=>'r');
- reset=function(){try{return _rsw.apply(this,arguments)}finally{nrp=700;nri=0;mkSlots()}};
- trStep=function(){if(!MP.racing||state!=='run'||!window.__mpT0)return;
-  const T=(performance.now()-window.__mpT0)/1000,h=dist/KMH;
-  for(const s of SL){if(s.st)continue;const r=s.B+s.dir*s.sp*T-h;
-   if(r<30){s.st=1;continue}
-   if(r<=540){s.st=1;if(seeded('k'+s.k,()=>_sp(-r,s.fT||undefined))){const c=cars[cars.length-1];c.sp=c.cs=s.sp}}}
-  /* lucrari la drum: pornesc cand orizontul ajunge la punctul fix de pe drum */
-  if(typeof repT!=='undefined'){if(h+470>=nrp){if(repT>0)repT=0}else if(repT<1)repT=1}};
- if(typeof repSpawn==='function'){const _rp=repSpawn;repSpawn=function(){const k=nri++;nrp+=450+mpM32(mpH(MP.room+'g'+k))()*500;return seeded('p'+k,()=>_rp.apply(this,arguments))}}
+ const _sp=spawn;spawn=function(z,fT,R){const key=R?R.k:'s'+Math.floor((dist/KMH-z)/8);if(!R&&MP.racing&&(covered(z)||cars.some(c=>c.sk===key)))return;const o=Math.random;Math.random=mpM32(mpH(MP.room+key));let r;try{r=_sp.call(this,z,fT,R)}finally{Math.random=o}if(r){const c=cars[cars.length-1];c.sk=key;c.fT=fT||0}return r};
+ const _rs=reset;reset=wr(_rs,()=>'r');const _rs2=reset;reset=function(){SK.clear();ghosts.clear();LD=null;return _rs2.apply(this,arguments)};
+ const _ai=ai;ai=function(c,dt){if(c.fol&&performance.now()-c.fol<500)return;return _ai.apply(this,arguments)};
+ const _ac=accident;accident=function(){if(LD&&performance.now()-LD.t<700)return;return _ac.apply(this,arguments)};
  if(typeof spawnZone==='function'){const _z=spawnZone;spawnZone=wr(_z,()=>'z'+Math.floor(dist/300))}
 }
 /* 2. masina prietenului: acelasi model, culoare albastra, pusa dupa diferenta de distanta */
 const op=mkVeh('sport',false,PAL.blue);op.g.visible=false;scene.add(op.g);
-const O={d:0,x:0,v:0,s:'ready',t:0,ok:false,ed:0,ex:0};let lt=performance.now();
-function upd(){const n=performance.now(),dt=Math.min(.1,(n-lt)/1000);lt=n;
+const O={d:0,x:0,v:0,s:'ready',t:0,ok:false,ed:0,ex:0,y:0,ey:0,vx:0};let lt=performance.now();
+function upd(){const n=performance.now(),dt=Math.min(.1,(n-lt)/1000);lt=n;try{trafSync(n,dt)}catch(e){}
  if(!(MP.on&&MP.racing&&O.ok)){op.g.visible=false;return}
  const age=Math.min(.5,(n-O.t)/1000),td=O.d+(O.s==='run'?O.v*KMH*age:0);
- O.ed+=(td-O.ed)*Math.min(1,dt*12);const px0=O.ex;O.ex+=(O.x-O.ex)*Math.min(1,dt*12);
- const z=-(O.ed-dist)/KMH;op.g.position.set(O.ex,.09,z);
+ O.ed+=(td-O.ed)*Math.min(1,dt*12);const px0=O.ex;O.ex+=(O.x+Math.max(-1.5,Math.min(1.5,O.vx*age))-O.ex)*Math.min(1,dt*14);O.ey+=(O.y-O.ey)*Math.min(1,dt*14);
+ const z=-(O.ed-dist)/KMH;op.g.position.set(O.ex,.09+O.ey,z);
  op.g.rotation.y=-Math.max(-.3,Math.min(.3,(O.x-O.ex)*.8));
  if(op.spin&&O.s==='run')op.spin.rotation.x-=dt*5;
  op.g.visible=Math.abs(z)<520}
-const _ds=drawScene;drawScene=function(){try{upd()}catch(e){}try{trStep()}catch(e){}return _ds.apply(this,arguments)};
+const _ds=drawScene;drawScene=function(){try{upd()}catch(e){}return _ds.apply(this,arguments)};
 /* 3. interfata */
 const st=document.createElement('style');st.textContent='#mpo{position:fixed;inset:0;z-index:130;display:none;align-items:center;justify-content:center;background:rgba(26,27,58,.82)}#mpo .bx{background:#fff4de;border:3px solid #1a1b3a;border-radius:18px;padding:18px;width:min(92vw,360px);text-align:center;color:#1a1b3a;font:600 15px/1.4 -apple-system,system-ui,sans-serif}#mpo h2{margin:0 0 8px;font-size:22px}#mpo button,#mpo input{display:block;width:100%;margin:8px 0;padding:12px;border-radius:12px;border:3px solid #1a1b3a;font:700 16px -apple-system,system-ui,sans-serif;box-sizing:border-box}#mpo button{background:#ffc233;color:#1a1b3a}#mpo button.s{background:#fff}#mpo button:disabled{opacity:.45}#mpo input{text-align:center;text-transform:uppercase;background:#fff}#mp-big{font-size:84px;font-weight:800;line-height:1.1}#mph{position:fixed;top:calc(env(safe-area-inset-top,0px) + 58px);left:50%;transform:translateX(-50%);z-index:60;background:rgba(26,27,58,.8);color:#fff;padding:4px 12px;border-radius:14px;font:700 14px -apple-system,system-ui,sans-serif;display:none}';document.head.appendChild(st);
 const ov=document.createElement('div');ov.id='mpo';ov.innerHTML='<div class="bx"><h2>🏁 Cursă cu prieten</h2><div id="mp-b"></div></div>';document.body.appendChild(ov);
@@ -5420,7 +5417,7 @@ function draw(){const b=E('mp-b');if(MP.cd){b.innerHTML='<div id="mp-big"></div>
   E('mp-new').onclick=()=>{const c=Math.random().toString(36).slice(2,7).toUpperCase().replace(/[^A-Z0-9]/g,'A');location.search='?room='+c+'&host=1'};
   E('mp-join').onclick=()=>{const c=E('mp-code').value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(c)location.search='?room='+c};}
  else{const t=!MP.on?(MP.host?'Aștept prietenul… trimite-i linkul.':'Mă conectez la cameră…'):myRdy?(opRdy?'Pornim…':'Aștept ca prietenul să fie gata…'):(opRdy?'Prietenul e gata ✔ Apasă Gata!':'Conectat ✅ Apasă Gata.');
-  b.innerHTML='<p>Cameră: <b>'+MP.room+'</b> <small style="opacity:.5">v7</small></p>'+(msg?'<p><b>'+msg+'</b></p>':'')+'<p>'+t+'</p>'+(MP.host?'<button class="s" id="mp-sh">📤 Trimite linkul</button>':'')+'<button id="mp-rd"'+((!MP.on||myRdy)?' disabled':'')+'>'+(msg?'Revanșă':'Gata ✔')+'</button><button class="s" id="mp-x">Închide</button>';
+  b.innerHTML='<p>Cameră: <b>'+MP.room+'</b> <small style="opacity:.5">v8</small></p>'+(msg?'<p><b>'+msg+'</b></p>':'')+'<p>'+t+'</p>'+(MP.host?'<button class="s" id="mp-sh">📤 Trimite linkul</button>':'')+'<button id="mp-rd"'+((!MP.on||myRdy)?' disabled':'')+'>'+(msg?'Revanșă':'Gata ✔')+'</button><button class="s" id="mp-x">Închide</button>';
   if(MP.host)E('mp-sh').onclick=()=>{const u=link();if(navigator.share)navigator.share({title:'Cursă Autostradă',text:'Hai la o cursă!',url:u}).catch(()=>{});else{try{navigator.clipboard.writeText(u)}catch(e){}prompt('Copiază linkul:',u)}};
   E('mp-rd').onclick=()=>{if(!MP.on)return;myRdy=true;try{initAudio()}catch(e){}send({t:'rdy'});draw();maybeGo()}}
  const x=E('mp-x');if(x)x.onclick=()=>{ov.style.display='none'}}
@@ -5431,11 +5428,12 @@ const mn=E('m-main'),ms=E('m-st');if(mn)mn.insertBefore(mb,ms||null);
 function maybeGo(){if(MP.host&&myRdy&&opRdy&&!MP.cd){send({t:'go'});countdown()}}
 function countdown(){if(MP.cd)return;MP.cd=1;myRdy=opRdy=false;msg='';O.ok=false;ov.style.display='flex';draw();let n=3;
  const tk=()=>{const el=E('mp-big');if(n>0){if(el)el.textContent=n--;setTimeout(tk,1000)}else{ov.style.display='none';MP.cd=0;go()}};tk()}
-function go(){window.__mpT0=performance.now();MP.racing=true;O.ok=false;O.s='ready';try{CFG.mode=0;RVF=1.3}catch(e){}window.PAUSED=false;E('mm').classList.add('h');E('ov').classList.add('h');start()}
+function go(){MP.racing=true;O.ok=false;O.s='ready';try{CFG.mode=0;RVF=1.3}catch(e){}window.PAUSED=false;E('mm').classList.add('h');E('ov').classList.add('h');start()}
 function verdict(win){if(!MP.racing)return;MP.racing=false;hud.style.display='none';op.g.visible=false;msg=win?'🏆 Ai câștigat!':'😅 Ai pierdut';myRdy=opRdy=false;setTimeout(openOv,1200)}
 function onData(m){if(!m)return;
- if(m.t==='s'){if(!MP.racing)return;O.d=m.d;O.x=m.x;O.v=m.v;O.s=m.s;O.t=performance.now();if(!O.ok){O.ok=true;O.ed=m.d;O.ex=m.x}}
+ if(m.t==='s'){if(!MP.racing)return;O.d=m.d;O.x=m.x;O.v=m.v;O.s=m.s;O.y=m.y||0;O.vx=m.w||0;O.t=performance.now();if(!O.ok){O.ok=true;O.ed=m.d;O.ex=m.x}}
  else if(m.t==='rdy'){opRdy=true;if(ov.style.display==='flex')draw();maybeGo()}
+ else if(m.t==='c')recvSnap(m);
  else if(m.t==='go')countdown();
  else if(m.t==='fin')verdict(false)}
 function onConn(c){conn=c;c.on('open',()=>{MP.on=true;msg='';if(ov.style.display==='flex')draw()});c.on('data',onData);
@@ -5453,7 +5451,8 @@ function initNet(){const cfg={config:{iceServers:[{urls:'stun:stun.l.google.com:
  else peer.on('open',()=>onConn(dial()))}
 if(MP.room){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=initNet;s.onerror=()=>{msg='Nu pot încărca PeerJS (internet?)';draw()};document.head.appendChild(s);setTimeout(openOv,1500)}
 /* 5. trimitere pozitie, HUD, finis */
-setInterval(()=>{if(MP.on&&MP.racing)send({t:'s',d:dist,x:px,v:v,s:state})},50);
+setInterval(()=>{if(MP.on&&MP.racing)send({t:'s',d:dist,x:px,v:v,s:state,y:py,w:vx})},40);
+setInterval(()=>{if(MP.on&&MP.racing&&state==='run')send({t:'c',d:dist,n:snap()})},100);
 setInterval(()=>{if(!MP.racing)return;
  if(MP.on&&state==='run'&&dist>=TARGET){send({t:'fin'});verdict(true);return}
  if(O.ok){const d=O.d-dist;hud.style.display='block';hud.textContent=(OUT(O.s)?'💥 Prieten ieșit · ':'🔵 Prieten: ')+(d>=0?'+':'')+Math.round(d)+' m · țintă '+(TARGET/1000)+' km';
