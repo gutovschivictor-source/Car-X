@@ -103,6 +103,9 @@ button:active{transform:scale(.94)}
 body.rp::before,body.rp::after{content:'';position:fixed;left:0;right:0;height:10vh;background:var(--ink);z-index:4;pointer-events:none}body.rp::before{top:0}body.rp::after{bottom:0}
 body.rp #rl,body.rp #rs{display:block}
 body.rp #hud,body.rp #bar,body.rp #nt,body.rp #hn,body.rp #cv,body.rp #al,body.rp #tv,body.rp #tip{display:none!important}
+#wl{position:fixed;left:20px;top:calc(env(safe-area-inset-top,0px) + 64px);display:none;background:var(--paper);color:#d9291c;border:2px solid var(--ink);border-radius:12px;box-shadow:3px 3px 0 var(--ink);padding:3px 9px;font:800 15px/1.2 -apple-system,system-ui,sans-serif;letter-spacing:.06em;z-index:3;pointer-events:none}#wl.on{display:block}#wl u{text-decoration:none;color:rgba(26,27,58,.28)}#wl.up{animation:wlp .6s cubic-bezier(.2,1.5,.4,1)}@keyframes wlp{0%{transform:none}25%{transform:scale(1.35)}100%{transform:none}}
+#gb{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 170px);transform:translateX(-50%);width:min(58vw,250px);display:none;z-index:4;pointer-events:none;text-align:center;font:800 12px/1 -apple-system,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}#gb.on{display:block}#gb span{display:block;margin-bottom:4px;color:var(--paper);text-shadow:0 1px 0 var(--ink),1px 0 0 var(--ink),-1px 0 0 var(--ink),0 -1px 0 var(--ink)}#gb i{display:block;height:14px;border:2px solid var(--ink);border-radius:9px;background:var(--paper);box-shadow:3px 3px 0 var(--ink);overflow:hidden}#gb em{display:block;height:100%;width:0;background:#2a6bff}#gb.hot em{background:#e8261c}#gb.hot{animation:gbs .25s steps(2) infinite}@keyframes gbs{50%{transform:translateX(-50%) translateY(-2px)}}
+body.rp #wl,body.rp #gb,body.skp #wl,body.skp #gb{display:none!important}
 #sl{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 #gr{position:fixed;left:20px;top:calc(env(safe-area-inset-top,0px) + 112px);width:64px;box-sizing:border-box;padding:5px 7px 7px;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:14px;box-shadow:3px 3px 0 var(--ink);display:none;z-index:3;text-align:center;font:700 10px -apple-system,system-ui,sans-serif;--r:0%;pointer-events:none}
 #gr.on{display:block}#gr b{display:block;font-size:30px;line-height:1.05;letter-spacing:-.03em}#gr b::before{font-size:11px;vertical-align:middle;margin-right:3px}
@@ -126,6 +129,7 @@ body.rp #gr{display:none!important}
 
 #tip{top:calc(env(safe-area-inset-top,0px) + 44px);max-width:30vw;padding:2px 8px;border-width:1px;border-radius:8px;box-shadow:none;font-size:10px;line-height:1.25;background:rgba(255,255,255,.82)}
 #al{top:calc(env(safe-area-inset-top,0px) + 82px);padding:2px 8px;border-width:1px;border-radius:8px;box-shadow:none;font-size:10px}
+#wl{top:calc(env(safe-area-inset-top,0px) + 92px);left:calc(env(safe-area-inset-left,0px) + 16px);padding:1px 7px;font-size:11px;border-width:1px;border-radius:8px;box-shadow:none}#gb{top:calc(env(safe-area-inset-top,0px) + 108px);width:min(40vw,220px);font-size:10px}#gb i{height:10px;border-width:1.5px;box-shadow:2px 2px 0 var(--ink)}
 #tv{top:calc(env(safe-area-inset-top,0px) + 92px);left:calc(env(safe-area-inset-left,0px) + 16px);padding:1px 7px;font-size:10px;border-width:1px;border-radius:8px;box-shadow:none}
 #gr{top:calc(env(safe-area-inset-top,0px) + 40px);left:calc(env(safe-area-inset-left,0px) + 16px);width:44px;padding:3px 5px 4px;border-radius:10px;border-width:1.5px;box-shadow:2px 2px 0 var(--ink);font-size:8px}
 #gr b{font-size:20px}#gr b::before{font-size:8px;margin-right:2px}
@@ -454,7 +458,7 @@ addEventListener('load',function(){ldHide()});
 })();
 </script>
 <div id="g"></div><div id="tnd"></div><div id="sunw"></div><div id="dnc"></div><div id="dns"></div><div id="dnb"></div><div id="gv"></div><div id="cinemaFX"><div id="speed-lines"></div><div id="nitro-flash"></div></div>
-<div id="hud"><b id="sc">Depășiri: 0</b><b id="ds">0.0 km</b><b id="sp">0 km/h</b></div>
+<div id="hud"><b id="sc">Depășiri: 0</b><b id="ds">0.0 km</b><b id="sp">0 km/h</b></div><div id="wl"></div><div id="gb"><span>Te prinde!</span><i><em></em></i></div>
 <div id="bar"><div id="wh"><svg id="ws" viewBox="0 0 200 200"><g id="wr" style="transform-origin:100px 100px">
 <circle cx="100" cy="100" r="88" fill="#fff4de" stroke="#1a1b3a" stroke-width="14"/>
 <path d="M12 100H78M122 100H188M100 124V188" stroke="#1a1b3a" stroke-width="12" stroke-linecap="round"/>
@@ -564,7 +568,7 @@ const HX=c=>parseInt(c.slice(1),16);
 {const r=document.documentElement.style;r.setProperty('--ink',PAL.ink);r.setProperty('--paper',PAL.paper);r.setProperty('--accent',PAL.accent);r.setProperty('--blue',PAL.blue)}
 const $=id=>document.getElementById(id),LANES=[-5.4,-1.8,1.8,5.4];
 /* setari salvate (meniu): sunet, volum, vibratii, sensibilitate volan, camera, grafica, skin */
-const CFG=Object.assign({mute:false,vol:1,hap:true,steer:1,cam:0,gfx:2,skin:0,first:0,mode:0,fxv:100,bgv:100,tilt:0,tsens:1},(()=>{try{return JSON.parse(localStorage.getItem('cfg')||'{}')||{}}catch(e){return{}}})());
+const CFG=Object.assign({mute:false,vol:1,hap:true,steer:1,cam:0,gfx:2,skin:0,first:0,mode:0,fxv:100,bgv:100,tilt:0,tsens:1,pdf:1},(()=>{try{return JSON.parse(localStorage.getItem('cfg')||'{}')||{}}catch(e){return{}}})());
 const GFX0=CFG.gfx;if(window.MP&&MP.room)CFG.gfx=1;
 const saveCFG=()=>{try{localStorage.setItem('cfg',JSON.stringify(window.MP&&MP.room?Object.assign({},CFG,{gfx:GFX0}):CFG))}catch(e){}},PR=()=>Math.min(devicePixelRatio||1,[1,1.5,2][CFG.gfx]||2);
 const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(PR());$('g').appendChild(renderer.domElement);
@@ -1925,9 +1929,9 @@ function flashL(c,dt){
  if(c.fg)c.fg.visible=on}
 function brakeL(c){if(!c.bl){const b=new THREE.Group();box(c.w*.75,.16,.1,0,.95,c.l/2+.03,c.wm,c.wl,b);c.g.add(b);c.bl=b}c.bl.visible=true}
 function ai(c,dt){if(c.rampT||c.rb||c.amb||c.ut)return;if(c.rival){rvAi(c,dt);return}
- if(c.lc){c.lc.t-=dt;if(c.lc.t<=0){if(laneClear(c,c.lc.tx,8)&&(!(c.pol||c.esc)||polRisk(c,c.lc.tx)>2.5))c.sw={tx:c.lc.tx,fx:c.x};else if(c.blk){c.g.remove(c.blk);c.blk=null}c.lc=null}return}
+ if(c.lc){c.lc.t-=dt;if(c.lc.t<=0){if(laneClear(c,c.lc.tx,8)&&(!(c.pol||c.esc)||polRisk(c,c.lc.tx)>2.5))c.sw={tx:c.lc.tx,fx:c.x,fast:!!(c.pol&&PD().fast&&wl>=3)};else if(c.blk){c.g.remove(c.blk);c.blk=null}c.lc=null}return}
  if(c.ctr){c.ct-=dt;if(c.ct<=0&&c.x<0&&c.z<-30&&laneClear(c,1.8,14))lc(c,1.8,.5);return}
- c.at=(c.at||0)-dt;if(c.at>0)return;c.at=c.em?.25:.5+Math.random()*.2;
+ c.at=(c.at||0)-dt;if(c.at>0)return;c.at=c.em?((c.pol&&!c.esc)?PD().tick:.25):.5+Math.random()*.2;
  if(c.em){if(c.pol&&c.dir<0){polAvoid(c);return}if(c.esc){escAi(c);return}if(c.pol){polAi(c);return}if(c.bd&&c.bg<22){const tx=c.x>3?1.8:5.4;if(laneClear(c,tx,18))lc(c,tx,.35)}return}
  if(!c.sw&&c.dir&&repBad(c.x,c.z,c.dir,120)){const tx=(c.dir>0?[1.8,5.4]:[-1.8,-5.4]).find(l=>Math.abs(l-c.x)>1&&laneClear(c,l,16));if(tx!==undefined){lc(c,tx,.5);return}}
  const T=t,z=c.z;
@@ -1936,7 +1940,7 @@ function ai(c,dt){if(c.rampT||c.rb||c.amb||c.ut)return;if(c.rival){rvAi(c,dt);re
  if(c.sport&&T>=8&&c.bd&&c.bg<30){const tx=c.x>0?(c.x<3?5.4:1.8):(c.x>-3?-5.4:-1.8);if(laneClear(c,tx,26)){lc(c,tx,1.1);return}}
 }
 function spawnEm(pol){const pn=LANES.reduce((a,l)=>Math.abs(l-px)<Math.abs(a-px)?l:a),alt=pn>0?(pn===1.8?5.4:1.8):(pn===-1.8?-5.4:-1.8),x=Math.random()<.7?pn:alt,z=(pol?250:125)+Math.random()*30;if(!free(x,z,5.8))return false;
- const ty=PMD[Math.random()*PMD.length|0],k=mkVeh(ty,!!pol),c={x,z,dir:1,w:k.w,l:k.l,sp:v+17,cs:v+(pol?40:10),g:k.g,counted:true,vx:0,m:MS[ty],rd:null,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:PHT[ty],em:true,pol:!!pol,lamps:k.lamps};if(pol)k.lamps.forEach((gp,i)=>gp.traverse(m=>{if(m.isMesh)m.material=i?PBM:PRM}));
+ const ty=pol?polTy():PMD[Math.random()*PMD.length|0],k=mkVeh(ty,!!pol),c={x,z,dir:1,w:k.w,l:k.l,sp:v+17,cs:v+(pol?40:10),g:k.g,counted:true,vx:0,m:MS[ty],rd:null,mm:k.m,lm:k.lm,wm:k.wm,wl:k.wl,wh:k.wh,det:k.det,hl:k.hl,ht:PHT[ty],em:true,pol:!!pol,lamps:k.lamps};if(pol)k.lamps.forEach((gp,i)=>gp.traverse(m=>{if(m.isMesh)m.material=i?PBM:PRM}));
  k.g.position.set(x,0,z);scene.add(k.g);cars.push(c);return true}
 /* motocicleta de politie care insoteste masina de urmarire */
 function spawnEsc(){if(cars.some(c=>c.esc&&!c.chs&&!c.gone&&!c.hit))return;const p=polC;if(!p||p.gone)return;
@@ -2095,15 +2099,34 @@ let sfxCrash=()=>{noiseBurst(.8,1200,50,.6,'lowpass');blip(70,.5,0,.35,'sawtooth
 const CH=[[0,[0,3,7]],[-4,[0,4,7]],[3,[0,4,7]],[-2,[0,4,7]]],
  MEL=[7,-1,-1,3,5,-1,7,-1, 8,-1,-1,12,10,-1,8,-1, 7,-1,-1,10,12,-1,10,-1, 5,-1,7,-1,14,-1,-1,-1],
  nf=(b,s)=>b*Math.pow(2,s/12);
-function music(){if(!AC||muted||CFG.bgv<=0||window.dnSil||(state!=='run'&&state!=='ready'))return;const NK=window.nightK||0,Q=1-.5*NK,CM=NK>.5;window.MUSON=1;
- const st=mi%32,bar=st>>3,k=st%8,[r,tn]=CH[bar];
- blip(nf(110,r),.22,0,.05*Q,'triangle');
- if(!CM&&(k===0||k===3||k===4)){blip(52,.14,0,.07,'sine')}
- if(k===4&&!CM)noiseBurst(.12,2500,1200,.05);
- blip(nf(220,r+tn[k%3]),.2,0,.03*Q,'triangle');
- if(k===0)for(const x of tn)blip(nf(220,r+x),CM?1.9:1.7,0,CM?.02:.012,CM?'sine':'sawtooth');
- const m=MEL[st];if(m>=0){blip(nf(440,m),CM?.5:.3,0,CM?.018:.03,CM?'sine':'sawtooth');blip(nf(220,m),.3,0,.02*Q,'triangle')}
- window.MUSON=0;mi++}
+/* ===== MUZICA SPARTANA DINAMICA (planificare pe ceasul audio, fara jitter): 0 garaj, 1 croaziera, 2 politia te observa, 3 URMARIRE ===== */
+function xmO(t,type,f,dur,v,f2,lp){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur*.6);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(v,.0002),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur);let n=o;if(lp){const q=AC.createBiquadFilter();q.type='lowpass';q.frequency.value=lp;o.connect(q);n=q}n.connect(g).connect(master);o.start(t);o.stop(t+dur+.05)}
+function xmN(t,dur,type,fq,v){const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=NB;f.type=type;f.frequency.value=fq;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(v,.0002),t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+dur);s.connect(f).connect(g).connect(master);s.start(t,Math.random());s.stop(t+dur+.05)}
+const XMRF=[0,-1,0,-1,0,-1,1,-1,0,-1,0,-1,3,-1,1,-1],XMTR=[0,0,-2,-4],XMLD=[[0,62,6],[8,65,3],[12,64,3]],XM16=.115;
+let xmT=0,xmS=0,xmB=0,xmL=1;
+function xmStep(t,s,b,i){const MV=.4*CFG.bgv/100,tr=XMTR[b],K=()=>xmO(t,'sine',140,.28,.9*MV,38),W=p=>{xmO(t,'sine',95*p,.45,.8*MV,48*p);xmN(t,.12,'lowpass',300,.25*MV)};
+ const r=XMRF[s];if(r>=0)xmO(t,'sawtooth',nf(73.42,tr+r),.2,(i?.3:.18)*MV,0,i>=2?900:500);
+ if(i===0&&s===0)xmO(t,'sawtooth',nf(36.7,tr),1.8,.15*MV,0,300);
+ if(i===0&&s%8===0)W(.8);
+ if(i>=1){if(s===0||s===8||(i>=2&&(s===6||s===14)))K();
+  if(s===4||s===12){xmN(t,.18,'highpass',1200,.5*MV);xmO(t,'triangle',190,.12,.35*MV,110)}
+  if(s%2===0)xmN(t,.04,'highpass',4000,.12*MV);
+  if([0,3,6,10,12].includes(s))W(1)}
+ if(i>=2&&s%2===1)xmN(t,.04,'highpass',4000,.09*MV);
+ if(i>=3){if(b===3&&s>=12)xmN(t,.18,'highpass',1200,.45*MV);
+  if([2,5,11,13].includes(s))W(1.25);
+  if(s===0&&b%2===0){xmN(t,.35,'bandpass',900,.45*MV);xmO(t,'sawtooth',110,.3,.25*MV,70,600)}}
+ if(i>=2)for(const[st,m,len]of XMLD)if(st===s){const f=nf(440,m+tr+(i===3&&b===3?12:0)-69),d=len*XM16;for(const c of[-7,0,7])xmO(t,'sawtooth',f*Math.pow(2,c/1200),d,.15*MV,0,1800);xmO(t,'square',f/2,d,.1*MV,0,900)}}
+function music(){if(!AC||muted||CFG.bgv<=0||window.dnSil||(state!=='run'&&state!=='ready')){xmT=0;return}
+ try{const now=AC.currentTime;if(xmT<now-.05||xmT===0){xmT=now+.06;xmS=0;xmB=0}
+  const pO=typeof polOn!=='undefined'&&polOn,hv=typeof hat!=='undefined'?hat:0,wn=(typeof polWn!=='undefined'&&polWn)||(typeof polRd!=='undefined'&&polRd>=0)||hv>=40,
+   tg=state!=='run'?0:pO?3:wn?2:1;
+  while(xmT<now+.55){
+   /* nivelul se schimba doar pe grila: urcare la fiecare timp (1/4 de masura), coborare la inceput de masura -> ritm mereu aliniat */
+   if(tg>xmL&&xmS%4===0)xmL=tg;else if(tg<xmL&&xmS===0)xmL=tg;
+   window.SPL=xmL;xmStep(xmT,xmS,xmB,xmL);
+   xmT+=XM16;if(++xmS>=16){xmS=0;xmB=(xmB+1)&3}}
+ }catch(e){}}
 function eF(){const lo=[0,16,32,48,64],hi=[16,32,48,64,100],g=v<16?0:v<32?1:v<48?2:v<64?3:4,fr=Math.min(1,Math.max(0,(v-lo[g])/(hi[g]-lo[g])));return PROF[pi].lo+(.3+.7*fr+(gOn?.06:0)+(nt>0?.25:0))*PROF[pi].sp}
 let pn=false;
 let HS=null;
@@ -3832,6 +3855,58 @@ function gearStep(dt){const gr=$('gr');gearCd=Math.max(0,gearCd-dt);if(gph>0){gp
 
 /* ===== politie in urmarire ===== */
 let polNx=0,hat=0,polOn=false,polC=null,polT=0,polCd=8,polBt=0,polWn=false,polRt=0,polRd=-1;
+/* ===== NIVEL DE CĂUTARE (stele), A DOUA MAȘINĂ, ȚEPI, BARĂ „PRINS”, DIFICULTATE POLIȚIE ===== */
+let wl=0,wlT=0,flT=8,flatT=0,flatS=1,flatP=0,spkT=14,gbK=0,gbP=-1,gbB=0;
+/* glk: cat de repede urmareste politia viraje (agatata) | gbr: abatere laterala la care scapi | gox: de la ce distanta se agata | gt: secunde pana te prinde (scade cu stelele)
+   lead: anticipare (s) a miscarii tale laterale | lcK: scara timpului de reactie la schimbarea benzii | tick: cat de des decide AI-ul | cls: viteza de apropiere pe nivel
+   sup: secunde pana la urmatoarea stea | flK/spk: scara intervalului pentru a doua masina / tepi | fast: viraje rapide la nivel 3+ */
+const PDFS=[
+ {glk:1.6,gbr:1.8,gox:3.8,gt:2.4,lead:0,lcK:1,tick:.25,cls:1.2,sup:15,flK:1.4,spk:1.35,fast:0},
+ {glk:2,gbr:1.5,gox:4.4,gt:2,lead:.25,lcK:.8,tick:.2,cls:2.5,sup:12,flK:1,spk:1,fast:0},
+ {glk:3.2,gbr:1.2,gox:5,gt:1.7,lead:.5,lcK:.55,tick:.12,cls:3.5,sup:9,flK:.75,spk:.75,fast:1}];
+const PD=()=>PDFS[CFG.pdf|0]||PDFS[1];
+const gtNeed=()=>Math.max(1.1,PD().gt-.12*Math.max(0,wl-1));
+function polTy(){const r=Math.random();return wl<=1?(r<.7?'polcar':'emerg'):wl<=2?(r<.5?'polcar':r<.8?'polsuv':'emerg'):wl<=3?(r<.5?'polsuv':r<.8?'polcar':'polvan'):(r<.5?'polsuv':'polvan')}
+function wlShow(){const e=$('wl');if(!e)return;if(wl<=0){e.classList.remove('on');e.textContent='';return}e.innerHTML='★'.repeat(wl)+'<u>'+'★'.repeat(5-wl)+'</u>';e.classList.add('on');e.classList.remove('up');void e.offsetWidth;e.classList.add('up')}
+function gbSet(k){const q=k<=0?0:Math.max(1,Math.min(100,Math.round(k*100)));if(q===gbP)return;gbP=q;const e=$('gb');if(!e)return;e.classList.toggle('on',q>0);e.firstElementChild.nextElementSibling.firstElementChild.style.width=q+'%';e.classList.toggle('hot',q>66)}
+function gbBar(dt){const gc=polOn&&polC&&polC.glue&&!polC.gone?polC:null;if(gc){gbK=Math.min(1,gc.gt/gtNeed());gbB-=dt;if(gbB<=0){gbB=.3-.17*gbK;blip(480+gbK*560,.07,0,.05,'square')}}else gbK=Math.max(0,gbK-dt*1.4);gbSet(gc?Math.max(.04,gbK):gbK)}
+/* a doua masina de politie: depaseste si te blocheaza din fata (fazele 1 si 2 ca la masina principala) */
+function flStep(c,dt){c.ph=c.ph|0;c.pt=(c.pt||0)+dt;
+ if(polT<10&&c.ph>0){c.ph=0;c.pt=0;c.bt=0;c.rv=0;if(c.bl)c.bl.visible=false}
+ if(c.ph===0){if(c.dir>0&&c.pt>10&&c.z>0&&c.z<70&&polT>12&&!air){c.ph=1;c.pt=0;showTip('{:cop:} Încearcă să te blocheze!');hap([40,30,40])}}
+ else if(c.ph===1){if(c.z<-14&&c.pt>1){c.ph=2;c.pt=0;c.bt=0;c.rv=0;showTip('{:cop:} Blocaj în față! Frânează sau schimbă banda!')}else if(c.pt>14){c.ph=0;c.pt=0}}
+ else if(c.ph===2){const blk=Math.abs(c.x-px)<2.2&&c.z<-6;if(blk||c.rv){c.bt=(c.bt||0)+dt;brakeL(c)}else if(c.bl)c.bl.visible=false;if(c.bt>6||c.pt>14){c.ph=0;c.pt=0;c.bt=0;c.rv=0;if(c.bl)c.bl.visible=false}}}
+function flClear(){for(const q of cars)if(q.fl){q.fl=0;q.pol=false;q.ph=0;q.lv=performance.now();if(q.bl)q.bl.visible=false}}
+/* tepi: placa cu spini pe 1-2 benzi; trecerea peste ea sparge pneurile (viteza scade, masina trage intr-o parte) */
+const spk=[],SPM={p:new THREE.MeshBasicMaterial({color:0x1f2233}),s:new THREE.MeshBasicMaterial({color:0x5a637d}),y:new THREE.MeshBasicMaterial({color:0xffc928})},SPL=1.6;
+function mkSpk(hw){const g=new THREE.Group(),w=hw*2-.25,D=.8,nc=Math.max(3,Math.round(w/.7)),cw=w/nc,R={p:[],i:[]},S={p:[],i:[]},
+ put=(B,ge)=>{const pp=ge.attributes.position.array,ii=ge.index.array,o=B.p.length/3;for(let k=0;k<pp.length;k++)B.p.push(pp[k]);for(const j of ii)B.i.push(o+j)},
+ bar=(x1,z1,x2,z2,wd,h)=>{const L=Math.hypot(x2-x1,z2-z1),ge=new THREE.BoxGeometry(L,h,wd);ge.rotateY(-Math.atan2(z2-z1,x2-x1));ge.translate((x1+x2)/2,.03+h/2,(z1+z2)/2);put(R,ge)};
+ /* doua sine paralele + diagonale (lant extins, ca in poza) */
+ bar(-w/2,-D/2,w/2,-D/2,.09,.06);bar(-w/2,D/2,w/2,D/2,.09,.06);
+ for(let c=0;c<nc;c++)bar(-w/2+c*cw,-D/2,-w/2+(c+1)*cw,D/2,.07,.05);
+ /* spini: soclu mic + varf piramidal, pe ambele sine */
+ for(const z of[-D/2,D/2])for(let c=0;c<nc;c++)for(let m=0;m<2;m++){const x=-w/2+(c+.2+.5*m)*cw+(z>0?.12:0);
+  put(R,new THREE.BoxGeometry(.13,.07,.13).translate(x,.065,z));
+  put(S,new THREE.ConeGeometry(.075,.28,4).rotateY(Math.PI/4).translate(x,.1+.14,z))}
+ for(const[B,mt]of[[R,SPM.p],[S,SPM.s]]){const ge=new THREE.BufferGeometry();ge.setAttribute('position',new THREE.Float32BufferAttribute(B.p,3));ge.setIndex(B.i);const m=new THREE.Mesh(ge,mt);m.frustumCulled=false;g.add(m)}
+ return g}
+function spawnSpk(){const z=-255-Math.random()*20;
+ if(rbs.length||spk.length>=2||cars.some(c=>c.amb&&Math.abs(c.z-z)<60)||spk.some(o=>Math.abs(o.g.position.z-z)<120))return false;
+ if(zn&&z<zn.g.position.z+45&&z>zn.g.position.z-zn.L-45)return false;
+ const pl=LANES.reduce((a,l)=>Math.abs(l-px)<Math.abs(a-px)?l:a),li=LANES.indexOf(pl);let x,hw;
+ if(Math.random()<.45){x=pl;hw=1.8}else{const a=li===0?0:li===3?2:(Math.random()<.5?li-1:li);x=(LANES[a]+LANES[a+1])/2;hw=3.6}
+ const g=mkSpk(hw);g.position.set(x,0,z);scene.add(g);spk.push({g,x,hw,w:0,hit:0});return true}
+function spkHit(){flatT=6;flatS=Math.random()<.5?-1:1;vx+=flatS*6;v=Math.max(10,v*.7);shake=Math.max(shake,.9);sfxCrack();noiseBurst(.55,2600,300,.2,'highpass');blip(150,.5,0,.16,'sawtooth');hap([70,30,90]);sparkBurst(px,.2,1.6,36,vx,-v*.4,6);for(let i=0;i<5;i++)puff(px+(Math.random()-.5)*1.6,.3,1.5+Math.random(),vx*.3,-v,1);showTip('{:warn:} Pneuri sparte! Viteza scade')}
+function spkStep(dt,cr){const run=state==='run'&&!cr;
+ for(let i=spk.length;i--;){const o=spk[i],p=o.g.position;p.z+=v*dt;
+  if(!o.w&&p.z>-170&&run){o.w=1;if(Math.abs(px-o.x)<o.hw+1.6){showTip('{:warn:} Țepi pe șosea!');blip(900,.12,0,.09,'square');blip(900,.12,.2,.09,'square')}}
+  if(!o.hit&&run&&!air&&!pc.dead&&p.z>-2&&p.z<3.2&&Math.abs(px-o.x)<o.hw+.75){o.hit=1;spkHit()}
+  if(p.z>40||(state!=='run'&&state!=='crash')){scene.remove(o.g);spk.splice(i,1)}}
+ if(flatT>0&&run){flatT-=dt;const k=Math.min(1,flatT/1.5),cap=Math.max(16,VN*.55);if(v>cap)v=Math.max(cap,v-45*dt);vx+=(flatS*10+Math.sin(t*14)*5)*k*dt;
+  flatP-=dt;if(flatP<=0&&!air){flatP=.07;sparkBurst(px+(Math.random()<.5?-.8:.8),.15,1.4,5,vx,-v*.5,3)}}else if(!run)flatT=0}
+function spkClear(){for(const o of spk)scene.remove(o.g);spk.length=0;flatT=0}
+
 const PMD=['emerg','polcar','polsuv','polvan'],PHT={polmoto:1.4,emerg:2.5,polcar:1.8,polsuv:2.4,polvan:3.5},rbs=[];let rbT=4;
 /* suprapunere intre doua dreptunghiuri rotite (SAT) - ca doua masini oblice sa nu se intersecteze */
 function rbOver(A,B,m){const ua=[[Math.cos(A.a),-Math.sin(A.a)],[Math.sin(A.a),Math.cos(A.a)]],ub=[[Math.cos(B.a),-Math.sin(B.a)],[Math.sin(B.a),Math.cos(B.a)]],dx=B.x-A.x,dz=B.z-A.z,
@@ -3925,7 +4000,7 @@ function ambStep(c,dt){const g=c.g;
   const ln=c.tl!==undefined?c.tl:c.sd*5.4;c.x=Math.max(-6.6,Math.min(6.6,c.x));if(Math.abs(c.x-ln)<.3)c.x=ln;g.position.x=c.x;const lq2=[ln,c.sd*1.8,c.sd*5.4].find(l=>laneClear(c,l,10));if(lq2!==undefined&&Math.abs(lq2-c.x)>.01)c.sw={tx:lq2,fx:c.x,fast:true}}}
 const PRM=new THREE.MeshBasicMaterial({color:0xff2a2a,fog:false}),PBM=new THREE.MeshBasicMaterial({color:0x2a6bff,fog:false});
 function heat(a){if(state==='run'&&!polOn&&polCd<=0)hat=Math.min(100,hat+a)}
-function polReset(){hat=0;polOn=false;polC=null;polT=0;polCd=CFG.mode===2?3:8;polBt=0;polWn=false;polRt=0;polRd=-1;radioGo=0}
+function polReset(){hat=0;polOn=false;polC=null;polT=0;polCd=CFG.mode===2?3:8;polBt=0;polWn=false;polRt=0;polRd=-1;radioGo=0;wl=0;wlT=0;flatT=0;gbK=0;wlShow();gbSet(0);flClear();spkClear()}
 function polTg(c){const r=polTg0(c);return(c.aw&&c.ob<40)?Math.min(r,Math.max(10,c.ob*2.2)):r}
 function pObs(c,x){let m=999;for(const d of cars){if(d===c||d.gone||Math.abs(d.x-x)>1.9)continue;let g=c.z-d.z-(c.l+d.l)/2;if(g<-2)continue;if(d.dir!==c.dir)g*=.5;if(g<m)m=g}return m}
 function polTg0(c){const ph=c.ph|0,ov=()=>Math.min(95,Math.max(18,v+(c.z>=-8?Math.min(16,(c.z+16)*.6):9)));
@@ -3934,7 +4009,7 @@ function polTg0(c){const ph=c.ph|0,ov=()=>Math.min(95,Math.max(18,v+(c.z>=-8?Mat
  if(near){if(bt>1){if(!c.rv){c.rv=1;showTip('{:cop:} Poliția dă cu spatele!');blip(220,.3,0,.1,'square')}return -9}return Math.max(0,v*.3)}
  c.rv=0;return ov()}
  {const dtt=t-(c.pt0===undefined?t:c.pt0);if(dtt>0){c.acc=(c.acc||0)*.75+((v-c.pv)/dtt)*.25}c.pt0=t;c.pv=v;
-  const sd=Math.abs(c.x-px)<1.9,gap=sd?5.4:0,e=c.z-gap;let d=e>=0?(c.z>100?Math.min(48,(c.z-60)*.6):Math.min(bOn||v<28?30:14,e*1.6)):(c.z<-10?8:Math.max(-45,e*2.4));
+  const sd=Math.abs(c.x-px)<1.9,gap=sd?5.4:0,e=c.z-gap;let d=e>=0?(c.z>100?Math.min(48,(c.z-60)*.6):Math.min(bOn||v<28?30:14+PD().cls*Math.max(0,wl-1),e*1.6)):(c.z<-10?8:Math.max(-45,e*2.4));
   if(c.acc<-2&&c.z<14)d+=Math.max(-25,c.acc*.8);
   return Math.min(130,Math.max(Math.max(0,Math.min(18,v-5)),v+d))}}
 function hdr(c,x){let m=999;for(const d of cars){if(d===c||d.gone||d.dir!==c.dir||Math.abs(d.x-x)>1.7)continue;const g=c.z-d.z-(c.l+d.l)/2;if(g>-2&&g<m)m=g}
@@ -3952,34 +4027,38 @@ function polAvoid(c){if(c.rv||c.glue||c.ut||c.hit||c.gone||c.sw||c.lc){c.dg=0;re
  let bl=null,br=r0;for(const l of LANES){const dl=Math.abs(l-c.x);if(dl<1||dl>3.9)continue;const r=polRisk(c,l);if(r>br+1.2&&r>4.5&&laneClear(c,l,12)){br=r;bl=l}}
  if(bl!==null){c.dg=0;lc(c,bl,.12);return true}
  c.dg=r0<2.2?2:1;return true}
-function polAi(c){if(polAvoid(c))return;const ob=pObs(c,c.x);c.ob=ob;if(ob>=70)c.obS=0;else if(ob<46&&!c.obS){c.obS=1;c.aw=Math.random()<.8}
+function polAi(c){if(polAvoid(c))return;const pxp=px+Math.max(-4,Math.min(4,vx*PD().lead*2)),ob=pObs(c,c.x);c.ob=ob;if(ob>=70)c.obS=0;else if(ob<46&&!c.obS){c.obS=1;c.aw=Math.random()<.8}
   if(c.aw&&!c.rv&&ob<46){let bl=null,bg=ob+12;for(const l of LANES){if(Math.abs(l-c.x)<1||Math.abs(l-c.x)>5)continue;const g=pObs(c,l);if(g>bg&&laneClear(c,l,12)){bg=g;bl=l}}if(bl!==null){lc(c,bl,.3);return}}
-  const ph=c.ph|0,pl=LANES.reduce((a,l)=>Math.abs(l-px)<Math.abs(a-px)?l:a),ot=pl>0?(pl===1.8?5.4:1.8):(pl===-1.8?-5.4:-1.8);let tx=pl,d=.35;
+  const ph=c.ph|0,pl=LANES.reduce((a,l)=>Math.abs(l-pxp)<Math.abs(a-pxp)?l:a),ot=pl>0?(pl===1.8?5.4:1.8):(pl===-1.8?-5.4:-1.8);let tx=pl,d=.35;
  if(ph===1){d=.5;const here=Math.abs(c.x-ot)<Math.abs(c.x-pl)?ot:pl,oth=here===ot?pl:ot,sc=x=>Math.min(hdr(c,x),80)+(x===ot?15:0);tx=sc(oth)>sc(here)+12?oth:here}
  else if(ph===2){d=.4;if(c.rv)d=.25;else if(hdr(c,pl)<=22)tx=Math.abs(c.x-ot)<Math.abs(c.x-pl)?ot:pl}
- else if(c.z<=10){const dx=px-c.x;if(Math.abs(dx)>5.4){const w=c.x+Math.sign(dx)*3.6;tx=LANES.reduce((a,l)=>Math.abs(l-w)<Math.abs(a-w)?l:a)}else return}
- if(Math.abs(c.x-tx)>1.2&&laneClear(c,tx,ph===2?10:16)&&!(c.aw&&!c.rv&&pObs(c,tx)<40))lc(c,tx,d)}
-function polEnd(c,ok){c.glue=false;c.lv=performance.now();c.pol=false;c.ph=0;if(c.bl)c.bl.visible=false;polOn=false;polC=null;polCd=CFG.mode===2?4:15;hat=0;
- if(ok){score+=10;hud();showTip('{:cop:} Ai scăpat de poliție! +10');blip(660,.14,0,.12);blip(990,.2,.1,.12)}}
+ else if(c.z<=10){const dx=pxp-c.x;if(Math.abs(dx)>5.4){const w=c.x+Math.sign(dx)*3.6;tx=LANES.reduce((a,l)=>Math.abs(l-w)<Math.abs(a-w)?l:a)}else return}
+ if(Math.abs(c.x-tx)>1.2&&laneClear(c,tx,ph===2?10:16)&&!(c.aw&&!c.rv&&pObs(c,tx)<40))lc(c,tx,d*PD().lcK)}
+function polEnd(c,ok){const bn=Math.max(0,wl-1)*5;c.glue=false;c.lv=performance.now();c.pol=false;c.ph=0;if(c.bl)c.bl.visible=false;polOn=false;polC=null;polCd=CFG.mode===2?4:15;hat=0;wl=0;wlT=0;wlShow();flClear();
+ if(ok){score+=10+bn;hud();showTip('{:cop:} Ai scăpat de poliție! +'+(10+bn));blip(660,.14,0,.12);blip(990,.2,.1,.12)}}
 /* === SENSIBILITATE POLITIE (agatare din spate) ===
    GLK: cat de repede urmareste politia virajele tale (6=original; mic = o scuturi mai usor)
    GBR: abaterea laterala (m) la care scapi de agatare (mic = scapi mai usor)
    GOX: distanta laterala (m) de la care se poate agata din spate (4.4=original) */
-const GLK=2,GBR=1.5,GOX=4.4;
-function polStep(dt,cr){if(state!=='run'||cr)return;
+/* valorile de agatare vin acum din PD() (setarea „Poliție” din meniu) */
+function polStep(dt,cr){if(state!=='run'||cr){if(gbP>0){gbK=0;gbSet(0)}return}gbBar(dt);
  if(!polOn){polCd=Math.max(0,polCd-dt);if(px<-.5&&!air&&polCd<=0)hat=Math.min(100,hat+(nt>0?12:6)*dt);hat=Math.max(0,hat-2*dt);if(polCd>0)hat=0;
  if(CFG.mode===2&&polCd<=0&&!air)hat=Math.max(hat,60)/* mod Politie: urmarirea porneste singura */;
   if(hat>=40&&!polWn){polWn=true;showTip('{:warn:} Poliția te observă')}if(hat<15)polWn=false;
   if(polRd>0){polRd=Math.max(0,polRd-dt);hat=Math.max(hat,60)}
   else if(polRd<0&&hat>=60&&polCd<=0&&!cars.some(c=>c.pol)){polRd=2.05;radioGo=1}
-  if(polRd===0&&!cars.some(c=>c.pol)){polRt-=dt;if(polRt<=0){polRt=.5;if(spawnEm(true)){polRd=-1;polC=cars[cars.length-1];polOn=true;polT=45;polNx=0;polBt=0;rbT=4;ambT=.6;hat=0;spawnEsc();showTip('{:cop:} Poliția te urmărește!');blip(880,.25,0,.1,'square');blip(660,.25,.25,.1,'square')}}}
+  if(polRd===0&&!cars.some(c=>c.pol)){polRt-=dt;if(polRt<=0){polRt=.5;if(spawnEm(true)){polRd=-1;polC=cars[cars.length-1];polOn=true;polT=45;wl=1;wlT=0;flT=8*PD().flK;spkT=12*PD().spk;wlShow();polNx=0;polBt=0;rbT=4;ambT=.6;hat=0;spawnEsc();showTip('{:cop:} Poliția te urmărește!');blip(880,.25,0,.1,'square');blip(660,.25,.25,.1,'square')}}}
   return}
+ wlT+=dt;if(wl<5&&wlT>=PD().sup){wlT=0;wl++;polT+=10;wlShow();showTip('{:siren:} Nivel de căutare '+wl+'!');blip(620+wl*70,.25,0,.1,'square');blip(460+wl*70,.25,.25,.1,'square');hap([40,30,40])}
+ flT-=dt;if(wl>=2&&flT<=0){if(polT>14&&cars.filter(q=>q.fl&&!q.gone&&!q.hit).length<(wl>=4?2:1)){if(spawnEm(true)){const q=cars[cars.length-1];q.fl=1;q.ph=1;q.pt=0;q.bt=0;q.rv=0;flT=16*PD().flK;showTip('{:cop:} Încă o mașină vine să te blocheze!');blip(780,.2,0,.09,'square')}else flT=.5}else flT=2}
+ for(const q of cars)if(q.fl&&q.pol&&!q.gone&&!q.hit&&!q.ut)flStep(q,dt);
+ spkT-=dt;if(wl>=2&&spkT<=0&&polT>6){if(spawnSpk())spkT=(13+Math.random()*7)*PD().spk;else spkT=.6}
  let c=polC;if(c&&(c.hit||c.gone||cars.indexOf(c)<0)){const w=Math.abs(c.z)>10;c.pol=false;if(c.bl)c.bl.visible=false;polC=null;c=null;polNx=3;polBt=0;if(w){score+=15;hud();showTip('{:cop:}{:boom:} Poliția a făcut accident! +15');blip(660,.14,0,.12);blip(990,.2,.1,.12)}}
  if(!c){polT-=dt;if(polT<=0){polEnd({pol:false},true);return}polNx-=dt;if(polNx<=0){if(spawnEm(true)){polC=cars[cars.length-1];polBt=0;rbT=4;spawnEsc();showTip('{:cop:} Încă o mașină de poliție!');blip(880,.25,0,.1,'square')}else polNx=.4}return}
  polT-=dt;rbT-=dt;ambT-=dt;if(ambT<=0){if(polT>7&&spawnAmb())ambT=1.5+Math.random();else ambT=.3}if(rbT<=0&&polT>3&&!rbs.length){if(spawnRb())rbT=7+Math.random()*3;else rbT=.4}c.ph=c.ph|0;c.pt=(c.pt||0)+dt;/* agatare: politia se lipeste de spatele masinii si ramane 2 s -> te prinde; se desprinde la nitro sau in salt */
- const gOK=c.dir>0&&!c.ut&&c.ph<2&&!air&&nt<=0&&!c.hit&&c.z>-1&&c.z<16&&Math.abs(c.x-px)<GOX;
- if(c.glue&&Math.abs(c.x-px)>GBR){c.glue=false;c.gt=0;c.gcd=1.5;c.gb=1}
-  if(c.glue){if(!air&&nt<=0&&!c.hit){c.gt+=dt;c.pt=0;if(c.gt>=2){c.glue=false;c.pol=false;polReset();polCd=20;showTip('{:cop:} Prins de poliție!');crash();return}}else{c.glue=false;c.gt=0;c.gcd=1.5;c.gb=1}}
+ const gOK=c.dir>0&&!c.ut&&c.ph<2&&!air&&nt<=0&&!c.hit&&c.z>-1&&c.z<16&&Math.abs(c.x-px)<PD().gox;
+ if(c.glue&&Math.abs(c.x-px)>PD().gbr){c.glue=false;c.gt=0;c.gcd=1.5;c.gb=1}
+  if(c.glue){if(!air&&nt<=0&&!c.hit){c.gt+=dt;c.pt=0;if(c.gt>=gtNeed()){c.glue=false;c.pol=false;polReset();polCd=20;showTip('{:cop:} Prins de poliție!');crash();return}}else{c.glue=false;c.gt=0;c.gcd=1.5;c.gb=1}}
  else{c.gcd=Math.max(0,(c.gcd||0)-dt);if(gOK&&c.gcd<=0){c.glue=true;c.ph=0;c.gt=0;c.sw=null;c.lc=null;if(c.blk){c.g.remove(c.blk);c.blk=null}}}
  if(polT<12&&c.ph>0){c.ph=0;c.pt=0;c.bt=0;c.rv=0;if(c.bl)c.bl.visible=false}
  if(c.ph===0){if(c.gb&&c.pt>5&&c.z>0&&c.z<50&&polT>12){c.ph=1;c.pt=0;showTip('{:cop:} Poliția te depășește!');hap([40,30,40])}}
@@ -4286,7 +4365,7 @@ function frame(now){requestAnimationFrame(frame);/* RELUARE FARA SUNET: in timpu
    if(nx)px-=nx*pen;else o.position.z+=nz*pen;return false});
   skT-=dt;if(skT<=0&&(Math.abs(axs)>14||Math.abs(vx)>10.5)){skT=.05;skid(px-.8,2.4,yaw);skid(px+.8,2.4,yaw)}
   for(const m of sk)if(m.visible){m.position.z+=v*dt;if(m.position.z>16)m.visible=false}
-  zoneStep(dt,cr);heliStep(dt);heliPolStep(dt);gearStep(dt);polStep(dt,cr);exStep(dt);yjStep(dt,1);lnStep(dt,g,cr);
+  zoneStep(dt,cr);heliStep(dt);heliPolStep(dt);gearStep(dt);polStep(dt,cr);spkStep(dt,cr);exStep(dt);yjStep(dt,1);lnStep(dt,g,cr);
   
   clrT=Math.max(0,clrT-dt);spawnT-=dt;if(spawnT<=0&&!cr){spawn(-520-Math.random()*40);spawnT=Math.max(.35,1.1-t*.01)*1.25}
 rpT-=dt;if(rpT<=0&&!cr&&t>15&&spawn(-520-Math.random()*40,'carrier'))rpT=16+Math.random()*10;
@@ -4302,7 +4381,7 @@ rbStep(dt);rampStep(dt);cityRampStep(dt);roadRepStep(dt,cr);const PL={cs:v,l:4.4
     if(nl){const gp=ns-(c.l+nl.l)/2,look=20+Math.max(c.cs,0)*.9;if(gp<look&&nl.cs<tg){const k=Math.max(0,Math.min(1,(gp-10.5)/(look-10.5))),fs=gp<10.5?nl.cs*.8:nl.cs+(tg-nl.cs)*k,df=Math.max(-30*dt,(fs-c.cs)*Math.min(1,dt*(2+6*(1-k))));if(df<dcs)dcs=df}}
     if(c.rival)dcs=Math.max(-34*dt,Math.min((c.rvacc||16)*dt,dcs));c.cs+=dcs}if(c.spin)c.spin.rotation.x-=dt*5;if(c.dmp)dumpStep(c,dt);
    const pz=c.z;c.z+=(v+(c.dir>0?-c.cs:c.cs))*dt;
-   if(c.glue&&c.pol&&!c.hit){const gz=(4.4+(c.cl||c.l))/2*.95+.12;c.z+=(gz-c.z)*Math.min(1,dt*12);c.cs=v;c.x+=(px-c.x)*Math.min(1,dt*GLK);c.g.position.x=c.x}
+   if(c.glue&&c.pol&&!c.hit){const gz=(4.4+(c.cl||c.l))/2*.95+.12;c.z+=(gz-c.z)*Math.min(1,dt*12);c.cs=v;c.x+=(px+Math.max(-3,Math.min(3,vx*PD().lead))-c.x)*Math.min(1,dt*PD().glk);c.g.position.x=c.x}
    if(nl&&!c.hit&&!c.amb&&!c.ut){const q=c.dir>0?c.z-nl.z:nl.z-c.z,mn=(c.l+nl.l)/2+.8;if(q<mn){if(nl===PL){const g=mn-q;c.z+=(c.dir>0?1:-1)*Math.min(g,.3)}else c.z=c.dir>0?nl.z+mn:nl.z-mn;if(c.cs>nl.cs)c.cs=nl.cs}}
    c.pz=pz;c.g.position.z=c.z;if(c.hit)hitStep(c,dt);else if(c.sw)swStep(c,dt);else if(state==='run'&&!c.glue)ai(c,dt);
    if(!c.te&&c.m>5000&&state==='run'&&Math.abs(c.z)<15&&Math.abs(c.x-px)<7){c.te=1;sfxTruck(c)}if(c.blk)c.blk.visible=((now/130)|0)%2===0;if(c.dir<0&&!c.em)flashL(c,dt);if(c.lamps){const ph=((now/110)|0)%2===0;c.lamps[0].visible=ph;c.lamps[1].visible=!ph}
@@ -4818,6 +4897,7 @@ seg('Vibrații',['Da','Nu'],()=>CFG.hap?0:1,i=>CFG.hap=i===0);
 step('Sens. volan',()=>CFG.steer,v=>CFG.steer=v,.5,1.5,.1,v=>Math.round(v*100)+'%');
 seg('Volan prin înclinare',['Oprit','Pornit'],()=>CFG.tilt?1:0,i=>TLT.set(i===1));
 step('Sens. înclinare',()=>CFG.tsens,v=>CFG.tsens=v,.5,1.5,.1,v=>Math.round(v*100)+'%');
+seg('Poliție',['Ușor','Normal','Greu'],()=>CFG.pdf|0,i=>CFG.pdf=i);
 seg('Cameră',['Din spate','Cabină'],()=>CFG.cam,i=>{CFG.cam=i;if((i===1)!==fp){tmp=1;$('cv').click();tmp=0}});
 seg('Zi / noapte',['Pornit','Oprit'],()=>DN.on?0:1,i=>DN.on=i===0);
 seg('Începe cu',['Zi','Noapte'],()=>DN.start?1:0,i=>DN.start=i===1?1:0);
