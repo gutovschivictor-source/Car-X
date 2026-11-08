@@ -652,6 +652,113 @@ const cabB=(B,K,z)=>{B(2.3,2.2,2.2,0,1.5,z);K(1.9,.7,.12,0,2.1,z-1.1)};
 function carB(B,K,P,dz){B(1.9,.7,4.4,0,.6,dz);B(1.56,.62,1.98,0,1.25,dz+.25);P(.28,.6,.8,.95,dz-1.4);P(.28,.6,.8,.95,dz+1.4);for(const sd of[-1,1]){K(.04,.36,.7,sd*.79,1.27,dz-.25);K(.04,.36,.9,sd*.79,1.27,dz+.65)}}
 function tracB(B,K,P,dz){B(1.2,.4,3.8,0,.8,dz);B(1.1,1,2.1,0,1.2,dz-1.1);B(1.7,1.7,1.6,0,2.25,dz+.75);K(1.4,.8,.1,0,2.5,dz-.06);B(.12,.9,.12,.4,2.15,dz-1.7);P(.5,1.8,1.8,1,dz+1.1);P(.3,1,1,.8,dz-1.5)}
 const rid=(o,parts)=>{const rg=new THREE.Group();o.g.add(rg);for(const[w,h,l,x,y,z,rx]of parts){const m=box(w,h,l,x,y,z,o.wm,o.wl,rg);if(rx)m.rotation.x=rx}o.rd=rg};
+/* ===== POLITIE REMODELATA: detalii pe masini + motocicleta noua cu pilot (functii ajutatoare) ===== */
+const POLDT={
+polcar:{w:1.9,fz:-2.35,rz:2.35,belt:.93,roof:1.56,zw:.2,d:.75,wz:-.85,hy:.7,ty:.7,lb:[1.67,.3]},
+polsuv:{w:2,fz:-2.5,rz:2.5,belt:1.32,roof:2.22,zw:.5,d:.85,wz:-.7,hy:1.05,ty:1.0,lb:[2.37,-.2]},
+polvan:{w:2.3,fz:-3.4,rz:3.4,belt:1.45,roof:2.43,zw:-2.35,d:.6,wz:-2.9,hy:1.1,ty:1.0,lb:[2.42,-2.4]},
+emerg:{w:2.1,fz:-2.9,rz:2.9,belt:1.15,roof:2.35,zw:-1.9,d:.6,wz:-2.4,hy:1.1,ty:1.1,lb:[1.94,-1.9],cross:1}};
+function polDet(o,ty){const g=o.g,B=(w,h,l,x,y,z)=>box(w,h,l,x,y,z,o.m,o.lm,g),K=(w,h,l,x,y,z)=>box(w,h,l,x,y,z,o.wm,o.wl,g),
+ Cc=(w,h,l,x,y,z,hex)=>box(w,h,l,x,y,z,colMat(hex,0),LB,g),D=POLDT[ty],hw=D.w/2;
+ for(const sd of[-1,1]){const sx=sd*(hw+.02),dn=Math.round(2*D.d/.26);
+  K(.03,D.belt*.6,.03,sx,D.belt*.4+.1,D.zw-D.d);K(.03,D.belt*.6,.03,sx,D.belt*.4+.1,D.zw+D.d);
+  K(.04,.05,.2,sx+sd*.01,D.belt-.12,D.zw-D.d+.25);K(.04,.05,.2,sx+sd*.01,D.belt-.12,D.zw+D.d-.25);
+  B(.12,.14,.22,sd*(hw+.09),D.belt+.2,D.wz+.25);K(.05,.05,.1,sd*(hw+.03),D.belt+.12,D.wz+.28);
+  for(let i=0;i<dn;i++)for(let j=0;j<2;j++)Cc(.03,.09,.24,sx+sd*.005,D.belt*.5-.02+j*.09,D.zw-D.d+.13+i*.26,(i+j)%2?'#5aa9ff':'#fff4de');
+  Cc(.3,.08,.05,sd*(hw-.4),D.hy,D.fz-.03,'#ffc233');Cc(.4,.1,.05,sd*(hw-.35),D.ty,D.rz+.03,'#ff5a3c');
+  K(.08,.45,.08,sd*hw*.5,D.hy-.1,D.fz-.08);K(.1,.12,.24,sd*(hw-.05),D.roof-.02,D.wz+.45);
+  if(D.cross){Cc(.04,.7,.2,sx+sd*.01,1.8,1.1,'#ff5a3c');Cc(.04,.2,.7,sx+sd*.01,1.8,1.1,'#ff5a3c')}
+  if(ty==='polvan')K(.03,.18,1.3,sx,2.3,1.0)}
+ K(.5,.14,.04,0,D.ty-.22,D.rz+.04);K(.5,.13,.04,0,D.hy-.3,D.fz-.04);K(D.w*.7,.14,.08,0,D.hy-.15,D.fz-.1);
+ K(.03,.55,.03,hw*.5,D.roof+.3,D.rz-1.2);K(1.5,.08,.5,0,D.lb[0],D.lb[1])}
+function polBike(o){const g=o.g,kp=g.children.slice(0,2);g.children.slice().forEach(c=>g.remove(c));o.rd=null;
+ const Bd=(w,h,l,x,y,z)=>box(w,h,l,x,y,z,o.m,o.lm,g),Cc=(w,h,l,x,y,z,hex)=>box(w,h,l,x,y,z,colMat(hex,0),LB,g),WH='#fff4de',SL='#d1cbc7',YL='#ffc233',BL='#5aa9ff',GL='#2b2d4f',RD='#ff5a3c',
+  SC=(x,y0,z0,R,N,sy,sz)=>{for(let r=0;r<R;r++)for(let c=0;c<N;c++)Cc(.03,sy,sz,x,y0+r*sy,z0+c*sz,(r+c)%2?YL:BL)};
+ kp.forEach(w=>{g.add(w);const q=w.geometry.parameters;wheelCut(w);rimAdd(w,1,q.width,q.height,q.depth,true);rimAdd(w,-1,q.width,q.height,q.depth,true)});
+ Bd(.34,.34,1,0,.62,.05);Bd(.3,.3,.55,0,.78,.85);Bd(.34,.1,.75,0,.99,.3);
+ Cc(.34,.24,.55,0,1.03,-.42,WH);Cc(.12,.02,.3,0,1.155,-.42,SL);
+ Bd(.42,.3,.35,0,1.05,-.55);Cc(.34,.2,.3,0,1.02,-.78,WH);Cc(.24,.1,.04,0,1.02,-.94,'#fff4dc');Bd(.3,.12,.25,0,1.17,-.5);Cc(.16,.07,.03,0,1.24,-.42,BL);
+ box(.38,.5,.04,0,1.42,-.55,colMat(GL,0),LB,g).rotation.x=.5;
+ Bd(.8,.05,.05,0,1.1,-.46);Cc(.26,.06,.62,0,.86,-.85,WH);Cc(.2,.02,.5,0,.895,-.85,YL);
+ for(const sd of[-1,1]){
+  Bd(.07,.62,.07,sd*.1,.72,-.84);Bd(.03,.14,.03,sd*.38,1.2,-.5);Bd(.1,.1,.05,sd*.4,1.3,-.52);Bd(.1,.07,.07,sd*.36,1.1,-.46);Cc(.06,.06,.06,sd*.2,1.02,-.92,YL);
+  Cc(.07,.38,.55,sd*.22,.93,-.55,WH);SC(sd*.26,.8,-.72,3,3,.1,.17);Cc(.03,.12,.12,sd*.27,1.1,-.52,'#1a1b3a');Cc(.04,.06,.06,sd*.27,1.1,-.52,BL);
+  Cc(.22,.24,.3,sd*.3,.55,-.1,SL);Cc(.04,.04,.8,sd*.36,.45,-.3,SL);Cc(.04,.36,.04,sd*.36,.63,-.68,SL);Cc(.04,.04,.3,sd*.36,.8,-.55,SL);
+  Bd(.14,.04,.5,sd*.3,.32,.18);Bd(.06,.08,.9,sd*.17,.45,.45);Cc(.04,.12,.6,sd*.19,.8,.25,SL);
+  Bd(.22,.34,.62,sd*.31,.8,.8);Cc(.24,.05,.64,sd*.31,.995,.8,WH);SC(sd*.425,.66,.58,2,3,.13,.2);
+  for(let r=0;r<3;r++)Cc(.2,.02,.2,sd*.31,1.03,.58+r*.2,r%2?YL:BL);
+  Cc(.1,.08,.05,sd*.16,1.0,1.3,RD)}
+ Bd(.4,.22,.55,0,1.16,1);Cc(.4,.14,.03,0,1.15,1.285,WH);
+ for(let r=0;r<3;r++)for(let c=0;c<3;c++)Cc(.13,.02,.18,(c-1)*.13,1.285,.84+r*.18,(r+c)%2?YL:BL);
+ Bd(.12,.38,.05,0,.72,1.33);Cc(.26,.16,.03,0,.78,1.36,WH);Cc(.14,.07,.04,0,.55,1.37,RD);
+ Bd(.08,.42,.08,0,1.5,1.45);Bd(.14,.07,.14,0,1.74,1.45);
+ o.lamps=[];for(let j=0;j<2;j++){const gp=new THREE.Group();g.add(gp);box(.3,.2,.28,0,1.9,1.45,o.wm,o.wl,gp);o.lamps.push(gp)}}
+function polRider(o){const rg=new THREE.Group();o.g.add(rg);o.rd=rg;
+ const L=(a,b,w,hex)=>{const A=new THREE.Vector3(...a),V=new THREE.Vector3(...b),m=box(w,w,A.distanceTo(V),0,0,0,colMat(hex,0),LB,rg);m.position.copy(A).add(V).multiplyScalar(.5);m.lookAt(V);return m},
+ X=(w,h,l,x,y,z,hex)=>box(w,h,l,x,y,z,colMat(hex,0),LB,rg),SK='#eadbb8',UN='#fff4de',PT='#3a3b52',IK='#1a1b3a';
+ for(const sd of[-1,1]){L([sd*.15,1.08,.15],[sd*.3,1.0,-.25],.14,PT);L([sd*.3,1.0,-.25],[sd*.3,.58,.02],.12,PT);X(.13,.13,.3,sd*.3,.52,-.05,IK);
+  L([sd*.22,1.62,0],[sd*.3,1.3,-.18],.1,UN);L([sd*.3,1.3,-.18],[sd*.3,1.07,-.45],.09,UN);X(.09,.09,.1,sd*.3,1.06,-.47,IK);X(.05,.2,.26,sd*.13,1.86,-.06,UN)}
+ X(.34,.16,.26,0,1.1,.15,PT);X(.38,.05,.26,0,1.2,.14,IK);X(.36,.5,.24,0,1.41,.07,UN).rotation.x=-.3;X(.07,.07,.03,.1,1.5,-.07,'#ffc233');
+ X(.08,.07,.08,0,1.69,-.02,SK);X(.22,.22,.22,0,1.82,-.06,SK).rotation.x=-.2;X(.3,.14,.32,0,1.95,-.06,UN).rotation.x=-.2;X(.3,.26,.08,0,1.86,.08,UN).rotation.x=-.2;X(.24,.06,.04,0,1.85,-.18,'#2b2d4f');X(.05,.02,.32,0,2.02,-.06,'#5aa9ff')}
+/* ===== MOTOCICLETE REMODELATE: detalii + pilot cu casca personalizata pe fiecare motor (nu pe cel de politie) ===== */
+(function(){const DC={};
+/* ===== detalii noi pentru toate motocicletele (acelasi nivel ca motorul de politie) ===== */
+const SL='#d1cbc7',YL='#ffc233',BL='#5aa9ff',RD='#ff5a3c',WH='#fff4de',IK='#1a1b3a',SK='#eadbb8';
+const BK={
+ moto:{bar:[1.05,-.45],seat:[.98,.15],peg:[.42,.35],tail:1.12,lean:1.0,suit:['#1a1b3a','#ff5a3c'],hel:'#fff4de'},
+ nakedbike:{bar:[1.2,-.5],seat:[.92,.5],peg:[.45,.35],tail:1.25,lean:.4,suit:['#3a3b52','#5aa9ff'],hel:'#5aa9ff'},
+ cruiser:{bar:[1.25,-.75],seat:[.82,.9],peg:[.32,-.15],tail:1.3,lean:-.25,suit:['#6b4a34','#eadbb8'],hel:'#eadbb8',half:1,bags:1},
+ cafe:{bar:[1.0,-.65],seat:[1.0,.65],peg:[.45,.4],tail:1.1,lean:1.05,suit:['#6b4a34','#fff4de'],hel:'#ffc233'},
+ vipbike:{bar:[1.1,-.42],seat:[1.02,.2],peg:[.55,.5],tail:1.4,lean:1.15,suit:['#1a1b3a','#b06cff'],hel:'#b06cff'},
+ dakar:{fmin:1.4,bar:[1.58,-.55],seat:[1.3,.5],peg:[.7,.2],tail:1.45,lean:.15,suit:['#ff7a1a','#1a1b3a'],hel:'#fff4de'},
+ boltbike:{bar:[.98,-.75],seat:[.9,.4],peg:[.6,.6],tail:1.6,lean:1.3,suit:['#ffc233','#1a1b3a'],hel:'#ff5a3c'}};
+function rod(par,a,b,w,hex){const A=new THREE.Vector3(...a),V=new THREE.Vector3(...b),m=box(w,w,A.distanceTo(V),0,0,0,colMat(hex,0),LB,par);m.position.copy(A).add(V).multiplyScalar(.5);m.lookAt(V);return m}
+function detBike(o,ty){const g=o.g,P=BK[ty],Cc=(w,h,l,x,y,z,hex,par)=>box(w,h,l,x,y,z,colMat(hex,0),LB,par||g),
+ wf=g.children[0],wr=g.children[1],qf=wf.geometry.parameters,qr=wr.geometry.parameters,[by,bz]=P.bar,[sy,sz]=P.seat,[py,pz]=P.peg;
+ const DK=DC[ty]||(DC[ty]=(()=>{const gm=g.children.filter(c=>c.isMesh&&c!==wf&&c!==wr),bx=gm.map(c=>new THREE.Box3().setFromObject(c)),V3=()=>new THREE.Vector3(),
+  ri=bx.reduce((a,b,i)=>{const c=b.getCenter(V3());return Math.abs(c.x)<.1&&c.y>.8&&b.max.z>bx[a].max.z?i:a},0),tz=bx[ri].max.z,ry=(bx[ri].min.y+bx[ri].max.y)/2,
+  fb=bx.reduce((a,b,i)=>(b.getCenter(V3()).y>(P.fmin||.7)&&(a<0||b.min.z<bx[a].min.z))?i:a,-1),fy=(bx[fb].min.y+bx[fb].max.y)/2,fz=bx[fb].min.z,
+  eb=bx.reduce((a,b,i)=>{const z=b.getSize(V3());return z.x*z.y*z.z>a[0]?[z.x*z.y*z.z,i]:a},[0,0])[1],E=bx[eb],es=E.getSize(V3()),ec=E.getCenter(V3());
+ return{tz,ry,fy,fz,emy:E.min.y,es,ec}})()),{tz,ry,fy,fz,es,ec}=DK;
+ for(const w of[wf,wr]){const q=w.geometry.parameters;wheelCut(w);rimAdd(w,1,q.width,q.height,q.depth,true);rimAdd(w,-1,q.width,q.height,q.depth,true)}
+ for(const sd of[-1,1]){
+  Cc(.03,qf.height*.52,qf.depth*.52,sd*(qf.width/2+.05),0,0,SL,wf);Cc(.05,.12,.16,sd*(qf.width/2+.07),qf.height*.2,-qf.depth*.2,RD,wf);
+  Cc(.03,qr.height*.42,qr.depth*.42,sd*(qr.width/2+.05),0,0,SL,wr);
+  rod(g,[sd*.11,wf.position.y,wf.position.z],[sd*.11,by-.03,bz+.1],.05,SL);
+  rod(g,[sd*.14,.5,.35],[sd*.14,wr.position.y,wr.position.z],.08,SL);                         /* brat oscilant */
+  Cc(.14,.06,.06,sd*.4,by,bz,IK);rod(g,[sd*.38,by+.02,bz],[sd*.46,by+.22,bz+.12],.025,SL);Cc(.1,.07,.04,sd*.46,by+.25,bz+.12,BL);   /* manere + oglinzi */
+  Cc(.2,.04,.07,sd*.3,py,pz,SL);Cc(.12,.1,.7,sd*.2,.5,.5,SL);Cc(.12,.1,.12,sd*.2,.5,.5+.42,IK)}                                   /* scarite + esapament */
+ Cc(.2,.18,.05,0,fy,fz,'#fff4dc');Cc(.24,.22,.03,0,fy,fz+.02,SL);                  /* far cu inel */
+ Cc(.24,.05,wf.geometry.parameters.depth*.65,0,wf.position.y+qf.height/2+.06,wf.position.z,o.m===WM?WH:'#ff5a3c');   /* aripa fata */
+ Cc(.2,.07,.05,0,ry,tz,RD);Cc(.22,.16,.03,0,ry-.115,tz+.02,WH);Cc(.14,.05,.03,0,ry-.115,tz+.04,IK);   /* stop + numar */
+ for(const sd of[-1,1])for(let i=0;i<4;i++)Cc(.03,es.y*.16,es.z*.55,sd*(es.x/2+.005),DK.emy+es.y*(.2+i*.2),ec.z,SL);                /* aripioare racire motor */
+ if(P.bags)for(const sd of[-1,1]){Cc(.2,.3,.6,sd*.34,.78,.9,'#6b4a34');Cc(.22,.05,.1,sd*.34,.9,.9,SL)}   /* cufere laterale */}
+function detRider(o,ty){const P=BK[ty],rg=new THREE.Group();o.g.add(rg);o.rd=rg;
+ const X=(w,h,l,x,y,z,hex)=>box(w,h,l,x,y,z,colMat(hex,0),LB,rg),[S0,S1]=P.suit,[by,bz]=P.bar,[sy,sz]=P.seat,[py,pz]=P.peg,
+ lc=Math.cos(P.lean),ls=Math.sin(P.lean),H=[0,sy+.14,sz],S=[0,H[1]+.55*lc,H[2]-.55*ls];
+ rod(rg,H,S,.34,S0).scale.set(1.1,1,1);X(.38,.07,.3,0,(H[1]+S[1])/2+.05,(H[2]+S[2])/2-.02,S1);   /* trunchi + dunga */
+ X(.34,.16,.3,0,H[1]-.02,H[2]+.02,IK);                                                              /* sezut */
+ for(const sd of[-1,1]){const hip=[sd*.15,H[1],H[2]],foot=[sd*.3,py+.08,pz],kn=[sd*.34,(hip[1]+foot[1])/2+.2,(hip[2]+foot[2])/2-.28],
+  sh=[sd*.2,S[1]-.04,S[2]],hd=[sd*.37,by+.05,bz],el=[sd*.38,(sh[1]+hd[1])/2-.06,(sh[2]+hd[2])/2+.05];
+  rod(rg,hip,kn,.15,S0);rod(rg,kn,foot,.12,S0);X(.12,.12,.3,foot[0],foot[1]-.04,foot[2]-.06,IK);X(.1,.04,.12,foot[0],foot[1]-.04,foot[2]-.22,SL);   /* picior + bocanc */
+  X(.08,.12,.2,sd*.34,kn[1]+.02,kn[2]-.04,S1);                                                         /* genunchiera */
+  rod(rg,sh,el,.1,S0);rod(rg,el,hd,.09,S0);X(.1,.1,.12,hd[0],hd[1],hd[2],IK)}                          /* brate + manusi */
+ const hx=S[1]+.3,hz=S[2]-.1*ls-.04,Hh=(w,h,l,x,y,z,hex)=>X(w,h,l,x,hx+y,hz+z,hex),V='#2b2d4f',A=S1,
+  sk={moto:'#eadbb8',nakedbike:'#d9a77a',cruiser:'#c68a5e',cafe:'#eadbb8',vipbike:'#a86f4a',dakar:'#d9a77a',boltbike:'#7a4a30'}[ty]||SK;
+ X(.1,.24,.1,0,S[1]+.1,S[2]-.03,sk);Hh(.3,.3,.34,0,0,0,P.hel);
+ if(ty==='moto'){Hh(.26,.11,.05,0,.02,-.19,V);Hh(.04,.02,.34,-.05,.16,0,A);Hh(.04,.02,.34,.05,.16,0,A);Hh(.31,.05,.2,0,-.02,.04,A);Hh(.1,.04,.04,0,-.1,-.19,SL);Hh(.2,.05,.08,0,.1,.2,P.hel)}
+ else if(ty==='nakedbike'){Hh(.28,.16,.05,0,.03,-.19,'#9fd0ff');Hh(.3,.1,.08,0,-.1,-.19,P.hel);Hh(.05,.02,.34,0,.16,0,WH);Hh(.31,.04,.34,0,-.06,0,WH);Hh(.06,.06,.1,.17,.06,-.05,IK);Hh(.03,.03,.04,.17,.06,-.11,RD)}
+ else if(ty==='cruiser'){Hh(.3,.06,.1,0,.1,-.2,P.hel);Hh(.24,.1,.04,0,.02,-.19,sk);Hh(.28,.05,.04,0,.05,-.22,IK);Hh(.08,.04,.03,-.07,.05,-.24,'#7a5af0');Hh(.08,.04,.03,.07,.05,-.24,'#7a5af0');
+  Hh(.2,.12,.06,0,-.08,-.2,'#6b4a34');Hh(.14,.03,.05,0,-.01,-.21,'#6b4a34');Hh(.05,.02,.34,0,.16,0,A);Hh(.3,.1,.1,0,-.12,.2,P.hel)}
+ else if(ty==='cafe'){Hh(.22,.14,.04,0,-.03,-.19,sk);Hh(.28,.07,.06,0,.09,-.2,IK);Hh(.1,.05,.03,-.07,.09,-.24,'#ffe28a');Hh(.1,.05,.03,.07,.09,-.24,'#ffe28a');
+  Hh(.04,.12,.04,-.15,-.12,-.05,'#6b4a34');Hh(.04,.12,.04,.15,-.12,-.05,'#6b4a34');Hh(.05,.02,.34,0,.16,0,WH);Hh(.26,.08,.2,0,-.14,0,'#eadbb8')}
+ else if(ty==='vipbike'){Hh(.26,.09,.05,0,.01,-.19,YL);Hh(.2,.1,.06,0,-.1,-.2,P.hel);Hh(.12,.03,.03,0,-.1,-.24,SL);Hh(.24,.04,.12,0,.12,.22,A);Hh(.04,.08,.04,-.08,.08,.18,IK);Hh(.04,.08,.04,.08,.08,.18,IK);Hh(.08,.03,.12,0,.16,-.05,IK);Hh(.31,.06,.12,0,0,-.05,A)}
+ else if(ty==='dakar'){Hh(.34,.03,.2,0,.12,-.25,A);Hh(.28,.1,.04,0,.04,-.19,IK);Hh(.22,.06,.03,0,.04,-.22,'#ffd75a');Hh(.26,.12,.12,0,-.11,-.22,P.hel);Hh(.12,.05,.03,0,-.1,-.29,IK);Hh(.06,.02,.34,0,.16,0,A);Hh(.31,.1,.12,0,.05,.08,A)}
+ else if(ty==='boltbike'){Hh(.26,.1,.05,0,.02,-.19,'#c6d7d8');Hh(.31,.05,.2,0,-.03,-.06,YL);Hh(.31,.04,.12,0,.05,-.1,RD);Hh(.05,.1,.26,0,.2,0,RD);Hh(.3,.08,.06,0,-.11,-.19,IK)}}
+const WELD={"moto":[],"nakedbike":[],"cruiser":[[0,0.8,-0.44,0,0.77,-0.44],[-0.085,1.233,-0.671,-0.09,1.225,-0.725]],"cafe":[],"vipbike":[[0,1.136,1.24,0,1.006,1.192]],"dakar":[[0,1.117,-1.439,0,1.065,-1.4],[0,1.45,-0.73,0,1.44,-0.7]],"boltbike":[],"polmoto":[[-0.23,0.34,0.18,-0.2,0.41,0.18],[0.23,0.34,0.18,0.2,0.41,0.18],[0,1.775,1.45,0,1.8,1.45],[0,0.72,1.305,0,0.72,1.25],[0,1.29,1.41,0,1.295,1.29]]};   /* tuburi mici de cadru care leaga piesele altfel suspendate */
+
+window.bikeDet=function(o,ty){try{o.g.remove(o.rd);detBike(o,ty);detRider(o,ty);for(const r of WELD[ty]||[])rod(o.g,r.slice(0,3),r.slice(3),.05,'#2b2d4f')}catch(e){console.error('bikeDet',ty,e)}};
+window.bikeDet.has=ty=>!!BK[ty]})();
 const TY={
  sport:{w:1.9,l:4.4,sp:[0,0],wt:0,dk:0,b:(B,K,P)=>{
   B(1.9,.42,4.4,0,.5,0);                                   /* caroserie joasa */
@@ -775,9 +882,8 @@ const TY={
  tractorTrailer:{w:2.5,l:10.4,sp:[8,12],wt:5,dk:.2,b:(B,K,P)=>{tracB(B,K,P,-3);B(.2,.2,1.6,0,.7,-.4);B(2.3,1.3,4.6,0,1.45,2.6);B(2,1,1.9,0,2.6,1.4);B(2,1,1.9,0,2.6,3.5);P(.4,1.3,1.3,1.1,3.7)}},
  combine:{w:3.5,l:9,sp:[7,10],wt:3,dk:.3,b:(B,K,P,C,o)=>{B(3.4,.9,1.2,0,.9,-3.9);B(2.6,2,6.5,0,1.9,.05);B(1.8,1.6,2,0,3.7,-2.3);K(1.5,.8,.1,0,3.8,-3.3);B(2.4,1.2,3.5,0,3.5,1.4);P(.7,1.7,1.7,1.4,-1.8);P(.5,1,1,.9,3);
   const rg=new THREE.Group();rg.position.set(0,1.9,-4.3);o.g.add(rg);for(let i=0;i<4;i++){const a=i*Math.PI/2;box(3.3,.1,.1,0,Math.sin(a)*.6,Math.cos(a)*.6,o.wm,o.wl,rg)}o.spin=rg}},
- polmoto:{w:.9,l:2.2,sp:[30,30],wt:0,dk:0,b:(B,K,P,C,o)=>{                 /* motocicleta de politie: supersport + cutie in spate + girofare */
-  TY.moto.b(B,K,P,C,o);K(.46,.3,.5,0,1.08,.95);K(.3,.05,.3,0,1.3,-.78);
-  o.lamps=[];for(const sd of[-1,1]){const gp=new THREE.Group();o.g.add(gp);box(.3,.2,.28,sd*.2,1.75,.05,o.wm,o.wl,gp);o.lamps.push(gp)}}},
+ polmoto:{w:.9,l:2.2,sp:[30,30],wt:0,dk:0,b:(B,K,P,C,o)=>{                 /* motocicleta de politie REMODELATA: BMW cu cufere, sirena pe antena, pilot relaxat */
+  TY.moto.b(B,K,P,C,o);polBike(o);polRider(o)}},
  polcar:{w:1.9,l:4.7,sp:[30,30],wt:0,dk:0,b:(B,K,P,C,o)=>{                 /* radiopatrula: sedan cu bara de girofare pe plafon */
   B(1.9,.62,4.7,0,.62,0);B(1.55,.62,2.2,0,1.25,.3);B(1.5,.1,.7,0,1.1,-.85).rotation.x=-.6;
   K(1.96,.18,3.3,0,.72,.1);K(.5,.1,.9,0,.95,-1.7);K(1.3,.3,.1,0,.45,-2.4);K(.4,.1,.1,.6,.7,-2.37);K(.4,.1,.1,-.6,.7,-2.37);K(1.5,.06,.06,0,.7,2.37);
@@ -795,6 +901,7 @@ const TY={
  emerg:{w:2.1,l:5.8,sp:[30,30],wt:0,dk:0,b:(B,K,P,C,o)=>{B(2.1,.9,5.8,0,.7,0);B(2.1,1.35,3.6,0,1.8,1.1);B(1.9,.9,1.6,0,1.45,-1.9);K(1.6,.55,.12,0,1.55,-2.72);K(2.14,.28,5.4,0,1.15,0);P(.3,.8,.8,1.05,-1.9);P(.3,.8,.8,1.05,1.9);
   o.lamps=[];for(const sd of[-1,1]){const gp=new THREE.Group();o.g.add(gp);box(.55,.28,.4,sd*.55,2.1,-1.9,o.wm,o.wl,gp);o.lamps.push(gp)}}}
 };
+for(const k of['polcar','polsuv','polvan','emerg']){const f=TY[k].b;TY[k].b=(B,K,P,C,o)=>{f(B,K,P,C,o);polDet(o,k)}}
 /* ===== vehicule noi: betoniera, basculanta, autocar cu etaj, masina de gunoi, limuzina, oldtimer ===== */
 const NVG={};
 function nvGeo(){if(NVG.a)return;const cy=(rt,rb,len,x)=>new THREE.CylinderGeometry(rt,rb,len,10).rotateZ(Math.PI/2).translate(x,0,0);
@@ -892,7 +999,7 @@ function mkVehNR(){const s=wRim;wRim=false;try{return mkVeh.apply(null,arguments
 function mkVeh(ty,dark,col){const Y=TY[ty],g=new THREE.Group(),m=bodyMat(ty,dark,col),lm=dark?LW:LB,wm=dark?WM:BM,wl=dark?LB:LW,
  B=(w,h,l,x,y,z)=>box(w,h,l,x,y,z,m,lm,g),K=(w,h,l,x,y,z)=>box(w,h,l,x,y,z,wm,wl,g),
  P=(w,h,l,x,z)=>{const a=wheelCut(K(w,h,l,x,h/2,z)),b=wheelCut(K(w,h,l,-x,h/2,z));o.wh.push(a,b);if(wRim){rimAdd(a,1,w,h,l,dark);rimAdd(b,-1,w,h,l,dark)}},C=(r,l,x,y,z)=>cyl(r,l,x,y,z,m,lm,g),o={g,w:Y.w,l:Y.l,m,lm,wm,wl,wh:[],det:[],hl:[],dr:{}};
- Y.b(B,K,P,C,o);if(WINT.has(ty))sideWin(g,m,K,Y.w);if(col===undefined)paintVeh(o,ty,dark,m,g,lm);return o}
+ Y.b(B,K,P,C,o);if(window.bikeDet&&window.bikeDet.has(ty))window.bikeDet(o,ty);if(WINT.has(ty))sideWin(g,m,K,Y.w);if(col===undefined)paintVeh(o,ty,dark,m,g,lm);return o}
 /* ===== bagaje pe unele masini: valize cu chingi, cutie de plafon, prelata sau bicicleta pe portbagaj ===== */
 const LDM=[0xff5a3c,0x5aa9ff,0xffc233,0x8a5a3a,0x4f8a5a,0xe8d9b8,0x7a5af0].map(c=>new THREE.MeshBasicMaterial({color:c})),
  LRM={car:{y:1.56,z:.25,w:1.5,l:1.8,pr:.14,pb:.10},van:{y:2.3,z:.3,w:1.9,l:3.6,pr:.16,pb:0}};
